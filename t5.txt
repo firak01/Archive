@@ -1,0 +1,376 @@
+//TODO: Modularisieren, ggf. die Darstellung der verschiedenen Bildschirmbereiche in mehrere Programme.
+//TODO: Aus dem Cruise-Missile-Beispiel die ETA - Angabe.
+//TODO: Die verschiedenen MissionsStati auf Dateien aufteilen, die ggf. von unterschiedlichen Programmen aus 
+//      miteinander kombinierbar sind.  1. Startsequenz, 2. Im Flug, 3. Start & Flug, etc.
+//TODO: Das Ziel als Paramter dem "Flugprogram" ?bergeben, ggf. weitere Parameter wie "Belastungsgrenzen."
+//TODO: Ausgabe des Treibstoffs und gesch?tzte noch m?gliche Flugzeit.
+//TODO: Startsequenz-Per Flag steuern ob die Bremsen erst bei voller Schubleistung geloest werden sollen.
+set iHeightGoal to 12000. //Sets desired height of plane.
+set iDistTargGoal to 2000. //Set desired distance to Target in meter.
+set targKscAtc to LATLNG(-0.035,-76.5). //Tower beim KSC
+set targKscRunStart to LATLNG(-0.0486,-74.7244). //Startposition auf Runway beim KSC.
+set targKscRunEnd to LATLNG(-0.0502,-74.7244). //Endposition auf Runway beim KSC.
+//set targKscRunEnd to LATLNG(-0.0475,-74.7244). //Endposition auf Runway beim KSC.
+set targPolNor to LATLNG(90,0). //Nordpol
+
+
+set constDegreeTxt to "G". //TODO: Ermittle in der englsichne Tastaur das Grad zeichen.
+set constHorizonUpMax to 65. //Die Maximalwerte fuer das Flugverhalten der Maschine.
+set constHorizonDownMax to -20.
+set constLaunchSpeedMin to 95. //Sets the Surfacespeed, which must be reached for "pull up"
+set constWheelSteeringSpeedMax to 30.
+
+
+//HEADING (degreesFromNorth, pitchAboveHorizon)
+//Represents a heading that's relative to the body of influence.
+//set x to heading(0, 20).     //geht auf 20 Grad, pitch nach unten...
+set gradeStart to targKscRunEnd:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
+set gradeCurrent to gradeStart.
+
+set targ to targKscRunEnd.
+
+//SET X //Set X TO LATLNG(10, 20).            // Initialize point at lattitude 10, longitude 20
+//PRINT //X:LAT.                        // Print 10.
+//PRINT X:LNG.                        // Print 20.
+//PRINT X:DISTANCE.                   // Print distance from vessel to x (same altitude is presumed)
+//PRINT LATLNG(10,20):HEADING.        // Print the heading to the point.
+//PRINT X:BEARING.                    // Print the heading to the point relative to vessel heading.
+
+clearscreen.
+print "------------" at (0,2).
+print "Start T4" at (0,3).
+print "Facing: " + facing at(0,7).
+print "Heading: " + HEADING at(0,8).
+wait 0.5.
+stage. //Spare das Druecken der "Spacebar"-Taste 
+
+//+++ Set to surface prograde:
+//lock steering to R(0,0,0) * vector:surface. //prograde.
+//lock WHEELSTEERING to R(0,0,0) * vector:surface. //TODO: wenn noch unter einer bestimmten geschwindigkeit "leicht" gegensteuern.
+set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+
+set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK WHEELSTEERING TO W.           // Steer the vessel in the direction suggested by direction X.
+
+//+++ Auf Startgeschwindigkeit gehen
+lock throttle to 1.0.
+BRAKES OFF. //TODO: Schubleistung ermitteln und erst bei Maximalschub Bremse l?sen.
+SAS ON. //SAS anstellen
+clearscreen.
+print "------------" at (0,2).
+print "Beschleunige (Press ctrl-c to exit)" at (0,3).
+set iCountSoft to 0.
+set iCount to 0.
+until abs(SHIP:surfacespeed) >= abs(constLaunchSpeedMin){
+	set iCount to iCount + 1.
+	
+	run subConsoleDataMain.txt
+
+	set iCountSoft to 0.
+	//TODO ueberarbeiten.
+	set gradeCurrent to targKscRunEnd:HEADING. //TODO: fexibles Ziel, funktoniert das
+	//if gradeCurrent != ROUND(targKscRunEnd:BEARING) {
+		set iCountSoft to iCountSoft + 1.
+		if abs(gradeCurrent - abs(ROUND(targKscRunEnd:BEARING))) >= 180 {
+			print "... korrektursteuern nach rechts..." at (0,0).
+			set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
+			if gradeCurrent > 360 { set gradeCurrent to 360. }.
+		}.
+		if abs(gradeCurrent - abs(ROUND(targKscRunEnd:BEARING))) < 180 {
+			print "... korrektursteuern nach links..." at (0,0).
+			set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
+			if gradeCurrent < 0 { set gradeCurrent to 0. }.
+		}.
+	//}.
+	
+	//+++ Steuern, falls noch nicht zu schnell	
+	if abs(SHIP:surfacespeed) > constWheelSteeringSpeedMax {
+		wait 0.5.
+	}
+	if abs(SHIP:surfacespeed) <= constWheelSteeringSpeedMax {
+		SAS OFF.
+		set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+		set W to HEADING(horizonCurrent, gradeCurrent).
+		wait 0.25. //schneller reagieren.... weniger pause.
+		SAS ON.
+	}.
+	
+}. 
+
+
+//+++ Hochziehen
+//clearscreen.
+//print "------------" at (0,2).
+//print "Hochziehen" at (0,3).
+//SAS OFF. //Vor aendern der Steuerung SAS ausschalten. Nur so reagiert der Flieger.
+set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+
+set horizonGoalUp to constHorizonUpMax. //wie stark die H?henver?nderung sein soll.
+set horizonGoalDown to -5.
+set horizonCurrent to horizonGoalUp.
+set targ to targPolNor.
+set iCountSoft to 0.
+set sMissionStepTxt to "Start (Press ctrl-c to exit)".
+until SHIP:altitude >= iHeightGoal{
+	set iCount to iCount + 1.
+	
+	clearscreen.
+	print "--- " + SHIP + " ---" at (0,2).
+	
+	//+++ Hoehenangabe
+	//These lines determine if the missile is flying over water. If it is, the missile determins its height based on altitude, not radalt.
+	set height to alt:radar.
+	if alt:radar < 0 {set height to altitude.}.
+	if alt:radar > altitude {set height to altitude.}.
+		
+	set sAltitudeControl to sMissionStepTxt + ": Hoehenkorridor halten.".
+	set horizonExtreme to 0.
+	if ROUND(altitude) < iHeightGoal - (iHeightGoal/10) { 
+		set horizonExtreme to horizonGoalUp.
+		set horizonCurrent to horizonGoalUp.
+		set sAltitudeControl to sMissionStepTxt + ": Hochziehen!".
+		set iCountSoft to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+	}.
+	if ROUND(altitude) > iHeightGoal + (iHeightGoal/10) { 
+		set horizonExtreme to horizonGoalDown.
+		set horizonCurrent to horizonGoalDown.
+		set sAltitudeControl to sMissionStepTxt + ": Runterziehen!".
+		set iCountSoft to 0. //set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+	}.
+	print sAltitudeControl at (0,3).
+	 
+	//+++ Anstiegswinkel verringern und schon leicht eine Kurve fliegen. Aber die Extermbelastungen vermeiden.
+	if horizonExtreme = 0 { 
+		//Teste, fliege gleichmaessiger
+		if abs(horizonCurrent)-iCountSoft > 0 {
+			set iCountSoft to iCountSoft + 1.
+		}.
+		if abs(horizonCurrent)-iCountSoft <= 0 {
+			 set iCountSoft to 0.
+		}.
+		//Vermeide ueberschreiten der erlaubten Belastung.
+		set horizonCurrent to horizonCurrent-iCountSoft.
+		if horizonCurrent > horizonGoalUp {
+			set horizonCurrent to horizonGoalUp.
+		}.
+		if horizonCurrent < horizonGoalDown {
+			set horizonCurrent to horizonGoalDown.
+		}.
+	}.
+	
+	
+	//Ziel: Langsam den Kurs ?ndern.
+	if height > 200 { 
+	if gradeCurrent != ROUND(targ:BEARING) {
+		if abs(gradeCurrent - abs(ROUND(targ:BEARING))) >= 180 {
+			print "... korrektursteuern nach rechts..." at (0,0).
+			set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
+			if gradeCurrent > 360 { set gradeCurrent to 360. }.
+		}.
+		if abs(gradeCurrent - abs(ROUND(targ:BEARING))) < 180 {
+			print "... korrektursteuern nach links..." at (0,0).
+			set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
+			if gradeCurrent < 0 { set gradeCurrent to 0. }.
+		}.
+	}.
+	}.
+	
+	//####### Wert - AUSGABEN #######
+	print iCount + ". Messung:" at (0,4).
+
+	print "Altitude: " + ROUND(altitude) + " m" at (0,5).
+	print "Radar: " + ROUND(height) + " m" at (25,5).
+	
+	set distKscAtcTxt to ROUND(targKscAtc:DISTANCE/1000) + " Km".
+	if targKscAtc:DISTANCE/1000<1 {
+		set distKscAtcTxt to ROUND(targKscAtc:DISTANCE) + " m".
+	}.
+	Print "KSC Distance: " + distKscAtcTxt at (0,7).
+	Print "KSC Heading:  " + ROUND(targKscAtc:HEADING) + " " + constDegreeTxt at (0,8).
+	Print "Bearing: " + ROUND(targKscAtc:BEARING) + " " + constDegreeTxt at (25,8).
+	
+	set distKscRunStartTxt to ROUND(targKscRunStart:DISTANCE/1000) + " Km".
+	if targKscRunStart:DISTANCE/1000<1 {
+		set distKscRunStartTxt to ROUND(targKscRunStart:DISTANCE) + " m".
+	}.
+	Print "Runway Distance: " + distKscRunStartTxt at (0,10).
+	Print "Runway Heading:  " + ROUND(targKscRunStart:HEADING) + " " + constDegreeTxt at (0,11).
+	Print "Bearing: " + ROUND(targKscRunStart:BEARING) + " " + constDegreeTxt at (25,11).
+	
+	set distKscRunEndTxt to ROUND(targKscRunEnd:DISTANCE/1000) + " Km".
+	if targKscRunEnd:DISTANCE/1000<1 {
+		set distKscRunEndTxt to ROUND(targKscRunEnd:DISTANCE) + " m".
+	}.
+	Print "Runway End Distance: " + distKscRunEndTxt at (0,13).
+	Print "Runway End Heading:  " + ROUND(targKscRunEnd:HEADING) + " " + constDegreeTxt at (0,14).
+	Print "Bearing: " + ROUND(targKscRunEnd:BEARING) + " " + constDegreeTxt at (25,14).
+
+	
+	set distPolNorTxt to ROUND(targPolNor:DISTANCE/1000) + " Km".
+	if targPolNor:DISTANCE/1000<1 {
+		set distPolNorTxt to ROUND(targPolNor:DISTANCE) + " m".
+	}.
+	Print "Northpole Distance: " + distPolNorTxt at (0,16).
+	Print "Northpole Heading:  " + ROUND(targPolNor:HEADING) + " " + constDegreeTxt at (0,17).
+	Print "Bearing: " + ROUND(targPolNor:BEARING) + " " + constDegreeTxt at (25,17).
+	
+	//+++ Richtungsangabe
+	print "Heading: " + heading at (0,20).
+	print "Facing: " + facing at (0,21).
+	
+	//##### Andere Strategie
+	//+++ Steuern
+	SAS OFF.
+	if height <= 200 {
+	//set X to UP + R(0,0,0). // soll nur hochziehen sein.... TODO GOON
+	set X to UP + V(10,10,0). // soll nur hochziehen sein.... TODO GOON
+	}
+	if height > 200{
+		set X to HEADING(horizonCurrent, gradeCurrent).
+	}
+	wait 1.
+	SAS ON.
+	
+	//+++ Fahrwerk einziehen
+	if height > 200 { 
+		GEAR OFF.
+	}.
+}.
+
+//Zielhoehe erreicht, nun lediglich Kurs und Hoehe halten
+set horizonGoalUp to 10. //wie stark die H?henver?nderung sein soll. Beim Flug nicht so stark wie beim Start
+set horizonGoalDown to -5.
+set iCountSoft to 0.
+set sMissionStepTxt to "Flug zum Ziel  (Press ctrl-c to exit)".
+until targ:DISTANCE < iDistTargGoal {
+	set iCount to iCount + 1.
+	clearscreen.
+	print "--- " + SHIP + " ---" at (0,2).
+	
+	set sAltitudeControl to sMissionStepTxt + ": Hoehenkorridor halten.".
+	set horizonExtreme to 0.
+	if ROUND(altitude) < iHeightGoal - (iHeightGoal/10) { 
+		set horizonExtreme to horizonGoalUp.
+		set horizonCurrent to horizonGoalUp.
+		set sAltitudeControl to sMissionStepTxt + ": Hochziehen!".
+		set iCountSoft to 0. //set iCountSoft to iCountSoft + 1. //muss das nicht auch set iCountSoft to 0. sein?
+	}.
+	if ROUND(altitude) > iHeightGoal + (iHeightGoal/10) { 
+		set horizonExtreme to horizonGoalDown.
+		set horizonCurrent to horizonGoalDown.
+		set sAltitudeControl to sMissionStepTxt + ": Runterziehen!".
+		set iCountSoft to 0. // set iCountSoft to iCountSoft + 1. //muss das nicht auch set iCountSoft to 0. sein?
+	}.
+	print sAltitudeControl at (0,3).
+	 
+	//+++ Anstiegswinkel verringern und schon leicht eine Kurve fliegen. Aber die Extermbelastungen vermeiden.
+	if horizonExtreme = 0 { 
+		//Teste, fliege gleichm??iger
+		if abs(horizonCurrent)-iCountSoft > 0 {
+			set iCountSoft to iCountSoft + 1.
+		}.
+		if abs(horizonCurrent)-iCountSoft <= 0 {
+			 set iCountSoft to 0.
+		}.
+		//Vermeide ueber die erlaubte Belastung.
+		set horizonCurrent to horizonCurrent-iCountSoft.
+		if horizonCurrent > horizonGoalUp {
+			set horizonCurrent to horizonGoalUp.
+		}.
+		if horizonCurrent < horizonGoalDown {
+			set horizonCurrent to horizonGoalDown.
+		}.
+	}.
+	
+	//Ziel: Langsam den Kurs ?ndern.
+	if gradeCurrent != ROUND(targ:BEARING) {
+		if abs(gradeCurrent - abs(ROUND(targ:BEARING))) >= 180 {
+			print "... korrektursteuern nach rechts..." at (0,0).
+			set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
+			if gradeCurrent > 360 { set gradeCurrent to 360. }.
+		}.
+		if abs(gradeCurrent - abs(ROUND(targ:BEARING))) < 180 {
+			print "... korrektursteuern nach links..." at (0,0).
+			set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
+			if gradeCurrent < 0 { set gradeCurrent to 0. }.
+		}.
+	}.
+	
+	//####### Wert - AUSGABEN #######
+	print iCount + ". Messung:" at (0,4).
+	
+	//+++ Hoehenangabe
+	//These lines determine if the missile is flying over water. If it is, the missile determins its height based on altitude, not radalt.
+	set height to alt:radar.
+	if alt:radar < 0 {set height to altitude.}.
+	if alt:radar > altitude {set height to altitude.}.
+	
+	print "Altitude: " + ROUND(altitude) + " m" at (0,5).
+	print "Radar: " + ROUND(height) + " m" at (25,5).
+	
+	set distKscAtcTxt to ROUND(targKscAtc:DISTANCE/1000) + " Km".
+	if targKscAtc:DISTANCE/1000<1 {
+		set distKscAtcTxt to ROUND(targKscAtc:DISTANCE) + " m".
+	}.
+	Print "KSC Distance: " + distKscAtcTxt at (0,7).
+	Print "KSC Heading:  " + ROUND(targKscAtc:HEADING) + " " + constDegreeTxt at (0,8).
+	Print "Bearing: " + ROUND(targKscAtc:BEARING) + " " + constDegreeTxt at (25,8).
+	
+	set distKscRunTxt to ROUND(targKscRun:DISTANCE/1000) + " Km".
+	if targKscRun:DISTANCE/1000<1 {
+		set distKscRunTxt to ROUND(targKscRun:DISTANCE) + " m".
+	}.
+	Print "Runway Distance: " + distKscRunTxt at (0,10).
+	Print "Runway Heading:  " + ROUND(targKscRun:HEADING) + " " + constDegreeTxt at (0,11).
+	Print "Bearing: " + ROUND(targKscRun:BEARING) + " " + constDegreeTxt at (25,11).
+	
+	set distPolNorTxt to ROUND(targPolNor:DISTANCE/1000) + " Km".
+	if targPolNor:DISTANCE/1000<1 {
+		set distPolNorTxt to ROUND(targPolNor:DISTANCE) + " m".
+	}.
+	Print "Northpole Distance: " + distPolNorTxt at (0,13).
+	Print "Northpole Heading:  " + ROUND(targPolNor:HEADING) + " " + constDegreeTxt at (0,14).
+	Print "Bearing: " + ROUND(targPolNor:BEARING) + " " + constDegreeTxt at (25,14).
+	
+	//+++ Richtungsangabe
+	print "Heading: " + heading at (0,20).
+	print "Facing: " + facing at (0,21).
+	
+	//#### ander Flugstrategie
+	//+++ Steuern: Nun etwas schaerfer fliegen.
+	set gradeCurrent to targ:HEADING.
+	
+	SAS OFF.
+	set x to HEADING(horizonCurrent, gradeCurrent).
+	wait 1.
+	SAS ON.
+}
+unlock steering.
+
+// pitch auf 0
+//set targetheading to 0. ///???? Ist das ein Schl?sselwort ???
+
+//heading muss sich auf eine longitude/latitude Koordinate beziehen.
+//SAS OFF.
+//lock steering to heading targKscAtc by 0.  
+	
+
+//Test
+//clearscreen.
+//print "Bremse ab" at (0,0).
+//SAS OFF.
+//set x to HEADING(-5, 90).     //gehe auf 90 Grad (startrichtung auf Startbahn), 40 Grad ?ber den Horizont
+//wait 10.
+//SAS ON.
+//wait 10.
+//print "Facing: " + facing at (0,7).
+//unlock steering. //Manuelle Steuerung ermoeglichen
+//lock throttle to 0.20.
+
+//TODO Warte bis auf 200 m hoehe, dann
+//GEAR OFF
+
+//TODO Warte bis auf 0 Neter Hoehe, dann..
+//BRAKES ON.

@@ -1,0 +1,25 @@
+
+
+set iCount to 0.
+
+
+set constLaunchSpeedMin to 95. //Sets the Surfacespeed, which must be reached for "pull up"
+
+SET listTarg TO LIST().   // Creates a new list in FOO variable
+SET listTarg:ADD TO targKscRunEnd.    // Adds a new element to the end of the list
+SET listTarg:ADD TO targPolNor.
+//PRINT FOO:LENGTH.    // Prints 3
+//SET FOO:REMOVE TO 1. // Removes the second element from the list
+//SET BAR TO FOO:COPY. // Makes a copy of the FOO list
+//FOO:CLEAR.           // Removes all elements from the FOO list.
+
+until abs(SHIP:surfacespeed) >= abs(constLaunchSpeedMin){
+	set iCount to iCount + 1.
+	run subConsoleDataMain (iCount, listTarg).
+	 
+	set listTarg:REMOVE TO 0.
+	set targKscRunEnd to LATLNG(-0.0302,-77.7244). //Endposition auf Runway beim KSC.
+	set listTarg:ADD TO targKscRunEnd.
+	wait 1.
+}
+

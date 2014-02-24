@@ -1,0 +1,67 @@
+//Merke: Man kann nur sinnvoll 1 Parameter (auch als Liste) uebergeben.  DECLARE PARAMETER iCount,targMain,listTarg To list().
+DECLARE PARAMETER argsIn.
+set subConsoleDataStart to LIST().
+
+run PrintCaller1("subConsoleDataStart").
+
+set constDegreeTxt to "G".
+print "--- " + SHIP + " ---" at (0,2).
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. das Hauptziel aus der argsIn Liste holen.
+run printDebug0("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
+set iIndex To -1.
+set listTarg to LIST().
+for argIn IN argsIn {
+	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		set targMain to argIn.
+		run printDebug0("TargMain = " + targMain).
+		}.	
+	if iIndex >= 1 {
+		set listTarg:ADD to argIn.  //Fuelle die liste der sonstigen ziele
+		run printDebug("Weiteres Ziel = " + argIn).
+		}.
+	if iIndex = 2 {
+		}.
+	}.
+print langCountGlobal + ". Messung:" at (0,4).     //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
+
+//Ausgabe des Hauptziels
+//Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
+//            Um die Variable entgegenzunehmen, muss der Returnwert dann dem Programmnamen entsprechen.
+run funDistTargTxt (targMain).
+set distTargTxt to funDistTargTxt.
+
+set iColumn to 0. //Die Tabellenzeile.
+set lineOffSet to (iColumn*5).
+Print (iColumn+1) + ". Das Hauptziel: " at (0, 9 + lineOffset).
+Print "Distance: " + distTargTxt + "                " at (0,10+lineOffset).
+Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,11+lineOffset).
+Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt + "                         " at (25,11+lineOffset).
+Print "--------------------------------------------------" at (0,12+lineOffset).
+
+
+set iIndex to -1.
+FOR targ IN listTarg {		
+	set iIndex to iIndex + 1. //Mitfuehren der Indexposition der Liste.
+	set iColumn to iColumn + 1.
+	
+	//Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
+	//            Um die Variable entgegenzunehmen, muss der Returnwert dann dem Programmnamen entsprechen.
+	run funDistTargTxt (targ).
+	set distTargTxt to funDistTargTxt.
+	
+	set lineOffSet to (iColumn*5).
+	Print (iColumn+1) + ". Ziel: " at (0, 9 + lineOffset).
+	Print "Distance: " + distTargTxt at (0,10+lineOffset).
+	Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,11+lineOffset).
+	Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt at (25,11+lineOffset).
+	Print "--------------------------------------------------" at (0,12+lineOffset).
+}.
+	
+	
+print "Facing: " + facing at (0,13+lineOffset).
+print "Heading: " + HEADING at(0,14+lineOffset).

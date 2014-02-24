@@ -1,0 +1,61 @@
+//Program "Plane Start"
+//Starte ein Flugzeug: 1) Beschleunige, 2) Ziehe hoch
+DECLARE PARAMETER argsIn, prgPlaneFlight.
+
+//erwarte als erstes Argument: Das Ziel 
+run PrintCaller("prgPlaneFlight").
+LOCK THROTTLE to 1.
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. Die Startgeschwindigkeit aus der argsIn Liste holen.
+//2. Die erlaubte Steuergeschwindigkeit am Boden.
+run printDebug("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+set iIndex to -1.
+for argIn IN argsIn {
+	run printDebug("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		set groundSpeedMax to argIn.
+		run printDebug("GroundSpeedMax= " + groundSpeedMax).
+		}.
+	if iIndex = 1 {
+		//set launchSteeringSpeedMax to argIn.
+		//run printDebug0("LaunchSteeringSpeedMax = " + launchSteeringSpeedMax).
+		}.
+	if iIndex = 2 {
+		//run printDebug("param@2 = " + argIn).
+		//set targMain to argIn.
+		}.
+	}.
+//Das Hauptziel aus der argsIn Liste holen.
+//TODO: Funktion machen, die den Wert einer Liste an Indexposition x zurueckgibt.
+set iIndex to -1.
+set iIndexToReturn to 0.
+
+DECLARE targMain.
+set t to argsIn:LENGTH.
+if iIndexToReturn < 1 {
+	for targMain IN argsIn {
+		set iIndex to iIndex + 1.
+		if iIndex = iIndexToReturn { break. }.
+	}.
+}.
+
+
+//Gesamtliste aller Ziele
+//TODO: Entferne aus der Liste das als Parameter uebergebene Ziel.
+//      Das als Funktion machen.
+SET listTarg TO LIST().   // Creates a new list in FOO variable
+SET listTarg:ADD TO targKscRunEnd.    // Adds a new element to the end of the list
+SET listTarg:ADD TO targPolNor.
+
+
+
+set listTarg:REMOVE TO 0.
+set targKscRunEnd to LATLNG(-0.0592,-74.7244). //Endposition auf Runway beim KSC.
+set listTarg:ADD TO targPolNor.
+	wait 1.
+	
+	//run subConsoleDataMain (iCount, targMain, listTarg).
+	

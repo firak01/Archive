@@ -1,0 +1,64 @@
+//Program "Plane Start"
+//Starte ein Flugzeug: 1) Beschleunige, 2) Ziehe hoch
+DECLARE PARAMETER argsIn, prgPlaneStart.
+
+//erwarte als erstes Argument: Die startgeschwindigkeit.
+run PrintCaller1("prgPlaneStart").
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. Die Startgeschwindigkeit aus der argsIn Liste holen.
+//2. Die erlaubte Steuergeschwindigkeit am Boden.
+run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+set iIndex to -1.
+for argIn IN argsIn {
+	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		set launchSpeedMin to argIn.
+		run printDebug0("LaunchSpeedMin = " + launchSpeedMin).
+		}.
+	if iIndex = 1 {
+		set launchSteeringSpeedMax to argIn.
+		run printDebug0("LaunchSteeringSpeedMax = " + launchSteeringSpeedMax).
+		}.
+	if iIndex = 2 {
+		//run printDebug("param@2 = " + argIn).
+		set targMain to argIn.
+		}.
+	}.
+
+//######################
+//Funktionen mit der Steuerung verknuepfen
+set horizonStart to 0.         //Horizont beim Start, TODO: Auslesen wie er wirklich ist.
+set horizonCurrent to horizonStart.
+//set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
+set gradeStart to targMain:BEARING.
+set gradeCurrent to gradeStart.
+set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK WHEELSTEERING TO targMain.           // Steer the vessel in the direction suggested by direction X.
+//################################
+LOCK THROTTLE to 1.
+
+//Los geht´s....
+set iCount to 0. //Messungszähler
+stage. //Spare das Druecken der "Spacebar"-Taste 
+
+//Liste mit den Argumenten an die ConsolenData-Ausbabe uebergeben!
+set args to LIST().
+set args:ADD to targMain.
+until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){	
+	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
+	set langCountGlobal to langCountGlobal+1.////Das ist der einzige Weg eine Zählvariable an eine Unterfunktion zu uebergeben. Die Variable ist in einem "ueberprogramm" deklariert und daher global
+	run subConsoleDataStart(args).
+	
+	//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
+	if abs(SHIP:surfacespeed) >= abs(launchSteeringSpeedMax) {
+		UNLOCK WHEELSTEERING.
+		run printDebug1("WHEELSTEERING ist abgestellt.").
+		}.
+}.
+run printDebug1("Startgeschwindigkeit erreicht.").
+
+Set STATUSx to "1".
+set prgPlaneStart:ADD TO STATUSx.

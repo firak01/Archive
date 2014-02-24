@@ -1,0 +1,189 @@
+//Klappt um tipparbeit zu sparen
+You can still reference Archie as volume 0. I doubt we would change that as there is no need, and it is a nice convenience
+
+//Merke: Aenderungen, die an den Dateien gespeichert werden, werden sofort auch in ein laufendes Programm uebernommen. 
+//           Das scheint aber nicht für das "Hauptprogramm" zu gelten.
+
+//Merke: Fehlermeldungszeilen bestehen aus Leerzeichenzeilen plus den Zeilen der aufgerufenen Programme
+
+
+######### VARIABLEN #######################
+//Alle Variablen sind global, so dass sie nicht explizit einer Methode uebergeben werden muessen.
+//ABER: In einer Funktion eine Variable hochzaehlen, in einer Schleife
+Schleifenstart ....
+z.B. set icount to icount +1.
+dann unterfunktion aufrufen
+run mySub().
+Schleifenende. Zurück zum Start.
+
+In der Unterfuntion den Wert ausgeben lassen, funktioniert.
+print icount.
+
+wieder zurück und die unterfunktion neu aufrufen.
+ABER: icount wird nicht verändert sein!!!!
+
+Noch schlimmer: Nach dem Rücksprung in die Hauptfunktion hat iCount wieder den alten Wert!!!
+Variablentausch bietet keine Lösung.
+Einzige LÖSUNG: Deklariere eine globale Variable in einem anderen Program.
+              z.B. set langCountGlobal to 0.
+---------------------------------------------------------------------------------------
+
+// Strings, die einer Zahl entsprechen können ausgedruckt werden.
+// und auf deren wert kann "gewartet" werden.
+set sZahl to "2".
+wait sZahl. 
+
+######### LISTEN ###########################
+//Merke:
+https://github.com/erendrake/KOS/wiki/List
+//SET FOO TO LIST().   // Creates a new list in FOO variable
+//SET FOO:ADD TO 5.    // Adds a new element to the end of the list
+//SET FOO:ADD TO ALTITUDE. // eg 10000
+//SET FOO:ADD TO ETA:APOAPSIS. // eg 30 
+//FOR BAR IN FOO { PRINT BAR. }. // Prints 5, then 10000, then 30
+//PRINT BAR. // ERROR, BAR doesn't exist outside the for statement
+
+//Listen gehen so:
+set args TO LIST().
+set args:ADD to libLaunchSpeedMin.  //Startgeschwindigkeit
+set x to 2334234.
+set args:ADD to x.
+
+set t to args:LENGTH.
+set iIndex to -1.
+set iIndexToReturn to 0.
+if iIndexToReturn < 1 {
+run printDebug("7").
+	for argIn IN args {
+	print "8". wait 1.
+		set iIndex to iIndex + 1.
+		if iIndex = iIndexToReturn {
+		print "9". wait 1.
+		set constLaunchSpeedMin to argIn.
+		print "10". wait 1.
+		break. }.
+	}.
+}.
+//Merke: argIn ist ausserhalb der liste nicht deklariert.
+
+//#########################################
+Man kann eine Liste als Parameter übergeben
+Folgends gibt für den Parameter a2 (eine liste), lediglich den 
+Namen der C# Klasse System.GenericCollection.... zurück
+
+set a2 to LIST().
+set b2 to LIST().
+
+set iIndex to -1.
+set iIndexToReturn to 5.
+set iTemp to 0.
+if iIndexToReturn >= 1 {
+	run printDebug("starte schleife lists").
+	for argIn IN argsIn {		
+		set iIndex to iIndex + 1.
+		if iIndex = 0 {
+			run printDebug("try to copy list 'a'").
+			set a2 TO argIn:COPY.
+			run printDebug("list 'a' copied").
+			run printDebug("a2="+a2).
+			wait 10.
+			print "Anzahl von parametern in a2= " + a2:LENGTH.
+		}.
+		if iIndex = 1 {
+			run printDebug("try to copy list 'b'").
+			set b2 TO argIn:COPY.
+			run printDebug("list 'b' copied").
+			run printDebug("b2="+b2).
+			print "Anzahl von parametern in b2= " + b2:LENGTH.
+		}.
+	}.
+}.
+
+##########################################
+Man kan ndie elemente einer Liste auch nicht über den Index ansprechen.
+run printDebug("argsIn[0]="+argsIn[0]).
+
+##########################################
+//o.k. es kann nur 1 Parameter String/zahl sinnvoll übergeben werden!
+//Die übergebenen Parameter müssen nicht extra Deklariert werden. 
+//Nur die Übernahme der Parameter muss mit DECLARE PARAMETER angezeigt werden.
+run printCaller (langCallerName).
+############################################
+
+//Verbesserung:
+//Man kann auch eine Liste übergeben.
+set args TO LIST().
+set args:ADD to libLaunchSpeedMin.  //Startgeschwindigkeit
+set x to "testparam 1".
+set y to "testparam 2".
+set args:ADD to x.
+set args:ADD to y.
+run prgPlaneStart (args).
+
+//und in dem Programm
+//die so übergebenen Werte kann man in einer Schleife durchgehen.
+set iIndex to -1.
+set iIndexToReturn to 5.
+set iTemp to 0.
+if iIndexToReturn >= 1 {
+	run printDebug("starte schleife").
+	for argIn IN argsIn {
+		run printDebug("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+		set iIndex to iIndex + 1.
+		if iIndex = 1 {
+			set constLaunchSpeedMin to argIn.
+			run printDebug("Speed = " + constLaunchSpeedMin).
+		}.
+		if iIndex = 2 {
+			run printDebug("param 1 = " + argIn).
+		}.
+		if iIndex = 3 {
+			run printDebug("param 2 = " + argIn).
+		}.
+	}.
+}.
+
+
+//Aber: Man kann sie nicht explizit abfragen:
+//Dies gibt die Fehlermeldung: "Suffix liblaunchspeedmin not found."
+print "was ist launchspeedmin". wait 5.
+set test to argsIn:libLaunchSpeedMin.
+print test. wait 5.
+
+
+
+print "was ist launchspeedmin". wait 5.
+set test to argsIn:libLaunchSpeedMin.
+print test. wait 5.
+
+
+
+
+
+
+//Hinweis: Weitere rudimentaere Befehle
+//https://github.com/Erendrake/KOS
+https://github.com/erendrake/KOS/wiki/LIST
+https://github.com/erendrake/KOS/wiki/Vessel
+
+
+	
+
+    Quote Originally Posted by togfox View Post
+    How do I determine compass heading from eular notation?
+    Here's how I'd try to solve it. (Caveat: I haven't tested this. This is just how I'd try to solve it if I was trying to):
+
+    Step 1: Get the tfDirtoUnitV and tfXYZtoENU programs I put on the Wiki here. Using tfXYZtoENU (which in turn calls tfDirToUnitV, which is why you need both of them) you can take any arbitrary vector in the underlying KSP's X,Y,Z axes and get what that vector would be if it was expressed in a frame of reference in which the axes were along your current East, North, and Up directions.
+    Thus instead of having 3 scalars representing the X component, Y component, and Z component of your vector, you can instead have 3 scalars representing the East component, North component, and Up component.
+
+    Step 2: Use tfXYZtoENU to obtain the East,North,Up of your current SURFACE velocity. (Note, depending on what you're trying to do with it you might be interested in the ORBITAL velocity instead. But I suspect you're doing something with the surface velocity if its something where you care about compass heading. The compass heading you get from the surface velocity will be different from the compass heading you get from the orbital velocity in all cases other than exactly 90 degrees (or 270 degrees if going faster than the planet's rotation. If going slower than the planet rotation then a 270 orbital heading will flip to a 90 surface heading).
+
+    Step 3: If you think about it, a compass heading is a case of doing trigonometry in which North is the X axis and East is the Y axis. (0 = north, 90 degrees = east, 180 degrees = negative north (south) and 270 degrees = negative wast (west). Therefore you can get your compass heading by plugging the North and the East components of your velocity vector into ARCTAN2().
+
+    If interested, you can do the same sort of thing to get your pitch but first you need the length of the velocity vector projected onto the east/north plane. Use the pathagorean theorem on just the east and north components (without the Up component) to get the length of that projection, then plug it into ARCTAN2() along with the Up component to get the pitch (you are obtaining the angle between the direction you're actually going with the Up component present versus the direction you would have been going had the Up component been zero.) 
+	
+	
+	
+	
+	
+

@@ -1,0 +1,76 @@
+clearscreen.
+print "Start Test001".
+print "Facing: " + facing.
+//print "Heading: " + heading. //Ausgabe der Richtung.
+
+
+//Spare das Druecken der "Spacebar"-Taste
+stage.  
+
+//SAS anstellen
+SAS ON. 
+
+// Set to surface prograde:
+lock steering to R(0,0,0) * vector:surface.
+
+//Auf Startgeschwindigkeit gehen
+lock throttle to 1.0.
+print "Beschleunige".
+print "Facing: " + facing.
+wait 3.
+print "Facing: " + facing.
+wait until abs(SHIP:surfacespeed) >= abs(60). 
+print "Facing bei >60ms: " + facing.
+
+// Set to surface prograde: Hochziehen
+//LOCK STEERING TO VELOCITY:SURFACE + V(0,60,0).
+
+//unlock steering. //Manuelle Steuerung erm?glichen
+SAS OFF. //Vor aendern der Steuerung SAS ausschalten. Vielleicht reagiert es dann.
+
+
+
+//Aus dem Web, f?r den start 
+//set y to 0. // Initial pitch
+//lock x to up + R(0,y,180). // master steering
+//lock steering to x. // lazy shorcut
+//set y to 20.
+
+//1. Version ausprobieren
+//R (pitch, yaw, roll)
+//Represents a rotation.
+//Macht Kurve nach Rechts... SET X TO PROGRADE + R(90,0,0).      // Initializes a direction to prograde plus a relative pitch of 90
+//Macht Kurve nach Rechts und Pitch nach oben... SET X TO UP + R(90,0,0).
+//Macht Kurve nach links und Pitch nach oben...SET X TO UP + R(0,0,90). bis auf 270 grad..
+//SET X TO UP + R(0,90,0).
+//LOCK STEERING TO X.                 // Steer the vessel in the direction suggested by direction X.
+
+//2. Version ausprobieren:
+//HEADING (degreesFromNorth, pitchAboveHorizon)
+//Represents a heading that's relative to the body of influence.
+//set x to heading(0, 20).     //geht auf 20 Grad, pitch nach unten...
+//SET X TO HEADING(45, 10).           // Create a rotation facing northeast, 10 degrees above horizon
+//set x to Heading(20, 30)    //geht auf 30 Grad, 20 Grad ?ber den Horizont.
+set x to HEADING(55, 90).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK STEERING TO X.                 // Steer the vessel in the direction suggested by direction X.
+print "Facing nach steering: " + facing.
+wait 10.
+SAS ON. //Nach aendern der Steuerung 10 Sek unden sp?ter SAS einschalten. Mehr Stabilitaet als Ziel.
+print "Facing nach 10 sek: " + facing.
+wait 10.
+print "Facing nach 10 sek: " + facing.
+
+//Test
+print "Bremse ab".
+SAS OFF.
+set x to HEADING(-10, 90).     //gehe auf 90 Grad (startrichtung auf Startbahn), 40 Grad ?ber den Horizont
+wait 10.
+SAS ON.
+wait 10.
+print "Facing nach 10 sek: " + facing.
+unlock steering.
+lock throttle to 0.20.
+
+//TODO Warte bis auf 0 Neter H?he, dann..
+//BRAKES ON.
+

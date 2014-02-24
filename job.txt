@@ -1,0 +1,83 @@
+//Aufrufstruktur als Konvention:
+//job... => prg...=> sub...=> fun...
+//Merke: Code auf Jobebene kann nicht "on the fly im laufenden Program geändert werden, sonst schon."
+//lang... dient der Deklartion von Konstanten und globalen Variablen für den "Kernel".
+//          Darin definierte Konstanten haben lang als Präfix.
+//lib... dient der deklaration von constanten und globalen variablen. Muss mit "run" eingebunden werde, am besten auf Job-Ebene, da ja global.
+//       Darin definierte Konstanten haben lib als Präfix.
+
+//Übergabewerte als Konvention:
+//Eingabewert von prg ist eine LIST beliebigern Namens.
+//Eingabewerte von fun sind frei definiert und auch beliebige Namen.
+//Nur prg und fun geben Werte zurück. 
+//Rückgabewert von prg ist eine LIST namens prgXyz. An erster Stelle steht ein StatusKey: prgXyz:STATUS mit den Werten TRUE, FALSE, ERROR
+//                                                                               weitere Stellen der Liste können dann noch gefüllt werden.
+//Rückgabewert von fun ist beliebiger Wert.
+clearscreen.
+run langKernel(). //Deklariere die "Language Konstanten."
+set langCallerName to "job".
+run PrintCaller(langCallerName).
+
+//##################################
+//### Starte von der Startbahn 
+//##################################
+run libKerbal(). //Soll die globalen Variablen für den Planeten deklarieren.
+run lib7p08().   //Deklariere die "Flugzeug Konstanten"
+
+//Merke: Paramter sind 
+set args TO LIST().
+set args:ADD to libLaunchSpeedMin.
+set args:ADD to libLaunchGroundSteeringSpeedMax.
+set args:ADD to libTargKscRunEnd.
+set args:ADD to libTargPolNor.
+
+set prgPlaneStart to LIST(). //Rückgabewert, muss hier schon deklariert werden.
+run prgPlaneStart (args,prgPlaneStart).
+run printDebug1("Startphase beendet").
+
+//Prüfe den Status des Programms
+//a) Rückgabwerte entgegennehmen.
+set iIndex to -1.
+set prgPlaneStartStatus to "0".
+for argReturn IN prgPlaneStart {
+	run printDebug("Wert: " + argReturn). //argReturn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		set prgPlaneStartStatus to argReturn.		
+		}.
+	if iIndex = 1 {		
+		}.
+	if iIndex = 2 {
+		}.
+	}.
+	
+//b) Rückgabwerte analysieren.
+if prgPlaneStartStatus = "1" {
+	run printDebug("Startgeschwindigkeit erreicht. Ziehe hoch.").
+	
+	//Eingabearray leeren.
+	set iCount to args:LENGTH.
+	for argIn In args {
+		set iCount to iCount -1.
+		set args:Remove to iCount.
+	}
+	//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
+	set args:add To libGroundSpeedMax. 
+	set args:add TO libTargPolNor. //Nordpol als Ziel
+	
+	//Nun auf Höhe gehen und das Ziel ansteuern.
+	set prgPlaneFligth to LIST(). //Rückgabewert
+	run prgPlaneFlight(args,prgPlaneFlight).
+	
+	}. //END START ERFOLGREICH
+if prgPlaneStartStatus = "0" {
+	run printDebug("Nicht gestartet.").
+	}.
+if prgPlaneStartStatus = "-99" {
+	run printDebug( "ERROR beim Start.").
+	}.
+
+
+
+
+

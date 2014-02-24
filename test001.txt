@@ -1,0 +1,26 @@
+print "Start Test001".
+stage.
+SAS ON. //SAS anstellen
+
+// Set to surface prograde:
+lock steering to R(0,0,0) * vector:surface.
+
+//Auf Startgeschwindigkeit gehen
+lock throttle to 1.0.
+wait until abs(surfacespeed) >= 40.
+
+// Set to surface prograde: Hochziehen
+//LOCK STEERING TO VELOCITY:SURFACE + V(0,60,0).
+
+unlock steering.
+set y to 0. // Initial pitch
+lock x to up + R(0,y,180). // master steering
+lock steering to x. // lazy shorcut
+set y to 20.
+
+wait 60.
+
+//Test
+unlock steering.
+lock throttle to 0.
+

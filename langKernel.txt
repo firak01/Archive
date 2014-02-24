@@ -1,0 +1,16 @@
+//Deklaration der "Kernel Spachkonstanten""
+set langFC TO LIST().  // Rückgabewert eines "FunctionCalls".  
+					// Element der Liste ist RETURN 
+					// Mit Wert -99 , dh. fehler
+					// mit wert 0 = false
+					//Wert 1 = true.
+
+set langDebugTime to 1. //Die Zeit, die ein Debugausdruck sichtbar bleiben soll, auf Zeile 1.					
+set langCallerTime to 0.25. //Die Zeit, die ein Ausdruck einer Funktion sichtbar bleiben soll auf Zeile 0.
+set langCallerName to "Name der zuletzt aufgerufenen Function". //Wird dann als Paramter an die function landCaller(sName) übergeben.
+
+//Die Größe der Konsole
+set langScreenSizeRow to 30.
+set langScreenSizeColumn to 20.
+
+set langCountGlobal to 0. //Globale Zählvariable, die über alle PRogramme hinaus deklariert ist.

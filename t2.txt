@@ -1,0 +1,136 @@
+set iHeightGoal to 4000. //Sets desired height of plane.
+set targW to LATLNG(-0.04059032,-74.67182).
+set targKscAtc to LATLNG(-0.035,-76.5). 
+//Tower beim KSC
+
+//SET X //Set X TO LATLNG(10, 20).            // Initialize point at lattitude 10, longitude 20
+//PRINT //X:LAT.                        // Print 10.
+//PRINT X:LNG.                        // Print 20.
+//PRINT X:DISTANCE.                   // Print distance from vessel to x (same altitude is presumed)
+//PRINT LATLNG(10,20):HEADING.        // Print the heading to the point.
+//PRINT X:BEARING.                    // Print the heading to the point relative to vessel heading.
+
+clearscreen.
+print "------------" at (0,2).
+print "Start Test001" at (0,3).
+print "Facing: " + facing at(0,7).
+wait 0.5.
+stage. //Spare das Druecken der "Spacebar"-Taste 
+
+//+++ Set to surface prograde:
+lock steering to R(0,0,0) * vector:surface.
+
+//+++ Auf Startgeschwindigkeit gehen
+lock throttle to 1.0.
+SAS ON. //SAS anstellen
+clearscreen.
+print "------------" at (0,2).
+print "Beschleunige" at (0,3).
+set iCount to 0.
+until abs(SHIP:surfacespeed) >= abs(70){
+	set iCount to iCount + 1.
+	print iCount + ". Facing: " + facing at (0,7).
+	wait 0.5
+}. 
+
+
+//+++ Hochziehen
+clearscreen.
+print "------------" at (0,2).
+print "Hochziehen" at (0,3).
+SAS OFF. //Vor aendern der Steuerung SAS ausschalten. Nur so reagiert der Flieger.
+
+//HEADING (degreesFromNorth, pitchAboveHorizon)
+//Represents a heading that's relative to the body of influence.
+//set x to heading(0, 20).     //geht auf 20 Grad, pitch nach unten...
+set horizonstart to 55.
+set horizon to horizonstart.
+set gradestart to 90.
+set grade to gradestart.
+set x to HEADING(horizon, grade).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+
+
+set iCount to 0.
+until SHIP:altitude >= iHeightGoal{
+	clearscreen.
+	print "------------" at (0,2).
+	print "Hochziehen" at (0,3).
+	
+	set iCount to iCount + 1.
+	print iCount + ". Messung:" at (0,4).
+	
+	//+++ H?henangabe
+	//These lines determine if the missile is flying over water. If it is, the missile determins its height based on altitude, not radalt.
+	set height to alt:radar.
+	if alt:radar < 0 {set height to altitude.}.
+	if alt:radar > altitude {set height to altitude.}.
+	
+	print "Altitude: " + abs(altitude) + " m" at (0,5).
+	print "Radar: " + abs(height) + " m" at (15,5).
+	
+	//+++ Richtungsangabe
+	print "Heading: " + heading at (0,6).
+	print "Facing: " + facing at (0,7).
+	
+	//+++ Fahrwerk einziehen
+//	if height > 200 { 
+//		GEAR OFF.
+//	}
+
+	//+++ Anstiegswinkel verringern und schon leicht eine Kurve fliegen.
+	if horizon > 10 { //Nicht auf 0, da wir immer noch steigen wollen.
+		set horizon to abs(horizonstart-iCount).
+	}
+	if grade > 0 {		
+		set grade to abs(gradestart-iCount).
+	}
+	SAS OFF.
+	set x to HEADING(horizon, grade).
+	wait 1.
+	SAS ON.
+}
+
+	
+print "test".
+wait 1.
+
+// pitch auf 0
+set targetheading = 0.
+
+//heading muss sich auf eine longitude/latitude Koordinate beziehen.
+	SAS OFF.
+    //lock steering to heading targKscAtc by 0.  
+	
+print "test2".
+wait 1.
+
+	//Schleife: Richtung auf 0,  und nur wenn die h?he abweicht, korregieren
+clearscreen.
+print "Altitude: " + altitude at (0,5).
+print "Heading: " + heading at (0,6).
+print "Facing: " + facing at (0,7).
+wait 10.
+SAS ON. //Nach aendern der Steuerung 10 Sek unden sp?ter SAS einschalten. Mehr Stabilitaet als Ziel.
+print "Facing: " + facing at (0,7).
+wait 10.
+print "Facing: " + facing at (0,7).
+
+//Test
+//clearscreen.
+//print "Bremse ab" at (0,0).
+//SAS OFF.
+//set x to HEADING(-5, 90).     //gehe auf 90 Grad (startrichtung auf Startbahn), 40 Grad ?ber den Horizont
+//wait 10.
+//SAS ON.
+//wait 10.
+//print "Facing: " + facing at (0,7).
+//unlock steering. //Manuelle Steuerung ermoeglichen
+//lock throttle to 0.20.
+
+//TODO Warte bis auf 200 m hoehe, dann
+//GEAR OFF
+
+//TODO Warte bis auf 0 Neter Hoehe, dann..
+//BRAKES ON.
+

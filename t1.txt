@@ -1,0 +1,89 @@
+set iHeightGoal to 4000. //Sets desired height of plane.
+
+clearscreen.
+print "------------" at (0,2).
+print "Start Test001" at (0,3).
+print "Facing: " + facing at(0,7).
+wait 0.5.
+//at (0,4).
+//print "Heading: " + heading. //Ausgabe der Richtung.
+
+stage. //Spare das Druecken der "Spacebar"-Taste 
+
+//+++ Set to surface prograde:
+lock steering to R(0,0,0) * vector:surface.
+
+//+++ Auf Startgeschwindigkeit gehen
+lock throttle to 1.0.
+SAS ON. //SAS anstellen
+clearscreen.
+print "------------" at (0,2).
+print "Beschleunige" at (0,3).
+set iCount to 0.
+until abs(SHIP:surfacespeed) >= abs(70){
+	set iCount to iCount + 1.
+	print iCount + ". Facing: " + facing at (0,7).
+	wait 0.5
+}. 
+
+
+//+++ Hochziehen
+clearscreen.
+print "------------" at (0,2).
+print "Hochziehen" at (0,3).
+SAS OFF. //Vor aendern der Steuerung SAS ausschalten. Nur so reagiert der Flieger.
+
+//HEADING (degreesFromNorth, pitchAboveHorizon)
+//Represents a heading that's relative to the body of influence.
+//set x to heading(0, 20).     //geht auf 20 Grad, pitch nach unten...
+set x to HEADING(55, 90).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+
+
+set iCount to 0.
+
+until SHIP:altitude >= iHeightGoal{
+	clearscreen.
+	print "------------" at (0,2).
+	print "Hochziehen" at (0,3).
+	
+	set iCount to iCount + 1.
+	print iCount + ". Messung:" at (0,4).
+	print "Altitude: " + altitude at (0,5).
+	print "Heading: " + heading at (0,6).
+	print "Facing: " + facing at (0,7).
+
+	//Anstiegswinkel verringern und schon leicht eine Kurve fliegen.
+	set x to HEADING(abs(55-(iCount/5)),abs(90-(iCount/5))).
+	wait 1.
+}
+
+
+print "test".
+wait 1.
+
+clearscreen.
+print "Altitude: " + altitude at (0,5).
+print "Heading: " + heading at (0,6).
+print "Facing: " + facing at (0,7).
+wait 10.
+SAS ON. //Nach aendern der Steuerung 10 Sek unden sp?ter SAS einschalten. Mehr Stabilitaet als Ziel.
+print "Facing: " + facing at (0,7).
+wait 10.
+print "Facing: " + facing at (0,7).
+
+//Test
+clearscreen.
+print "Bremse ab" at (0,0).
+SAS OFF.
+set x to HEADING(-5, 90).     //gehe auf 90 Grad (startrichtung auf Startbahn), 40 Grad ?ber den Horizont
+wait 10.
+SAS ON.
+wait 10.
+print "Facing: " + facing at (0,7).
+unlock steering. //Manuelle Steuerung ermoeglichen
+lock throttle to 0.20.
+
+//TODO Warte bis auf 0 Neter H?he, dann..
+//BRAKES ON.
+
