@@ -1,0 +1,15 @@
+//Gib den letzten Eintrag einer Liste zurück. 
+//Dazu muss man die Anzahl der Elemente zählen.
+//und mit einer Zahl kann man dann als Variable diesen Eintrag abfragen.
+DECLARE PARAMETER argsIn,readListEntryLast.
+run PrintCaller1("readListEntryLast").
+
+run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+set countList To LIST().
+run countList(argsIn,countList).
+set iIndexMax to countList#0.   //Rueckgabewert ist immer an Stelle 0.
+set lineToPrint to argsIn#iIndexMax.
+
+//Als Rueckgabewert
+set readListEntryLast:ADD to lineToPrint.
+

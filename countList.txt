@@ -1,0 +1,14 @@
+//Zählt die Anzahl der Elemente einer Liste.
+//Der Befehl der Befehle set anzahl to argsIn:LENGTH gibt zwar die Anzahl der Elemente zurück.
+//aber der Wert ist keine mathematische Zahl und kann z.B. mit einer echten Zahl nicht verglichen werden. 
+//Der returnwert dieser Funktion funktioniert anschliessend!
+DECLARE PARAMETER argsIn, countList.
+
+run PrintCaller1("countList").
+run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+set iIndex to -1.
+for argIn IN argsIn {
+	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	}.
+set countList:ADD to iIndex.

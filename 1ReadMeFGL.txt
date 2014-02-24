@@ -1,3 +1,20 @@
+//KOS Dokumentation:
+https://github.com/Erendrake/KOS/blob/master/README.md
+
+//######################################
+//###### TODO : Ausprobieren ##################
+ CTRL + SHIFT + X soll den KOS Terminal schliessen.
+
+ //###########
+ Sensoren abfragen:
+  The sensor suffix has been renamed to "sensors".
+    So instead of "print ship:sensor:acc:mag" you have to use "print ship:sensors:acc:mag" 
+
+#########################
+Einen Node setzen:
+when I'm trying to set a node if I do add node (time+30,0,0,400). it tells me that time does not return a number value. if I do add node (0,0,0,400). it makes a node 3 hours in the past... did the behavior of this change or am I doing something wrong?
+try node (time:seconds+30,0,0,400) instead. 
+//######################################
 //Klappt um tipparbeit zu sparen
 You can still reference Archie as volume 0. I doubt we would change that as there is no need, and it is a nice convenience
 
@@ -66,6 +83,23 @@ run printDebug("7").
 }.
 //Merke: argIn ist ausserhalb der liste nicht deklariert.
 
+############################
+Gezielt auf ein Element der Liste zugreifen:
+set iIndexMax to countList#0.
+
+Maybe its the thing called "ITERATOR" that does it, but if so it's not mentioned how to use it anywhere on the page.
+I Added index grammar along with the list and it actually took quite a bit of work so of course I failed to include it in the docs
+SET foo TO bar#3.
+
+alternatively you can use a variable to index into a list
+SET blarg TO 3.
+SET foo TO bar#blarg.
+
+Unfortunately, I don't have the following statement working yet.
+SET bar#3 TO "foo"
+the ITERATOR is a structure that was built before I added the FOR command
+
+
 //#########################################
 Man kann eine Liste als Parameter übergeben
 Folgends gibt für den Parameter a2 (eine liste), lediglich den 
@@ -100,8 +134,10 @@ if iIndexToReturn >= 1 {
 }.
 
 ##########################################
-Man kan ndie elemente einer Liste auch nicht über den Index ansprechen.
+Man kann die elemente einer Liste auch nicht über den Index ansprechen.
 run printDebug("argsIn[0]="+argsIn[0]).
+
+TODO: Ausprobieren:
 
 ##########################################
 //o.k. es kann nur 1 Parameter String/zahl sinnvoll übergeben werden!

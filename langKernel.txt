@@ -14,3 +14,43 @@ set langScreenSizeRow to 30.
 set langScreenSizeColumn to 20.
 
 set langCountGlobal to 0. //Globale Zählvariable, die über alle PRogramme hinaus deklariert ist.
+
+set langNumberList to List().
+set langNumberList:ADD to "1".
+set langNumberList:ADD to "2".
+set langNumberList:ADD to "3".
+set langNumberList:ADD to "4".
+set langNumberList:ADD to "5".
+set langNumberList:ADD to "6".
+set langNumberList:ADD to "7".
+set langNumberList:ADD to "8".
+set langNumberList:ADD to "9".
+set langNumberList:ADD to "0".
+
+set langLetterList to List().
+set langLetterList:ADD to "A".
+set langLetterList:ADD to "B".
+set langLetterList:ADD to "C".
+set langLetterList:ADD to "D".
+set langLetterList:ADD to "E".
+set langLetterList:ADD to "F".
+set langLetterList:ADD to "G".
+set langLetterList:ADD to "H".
+set langLetterList:ADD to "I".
+set langLetterList:ADD to "J".
+set langLetterList:ADD to "K".
+set langLetterList:ADD to "L".
+set langLetterList:ADD to "M".
+set langLetterList:ADD to "N".
+set langLetterList:ADD to "O".
+set langLetterList:ADD to "P".
+set langLetterList:ADD to "Q".
+set langLetterList:ADD to "R".
+set langLetterList:ADD to "S".
+set langLetterList:ADD to "T".
+set langLetterList:ADD to "U".
+set langLetterList:ADD to "V".
+set langLetterList:ADD to "W".
+set langLetterList:ADD to "X".
+set langLetterList:ADD to "Y".
+set langLetterList:ADD to "Z".

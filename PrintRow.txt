@@ -1,0 +1,28 @@
+//Zeilenweise die Werte ausgeben
+DECLARE PARAMETER argsIn,theRowList.
+
+run PrintCaller1("PrintRow").
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. Die Liste der Zeichen/Strings
+//2. Die Zeile(n)) in der ausgeprintet werden soll
+
+//set readListEntryLast to LIST().
+//set lineToPrint to readListEntryLast#0.
+//run printDebug0("Zeile ist" + lineToPrint).
+
+//set removeListEntryLast to LIST().
+//run removeListEntryLast(argsIn,removeListEntryLast).
+//run printDebug0("Anzahl von Parametern in rueckgabewert= " + removeListEntryLast:LENGTH).
+
+for lineToPrint in theRowList {
+
+set iIndex to -1.
+//for character in removeListEntryLast {
+for character in argsIn {
+	set iIndex to iIndex + 1.         //TODO: Stringfunktion, die die Laenge eines Strings ermittelt waere toll.
+	print character at (iIndex, lineToPrint).
+}.
+}.
+

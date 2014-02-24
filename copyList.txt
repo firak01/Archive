@@ -1,0 +1,15 @@
+//Mache eine echte Kopie einer Liste, Eintrag für Eintrag
+//Der Befehl set listeNeu To listeOriginal:COPY 
+//bewirkt anschliessend nicht, dass mit listeNeu 100%ig gearbeitewrden kann. Man kann dies nicht als Liste ansehen.
+//Diese Liste funktioniert anschliessend!
+DECLARE PARAMETER argsIn, copyList.
+
+run PrintCaller1("copyList").
+run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+set iIndex to -1.
+for argIn IN argsIn {
+	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	set copyList:ADD TO argIn.
+	}.
+	

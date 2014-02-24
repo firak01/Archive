@@ -24,6 +24,22 @@ run PrintCaller(langCallerName).
 run libKerbal(). //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 
+//TEST:  weil nicht geht set listNumber to langNumberList:COPY.
+set theRowList to LIST().
+set theRowList:ADD to 4. //ich will in der 4. und 6. Zeile drucken.
+set theRowList:ADD to 6.
+run PrintRow(langNumberList,theRowList).
+
+//TODO MEthode: removeListEntryAll()
+//set theRowList:CLEAR.
+set theRowList:REMOVE TO 1. //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
+set theRowList:REMOVE TO 0.
+set theRowList:ADD to 5.
+
+set theStringList to LIST().
+set theStringList:ADD to "top tools by FGL".
+run PrintRow(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
+
 //Merke: Paramter sind 
 set args TO LIST().
 set args:ADD to libLaunchSpeedMin.
