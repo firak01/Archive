@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+<NotepadPlus>
+  <AutoComplete>
+    <KeyWord name="LIST.contains" />
+    <KeyWord name="LIST.removeEntryLast" />
+    <KeyWord name="Mary Poppins" />
+    <KeyWord name="Mit freundlichen Grüßen" />
+    <KeyWord name="Supercalifragilisticexpialidocious" />
+  </AutoComplete>
+</NotepadPlus>

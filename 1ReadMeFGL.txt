@@ -1,6 +1,17 @@
 //KOS Dokumentation:
 https://github.com/Erendrake/KOS/blob/master/README.md
 
+//Folgende zwei Dateien gehören in das Repository und sind über GIT zu speichern.
+//Die zu pflegende Liste mit den KOS Befehlen (autocomplete) über die Tasten strg + space liegt hier:
+C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL.xml
+
+Die Datei mit den benutzerdefinierten Sprachen liegt hier:
+C:\Users\lindhaueradmin\AppData\Roaming\Notepad++\userDefineLang.xml
+Die Sprache wird aber als KOSbyFGL.udl aus dem Repository importiert und wieder exportiert.
+
+
+
+
 //######################################
 //###### TODO : Ausprobieren ##################
  CTRL + SHIFT + X soll den KOS Terminal schliessen.

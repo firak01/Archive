@@ -12,8 +12,7 @@ set iIndexReduced to iIndexMax - 1.
 set iIndex to -1.
 for argIn IN argsIn {
 	set iIndex to iIndex + 1.
+
 	set removeListEntryLast:ADD TO argIn.
 	if iIndex = iIndexReduced { break. }.
 }.
-
-
