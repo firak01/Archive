@@ -1,0 +1,372 @@
+<project name="Backend" default="compile" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property name="src" value="src"/>
+  <property name="build" value="${BUILDTARGET}"/>
+  <property environment="env"/>
+  <path id="project.classpath">
+	<pathelement path="${env.CLASSPATH}"/>
+  </path>
+  <!-- property name="build.compiler" value="jikes"/ -->
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+	
+	<target name="test" depends="hudson">
+		<javac debug="yes" srcdir="${src.tests}" destdir="${build.tests}"
+				excludes="de/incony/tool/**">
+			<classpath refid="project.classpath"/>
+		</javac>
+		<junit printsummary="on" haltonfailure="no" showoutput="yes" logfailedtests="yes">
+			<classpath>
+				<pathelement location="${build.tests}"/>
+				<path refId="project.classpath"/>
+				<pathelement path="${env.ANT_HOME/lib/}"/>
+			</classpath>
+	
+			<formatter type="xml"/>
+	
+			<batchtest fork="no" todir="${reports.tests}">
+				<fileset dir="${src.tests}">
+					<include name="**/*Test*.java"/>
+					<exclude name="**/*TestHelper*.java"/>
+					<exclude name="**/*TestConfig*.java"/>
+					<exclude name="**/*TestContext*.java"/>
+					<exclude name="**/hibernate/DatabaseTest*.java"/><!-- solange noch nicht alle Funktionalitaeten im Hibernate Backend vorhanden sind, macht es keinen Sinn hier die gleichen Tests wie im JDBC auszuführen. -->
+					<exclude name="**/*TestSuite*.java"/><!-- wird im Hudson Ergebnis als lediglich 1 Test angegeben, macht momentan nur lokal Sinn, wg. Drop und neu Anlegen des DatenbankSchemas -->
+					<exclude name="**/*SolrSearchServerTest*.java"/><!-- in der config/Solr.properties ist als Server localhost angegeben, macht so auf dem Hudson wenig Sinn -->
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+  <target name="hudson" depends="hudsoncp, anteros2, docu">
+  <echo>Build hudson...</echo>
+  </target>
+  	
+  <target name="hudsoncp">
+  	<path id="project.classpath">
+        <pathelement path="${env.CLASSPATH};./${src.tests}"/>
+  		<fileset dir="${env.LIB_INCONY}">
+  		            <include name="**/*.jar" />
+  		</fileset>
+  		<fileset dir="${env.LIB}">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${env.LIB_ECLIPSE}">
+            <include name="**/*.jar" />
+        </fileset>
+      <fileset dir="${env.WORKSPACE}/resources">
+          <include name="**/*.jar" />
+      </fileset>  		
+      </path>
+  </target>
+	
+  <target name="compile" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="docu">
+    <mkdir dir="doc"/>
+    <javadoc packagenames="de.incony.anteros.backend.GOM,de.incony.anteros.backend.GOM.clients,de.incony.anteros.backend.GOM.JDBC,de.incony.anteros.backend.GOM.util,,de.incony.anteros.backend.config,,de.incony.anteros.backend.config.xml"
+             destdir="doc"
+	     sourcepath="src"
+	     public="yes"
+	     windowTitle="INCONY General Java Library"
+	     defaultexcludes="yes"/>
+  </target>
+
+  <target name="anteros2" depends="clean, gomclients, dgom, imex, databaseManager, configclients, configmanager, search, gombase">
+  <jar jarFile="${build}/AnterosBE.jar"
+       excludes="*.*"
+       basedir="${build}"/>
+  </target>
+
+  <target name="anteros1" depends="clean, pcp, gomjdbc, gomclients, imex, sccorba, pmgom">
+  <jar jarFile="${build}/AnterosBE.jar"
+       basedir="${build}"
+       excludes="*.*,de/incony/anteros/backend/CORBA/**,de/incony/anteros/backend/searchComponent/CORBA/**"/>
+  <jar jarFile="${build}/AnterosBE_CORBA.jar"
+       basedir="${build}"
+       includes="de/incony/anteros/backend/CORBA/**,de/incony/anteros/backend/searchComponent/CORBA/**"/>
+  </target>
+
+  <!-- property constraints parser -->
+  <target name="pcp" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <java classname="COM.sun.labs.javacc.Main" fork="TRUE" dir="${src}/de/incony/anteros/backend/GOM">
+	<jvmarg value="-Dinstall.root=${JAVACCHOME}"/>
+	<arg value="PropertyConstraintsParser.jj"/>
+    </java>
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/JavaCharStream.java,de/incony/anteros/backend/GOM/PropertyConstraintsParser*.java,de/incony/anteros/backend/GOM/ParseException.java,de/incony/anteros/backend/GOM/Token*.java">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+  
+  <!-- keyword parser -->
+  <target name="kp" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <java classname="COM.sun.labs.javacc.Main" fork="TRUE" dir="${src}/de/incony/anteros/backend/GOM/util/keywordparser/">
+      <jvmarg value="-Dinstall.root=${JAVACCHOME}"/>
+      <arg value="KeywordParser.jj"/>
+    </java>
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/util/keywordParser/*.java">
+      <classpath path="${classpath}"/>
+    </javac>
+  </target>
+
+  <target name="anteros" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/*">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="gomall" depends="configxml">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/**">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="gomapi" depends="anteros">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/*">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="gomutil" depends="gomapi">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/util/**">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="gomjdbc" depends="gomutil,configxml">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <!-- deprecation="yes"  -->
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/JDBC/**">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="gomjdo" depends="gomapi,configxml">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/JDO/*">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="gomjdoenhance" depends="gomjdo">
+    <delete dir="${build}/enhanced"/>
+    <mkdir dir="${build}/enhanced"/>
+    <java classname="com.signsoft.ibo.enhancer.Main" fork="yes" failonerror="yes">
+      <arg line="-s ${build} -d ${build}/enhanced -cp ${java.class.path} -ipackage de.incony.anteros.backend.GOM.JDO -v:info"/>
+    </java>
+  </target>
+
+  <target name="dgom" depends="gomjdbc,mapping">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/DGOM/*">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="mapping" depends="gomapi">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/mapping/*">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="gomclients" depends="gomjdbc">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/clients/*">
+    	<classpath refid="project.classpath"/>
+    </javac>
+  </target>
+	
+	<target name="gombase" depends="gomjdbc,configapi">
+	    <!-- Compile the java code from ${src} into ${build} -->
+	    <mkdir dir="${build}"/>
+	    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/base/**">
+	    	<classpath refid="project.classpath"/>
+	    </javac>
+		
+		<!-- Copy dtd to workspace -->
+		<echo>Copy gom-mapping.dtd / hibernate.cfg.xml / ehcache files</echo>
+		<copy todir="${build}/de/incony/anteros/backend/GOM/hibernate/mappings/">
+			<fileset dir="${src}/de/incony/anteros/backend/GOM/hibernate/mappings/">		    
+		    	<include name="**/*gom-mapping*.dtd"/>		       
+			</fileset>
+		  </copy>
+		 <copy todir="${build}">
+			<fileset dir="${src}">		    
+		    	<include name="**/*hibernate*.cfg.xml"/>
+				<include name="**/*hibernate*.properties"/>	
+				<include name="**/*ehcache*.xml"/>
+			</fileset>
+		</copy>
+	  </target>
+	
+  <target name="search" depends="gomapi">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/search/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="objecteditor" depends="gomclients">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/clients/objectEditor/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="classificationeditor" depends="gomclients">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/clients/classificationEditor/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="imex" depends="gomclients">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/clients/imex/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="BMEcat">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/clients/BMEcatImport/*,de/incony/xsl/*.java">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="databaseManager" depends="gomclients">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/clients/databaseManager/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="ProcatImport" depends="gomclients">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/GOM/clients/ProcatImport/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="srapi" depends="gomjdbc">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/srapi/**,de/incony/anteros/backend/GOM/soap/**,de/incony/anteros/backend/srapi/**">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="configapi" depends="anteros">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/config/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="configxml" depends="configapi">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/config/xml/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="configclients" depends="configxml">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/config/clients/**">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+	
+  <target name="configmanager" depends="anteros">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/config/clients/configurationManager/**">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="scapi" depends="pmapi">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/searchComponent/*,de/incony/anteros/backend/searchComponent/clients/**">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="scgom" depends="scapi,gomjdbc">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/searchComponent/GOM/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="sccorba" depends="scapi">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/searchComponent/CORBA/*,de/incony/anteros/backend/CORBA/searchComponent/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="pmapi" depends="anteros">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/profileManager/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="pmgom" depends="anteros">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <mkdir dir="${build}"/>
+    <javac debug="yes" srcdir="${src}" destdir="${build}" includes="de/incony/anteros/backend/profileManager/GOM/*">
+      <classpath refid="project.classpath"/>
+    </javac>
+  </target>
+
+  <target name="clean">
+    <!-- Delete the ${build}directory tree -->
+    <delete dir="${build}/de/incony/anteros/backend"/>
+    <delete dir="${build}/enhanced"/>
+    <delete file="${build}/AnterosBE.jar"/>
+  </target>
+</project>
