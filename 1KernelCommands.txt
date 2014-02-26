@@ -1,4 +1,0 @@
-//KernelCommand List
-List.removeElementLast
-
-
