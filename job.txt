@@ -29,7 +29,7 @@ set listCopy to list().
 set listSource to list().
 set listSource:ADD to "test01".
 set listSource:ADD to "test02".
-run LIST.copy(listSource, listCopy).
+run LIST_copy(listSource, listCopy).
 for x in listCopy {
 	run printDebug("kopierter Wert: " + x).	
 	}.

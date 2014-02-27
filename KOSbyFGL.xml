@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="Windows-1252" ?>
 <NotepadPlus>
   <AutoComplete>
-    <KeyWord name="LIST.copy" />
-    <KeyWord name="LIST.readEntryLast" />
-    <KeyWord name="LIST.removeEntryLast" />
+    <KeyWord name="LIST_copy" />
+    <KeyWord name="LIST_readEntryLast" />
+    <KeyWord name="LIST_removeEntryLast" />
   </AutoComplete>
 </NotepadPlus>
