@@ -24,16 +24,6 @@ run PrintCaller(langCallerName).
 run libKerbal(). //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 
-//TEST 20140226: Kopieren einer Liste, mit neuer Static Object Syntex....
-set listCopy to list().
-set listSource to list().
-set listSource:ADD to "test01".
-set listSource:ADD to "test02".
-run LIST_copy(listSource, listCopy).
-for x in listCopy {
-	run printDebug("kopierter Wert: " + x).	
-	}.
-
 //TEST:  weil nicht geht set listNumber to langNumberList:COPY.
 set theRowList to LIST().
 set theRowList:ADD to 4. //ich will in der 4. und 6. Zeile drucken.

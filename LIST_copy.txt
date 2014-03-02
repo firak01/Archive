@@ -13,3 +13,12 @@ for argIn IN argsIn {
 	set listCopy:ADD TO argIn.
 	}.
 	
+// Kopieren einer Liste, mit neuer Static Object Syntax....
+//set listCopy to list().
+//set listSource to list().
+//set listSource:ADD to "test01".
+//set listSource:ADD to "test02".
+//run LIST_copy(listSource, listCopy).
+//for x in listCopy {
+//	run printDebug("kopierter Wert: " + x).	
+//	}.
