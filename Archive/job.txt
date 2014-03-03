@@ -40,6 +40,7 @@ set theStringList to LIST().
 set theStringList:ADD to "top tools by FGL".
 run PrintRow(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
 
+
 //Merke: Paramter sind 
 set args TO LIST().
 set args:ADD to libLaunchSpeedMin.
@@ -47,9 +48,11 @@ set args:ADD to libLaunchGroundSteeringSpeedMax.
 set args:ADD to libTargKscRunEnd.
 set args:ADD to libTargPolNor.
 
+LOCK THROTTLE to 1.      //Vollschub
 set prgPlaneStart to LIST(). //Rückgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart).
-run printDebug1("Startphase beendet").
+run printDebug1("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
+UNLOCK STEERING.
 
 //Prüfe den Status des Programms
 //a) Rückgabwerte entgegennehmen.
@@ -69,7 +72,7 @@ for argReturn IN prgPlaneStart {
 	
 //b) Rückgabwerte analysieren.
 if prgPlaneStartStatus = "1" {
-	run printDebug("Startgeschwindigkeit erreicht. Ziehe hoch.").
+	run printDebug("Startgeschwindigkeit erreicht. Ziehe automatisiert hoch.").
 	
 	//Eingabearray leeren.
 	set iCount to args:LENGTH.

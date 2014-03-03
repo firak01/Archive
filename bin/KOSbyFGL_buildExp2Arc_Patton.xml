@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>  
-<project name="FGLKOSGitPrepare" default="compile" basedir=".">
+<project name="FGLKOSArchivePreparePatton" default="compile" basedir=".">
+
+	TODO: Variablen/Properties: KOS anbändern in KOS , NPP abändern in Npp 
 
   <!-- set global properties for this build -->
   <!-- Example for using an environment variable, which is defined e.g. in windows: 
@@ -9,6 +11,8 @@
   <property name="src" value="src"/>
   -->
 
+  
+  
   <!-- Ausgangsverzeichnis: Das Repository -->
   <property name="src.dirRepositoryKosPath" value="c:/1fgl/repository/KOS4Export" />
   <property name="src.dirRepositoryKosNPP" value="Notepad++" />
@@ -16,7 +20,7 @@
   <!-- mit absoluten Pfaden hat das kopieren so nicht geklappt, erst wenn wie unten // vor der property steht, funktioniert es -->
   <!-- Achtung: verwende auch auf deutschen Systemen C:\Program Files (x86), Abaenderung in deutschen Namen Programme... bewirkt nur, das scheinbar das Verzeichnis doppelt angelegt wird. -->
   <!-- Datei KOSbyFGL.xml --> <!--"C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL._orig.xml"-->
-  <property name="dest.dirNPP_plugins_api" value="c:/Program Files (x86)/Notepad++/plugins/APIs" />
+  <property name="dest.dirNPP_plugins_apiPath" value="c:/Program Files (x86)/Notepad++/plugins/APIs" />
  
   <!-- alle .txt Dateien, die ein juengeres Aenderungsdatum haben. Also die reinen KOS-Programdateien --> 
   <property name="dest.dirKOSArchive" value="Archive" /> 
@@ -84,8 +88,8 @@
 	</touch>
 	-->
 	<echo>NPP Plugins API Directory:</echo>
-	<mkdir dir="//${dest.dirNPP_plugins_api}"/>
-	<copy todir="//${dest.dirNPP_plugins_api}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
+	<mkdir dir="//${dest.dirNPP_plugins_apiPath}"/>
+	<copy todir="//${dest.dirNPP_plugins_apiPath}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
 	  <fileset dir="//${src.dirRepositoryKosPath}/${src.dirRepositoryKosNPP}">
 		<include name="**/**KOSbyFGL.xml"/>
 	  </fileset>
@@ -106,7 +110,7 @@
 	
 	<!-- Dateien, die neuer sind, werden nicht ueberschrieben, obwohl alle txt - Dateien gelöscht worden sein sollen. -->	  
 	<copy todir="//${dest.dirKOSArchivePath}" overwrite="false"  preservelastmodified="true"> 
-	  <fileset dir="//${src.dirRepositoryKos}">
+	  <fileset dir="//${src.dirRepositoryKosPath}">
 		<include name="**/**.txt"/>		
 		<exclude name="**/**KOSbyFGL*.*"/>
 		<exclude name="**/**.bat"/>

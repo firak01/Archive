@@ -2,7 +2,7 @@ REM Verwendet wird ant. Voraussetzung ist also das Java Ant - Tool installiert i
 REM Unbedingt mit call aufrufen, sonst werden nachfolgende Anweisungen nicht mehr ausgeführt.
 echo start Arc2Exp fuer Patton
 
-ant -buildfile KOSbyFGL_buildArc2Exp_Patton.xml
+call ant -buildfile KOSbyFGL_buildArc2Exp_Patton.xml
 
 echo Ende Arc2Exp fuer Patton
 pause

@@ -4,7 +4,7 @@ DECLARE PARAMETER argsIn, prgPlaneFlight.
 
 //erwarte als erstes Argument: Das Ziel 
 run PrintCaller("prgPlaneFlight").
-LOCK THROTTLE to 1.
+//LOCK THROTTLE to 1.//wird im aufrufenden Ptogramm gemacht.
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.

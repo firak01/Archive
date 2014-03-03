@@ -38,11 +38,13 @@ set gradeCurrent to gradeStart.
 set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 LOCK WHEELSTEERING TO targMain.           // Steer the vessel in the direction suggested by direction X.
 //################################
-LOCK THROTTLE to 1.
+//LOCK THROTTLE to 1. //Vollschub wird im aufrufenden Programm schon gegeben.
 
 //Los geht´s....
 set iCount to 0. //Messungszähler
 stage. //Spare das Druecken der "Spacebar"-Taste 
+BRAKES On.
+BRAKES OFF. //Funktioniert alleine nicht.
 
 //Liste mit den Argumenten an die ConsolenData-Ausbabe uebergeben!
 set args to LIST().
