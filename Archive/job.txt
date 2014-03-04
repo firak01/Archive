@@ -1,7 +1,7 @@
 //Aufrufstruktur als Konvention:
 //job... => prg...=> sub...=> fun...
 //Merke: Code auf Jobebene kann nicht "on the fly im laufenden Program geändert werden, sonst schon."
-//lang... dient der Deklartion von Konstanten und globalen Variablen für den "Kernel".
+//lang... dient der Deklaration von Konstanten und globalen Variablen für den "Kernel".
 //          Darin definierte Konstanten haben lang als Präfix.
 //lib... dient der deklaration von constanten und globalen variablen. Muss mit "run" eingebunden werde, am besten auf Job-Ebene, da ja global.
 //       Darin definierte Konstanten haben lib als Präfix.
@@ -16,7 +16,7 @@
 clearscreen.
 run langKernel(). //Deklariere die "Language Konstanten."
 set langCallerName to "job".
-run PrintCaller(langCallerName).
+run DEBUG_Caller(langCallerName).
 
 //##################################
 //### Starte von der Startbahn 
@@ -28,7 +28,11 @@ run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 set theRowList to LIST().
 set theRowList:ADD to 22. //ich will in der 22. und 24. Zeile drucken.
 set theRowList:ADD to 24.
-run PrintRow(langNumberList,theRowList).
+run PRINT_RowRepeated(langNumberList,theRowList).
+
+
+
+
 
 //TODO MEthode: removeListEntryAll()
 //set theRowList:CLEAR.
@@ -38,7 +42,7 @@ set theRowList:ADD to 23.  //folgendes in der 23. Zeile drucken.
 
 set theStringList to LIST().
 set theStringList:ADD to "top tools by FGL".
-run PrintRow(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
+run PRINT_Row(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
 
 
 //Merke: Paramter sind 
@@ -51,7 +55,7 @@ set args:ADD to libTargPolNor.
 LOCK THROTTLE to 1.      //Vollschub
 set prgPlaneStart to LIST(). //Rückgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart).
-run printDebug1("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
+run  printDebug1("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
 UNLOCK STEERING.
 
 //Prüfe den Status des Programms
@@ -72,7 +76,7 @@ for argReturn IN prgPlaneStart {
 	
 //b) Rückgabwerte analysieren.
 if prgPlaneStartStatus = "1" {
-	run printDebug("Startgeschwindigkeit erreicht. Ziehe automatisiert hoch.").
+	run DEBUG_  printDebug("Startgeschwindigkeit erreicht. Ziehe automatisiert hoch.").
 	
 	//Eingabearray leeren.
 	set iCount to args:LENGTH.

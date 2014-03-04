@@ -8,10 +8,7 @@
   <property name="dest" value="target"/>
   <property name="src" value="src"/>
   -->
-  
-  <!-- TODO: Umbenennen von dest nach scr und umgekehrt -->
-  <!-- TODO: Archive - Dateien auch in/aus Unterverzeichnis Archive -->
-  
+   
   <!-- Ausgangsverzeichnis: Das Repository -->
   <property name="dest.dirRepositoryKosPath" value="c:/1fgl/repository/KOS4Export" />
   <property name="dest.dirRepositoryKosNpp" value="Notepad++" />
@@ -19,8 +16,10 @@
   
   <!-- mit absoluten Pfaden hat das kopieren so nicht geklappt, erst wenn wie unten // vor der property steht, funktioniert es -->
   <!-- Achtung: verwende auch auf deutschen Systemen C:\Program Files (x86), Abaenderung in deutschen Namen Programme... bewirkt nur, das scheinbar das Verzeichnis doppelt angelegt wird. -->
-  <!-- Datei KOSbyFGL.xml --> <!--"C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL._orig.xml"-->
-  <property name="src.dirNpp_plugins_apiPath" value="c:/Program Files (x86)/Notepad++/plugins/APIs" />
+  <!-- Datei KOSbyFGL.xml --> <!--"C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL._orig.xml"-->  
+  <property name="src.dirNpp_plugins_Path" value="c:/Program Files (x86)/Notepad++/plugins" />
+  <property name="src.dirNpp_pluginsAPIs" value="APIs" />
+  <property name="src.dirNpp_pluginsAPIsPath" value="${src.dirNpp_plugins_Path}/${src.dirNpp_pluginsAPIs}" />
  
   <!-- alle .txt Dateien, die ein juengeres Aenderungsdatum haben. Also die reinen KOS-Programdateien --> 
   <property name="src.dirKosArchive" value="Archive" /> 
@@ -97,11 +96,10 @@
        basedir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosArchive}"
 	/>
 	
-	<!-- IM ERSTEN TEST NIX LÖSCHEN -->
-	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die Programmdateien!!!)erst loeschen -->
-	<!-- <delete includeemptydirs="false">
-		<fileset dir="//${dest.dirKosPath}/${dest.dirRepositoryKosArchive}" includes="**/*.txt"/>
-	</delete> -->
+	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die Programmdateien!!!) nach dem Backup loeschen -->
+	<delete includeemptydirs="false">
+		<fileset dir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosArchive}" includes="**/*.txt"/>
+	</delete>
 	
 	<!-- Dateien, die neuer sind, werden nicht ueberschrieben, obwohl alle txt - Dateien gelöscht worden sein sollen. -->	  
 	<copy todir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosArchive}" overwrite="false"  preservelastmodified="true"> 
@@ -128,27 +126,27 @@
 	   includes="KOSbyFGL.xml contextMenu.xml functionList.xml langs.xml session.xml shortcuts.xml stylers.xml userDefineLang.xml"
 	/>
 	
-	<!-- Im Test erste einmal NIX LOESCHEN -->
-	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die Programmdateien!!!)erst loeschen -->
-	<!-- <delete includeemptydirs="false">
-		<fileset dir="//${dest.dirKosArchivePath}" includes="**/*.txt"/>
-	</delete> -->
+	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die xml-dateien!!!) nach dem Backup loeschen -->
+	<delete includeemptydirs="false">
+		<fileset dir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosNpp}" includes="**/*.xml"/>
+	</delete>
 	
-	<!-- Kopiere Dateien vom Ausgangsverzeichnis / NPP Plugins -->
+	<!-- Kopiere Dateien vom Ausgangsverzeichnis / NPP Plugins (nur ältere Dateien werden überschrieben, obwohl alle .xml Dateien schon gelöscht sein sollten.)-->
 	<echo>NPP Plugins API Directory:</echo>
 	<copy todir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosNpp}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
-	  <fileset dir="//${src.dirNpp_plugins_apiPath}">
+	  <fileset dir="//${src.dirNpp_pluginsAPIsPath}">
 		<include name="**/**KOSbyFGL.xml"/>
 	  </fileset>
 	</copy>
 
-	<!-- HIER NIX LOESCHEN -->
+	<!-- HIER NIX LOESCHEN, das Ziel ist das gleiche Verzeichnis wie oben. -->
 	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die Programmdateien!!!)erst loeschen -->
 	<!-- <delete includeemptydirs="false">
 		<fileset dir="//${dest.dirKosArchivePath}" includes="**/*.txt"/>
 	</delete> -->
 	
-	<!-- Dateien, die neuer sind, werden nicht ueberschrieben, obwohl alle txt - Dateien gelöscht worden sein sollen. -->	  	
+	<!-- Kopiere NPP Konfigurationsdateien (nur ältere Dateien werden überschrieben, obwohl alle .xml Dateien schon gelöscht sein sollten.)-->
+	<echo>NPP AppDAta Directory:</echo>
 	<copy todir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosNpp}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
 	  <fileset dir="//${src.dirNpp_AppDataPath}">
 		<include name="**/**config.xml"/>

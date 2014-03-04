@@ -13,7 +13,7 @@
         <GUIConfig name="UserDefineDlg" position="undocked">hide</GUIConfig>
         <GUIConfig name="TabSetting" size="4" replaceBySpace="no" />
         <!--App position-->
-        <GUIConfig name="AppPosition" x="525" y="10" width="861" height="1158" isMaximized="yes" />
+        <GUIConfig name="AppPosition" x="488" y="71" width="861" height="1158" isMaximized="yes" />
         <!-- For the primary scintilla view,
              2 status for Attribut lineNumberMargin, bookMarkMargin, indentGuideLine and currentLineHilitingShow: "show" or "hide"
              4 status for Attribut folderMarkStyle : "simple", "arrow", "circle" and "box"  -->
@@ -87,16 +87,16 @@
         <GUIConfig name="titleBar" short="no" />
         <GUIConfig name="stylerTheme" path="C:\Users\lindhaueradmin\AppData\Roaming\Notepad++\stylers.xml" />
         <GUIConfig name="delimiterSelection" leftmostDelimiter="40" rightmostDelimiter="41" delimiterSelectionOnEntireDocument="yes" />
-        <GUIConfig name="DockingManager" leftWidth="588" rightWidth="136" topHeight="200" bottomHeight="200">
+        <GUIConfig name="DockingManager" leftWidth="551" rightWidth="136" topHeight="200" bottomHeight="200">
             <FloatingWindow cont="4" x="-1250" y="213" width="-506" height="769" />
             <FloatingWindow cont="5" x="-1794" y="246" width="-1050" height="802" />
             <PluginDlg pluginName="LocationNavigate.dll" id="4" curr="0" prev="4" isVisible="yes" />
             <PluginDlg pluginName="LightExplorer.dll" id="0" curr="0" prev="5" isVisible="yes" />
             <PluginDlg pluginName="ComparePlugin.dll" id="9" curr="1" prev="-1" isVisible="no" />
+            <PluginDlg pluginName="NppTaskList.dll" id="15" curr="1" prev="-1" isVisible="yes" />
             <PluginDlg pluginName="Notepad++::InternalFunction" id="44084" curr="1" prev="-1" isVisible="no" />
             <PluginDlg pluginName="Notepad++::InternalFunction" id="44070" curr="0" prev="-1" isVisible="no" />
             <PluginDlg pluginName="dummy" id="0" curr="3" prev="-1" isVisible="yes" />
-            <PluginDlg pluginName="NppTaskList.dll" id="15" curr="1" prev="-1" isVisible="yes" />
             <PluginDlg pluginName="XPatherizerNPP" id="1" curr="1" prev="-1" isVisible="no" />
             <PluginDlg pluginName="XPatherizerNPP" id="0" curr="2" prev="-1" isVisible="no" />
             <ActiveTabs cont="0" activeTab="1" />
@@ -108,27 +108,21 @@
         </GUIConfig>
     </GUIConfigs>
     <!-- The History of opened files list -->
-    <FindHistory nbMaxFindHistoryPath="10" nbMaxFindHistoryFilter="10" nbMaxFindHistoryFind="10" nbMaxFindHistoryReplace="10" matchWord="no" matchCase="no" wrap="yes" directionDown="no" fifRecuisive="yes" fifInHiddenFolder="no" dlgAlwaysVisible="no" fifFilterFollowsDoc="no" fifFolderFollowsDoc="no" searchMode="0" transparencyMode="1" transparency="150" dotMatchesNewline="no">
+    <FindHistory nbMaxFindHistoryPath="10" nbMaxFindHistoryFilter="10" nbMaxFindHistoryFind="10" nbMaxFindHistoryReplace="10" matchWord="no" matchCase="no" wrap="yes" directionDown="yes" fifRecuisive="yes" fifInHiddenFolder="no" dlgAlwaysVisible="no" fifFilterFollowsDoc="no" fifFolderFollowsDoc="no" searchMode="0" transparencyMode="1" transparency="150" dotMatchesNewline="no">
         <Path name="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive" />
         <Filter name="*.*" />
+        <Find name="src.dirNpp_plugins_apiPath" />
+        <Find name="dirNPP" />
+        <Find name="backup_Archive" />
+        <Find name="backup_KosArchive" />
+        <Find name="KOS" />
         <Find name="&#x00DF;" />
         <Find name="&#x00F6;" />
         <Find name="&#x00E4;" />
         <Find name="&#x00FC;" />
-        <Find name="kos" />
         <Find name="copyList" />
-        <Find name="langcaller" />
-        <Find name="6p07" />
-        <Find name="7p08" />
-        <Find name="heading" />
     </FindHistory>
     <History nbMaxFile="15" inSubMenu="no" customLength="-1">
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\langKernel.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\funDistTargTxt.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\t5.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\1ReadMeFGL.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\readListEntryLast.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\PrintRow.txt" />
         <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\subConsoleDataStart.txt" />
         <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\removeListEntryLast.txt" />
         <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\saves\Firak06-Career\Ships\SPH\7p08b-JetFighter 2  (long Range).craft" />
@@ -137,6 +131,12 @@
         <File filename="C:\1fgl\repository\KOS4Export\KOSbyFGL_buildExp2Arc_Patton.xml" />
         <File filename="C:\1fgl\repository\KOS4Export\job.txt" />
         <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\test001.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\Notepad++\KOSbyFGL.xml" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\job.txt" />
+        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\PRINT_Row.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildExp2Arc_Patton.xml" />
+        <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Patton.xml" />
+        <File filename="C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL.xml" />
     </History>
     <ProjectPanels>
         <ProjectPanel id="0" workSpaceFile="" />

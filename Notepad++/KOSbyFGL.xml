@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="Windows-1252" ?>
 <NotepadPlus>
   <AutoComplete>
-    <Keyword name="LIST_clear" />
-    <Keyword name="LIST_contains" />
-    <KeyWord name="LIST_copy" />
+	<!-- KOS-Bibliothekskern. Zu jedem hier angegebenen keywords muss eine entsprechende .txt Datei vorhanden sein. -->
+	<!-- Nach einer Änderung muss Notepad++ neu gestartet werden. Damit die Änderung wirkt -->
+	<Keyword name="DEBUG_Caller0" />
+	<Keyword name="DEBUG_Caller1" />
+	<Keyword name="LIST_clear" />
+    	<Keyword name="LIST_contains" />
+    	<KeyWord name="LIST_copy" />
 	<KeyWord name="LIST_insertAt" />
-    <KeyWord name="LIST_readEntryLast" />
+    	<KeyWord name="LIST_readEntryLast" />
 	<KeyWord name="LIST_removeEntryAt" />
-    <KeyWord name="LIST_removeEntryLast" />
+    	<KeyWord name="LIST_removeEntryLast" />
+	<KeyWord name="PRINT_Column" />
+	<KeyWord name="PRINT_ColumnRepeated" />
+	<KeyWord name="PRINT_Row" />
+	<KeyWord name="PRINT_RowRepeated" />
+	<Keyword name="TRACE_Caller" />
   </AutoComplete>
 </NotepadPlus>

@@ -278,8 +278,8 @@
             <Keywords name="Keywords4">LIST&#x000D;&#x000A;node&#x000D;&#x000A;apoapsis&#x000D;&#x000A;periapsis&#x000D;&#x000A;atl:apoapsis&#x000D;&#x000A;atl:periapsis&#x000D;&#x000A;eta:apoapsis&#x000D;&#x000A;eta:periapsis&#x000D;&#x000A;mag:node eta:node&#x000D;&#x000A;BODY SHIP:BODY TARGET:BODY&#x000D;&#x000A;NODE:ORBIT:APOAPSIS&#x000D;&#x000A;VOLUME:NAME</Keywords>
             <Keywords name="Keywords5">run declare parameter&#x000D;&#x000A;</Keywords>
             <Keywords name="Keywords6">Bodies Targets Engines Resources &#x000D;&#x000A;Parts Sensors Elements</Keywords>
-            <Keywords name="Keywords7">lib&#x000D;&#x000A;prg&#x000D;&#x000A;fun&#x000D;&#x000A;ClearLine&#x000D;&#x000A;PrintCaller&#x000D;&#x000A;PrintDebug&#x000D;&#x000A;libKerbal&#x000D;&#x000A;LIST_&#x000D;&#x000A;&#x000D;&#x000A;</Keywords>
-            <Keywords name="Keywords8">lang&#x000D;&#x000A;langScreenSizeRow&#x000D;&#x000A;langScreenSizeColumn&#x000D;&#x000A;langCallerName&#x000D;&#x000A;langCallerTime&#x000D;&#x000A;langDebugTime&#x000D;&#x000A;langFC&#x000D;&#x000A;libLaunchSpeedMin&#x000D;&#x000A;libGroundSpeedMax</Keywords>
+            <Keywords name="Keywords7">DEBUG_&#x000D;&#x000A;LIST_&#x000D;&#x000A;PRINT_&#x000D;&#x000A;&#x000D;&#x000A;</Keywords>
+            <Keywords name="Keywords8">lib&#x000D;&#x000A;lang&#x000D;&#x000A;prg&#x000D;&#x000A;sub&#x000D;&#x000A;fun&#x000D;&#x000A;</Keywords>
             <Keywords name="Delimiters">00 01 02 03( 04 05) 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
         </KeywordLists>
         <Styles>
