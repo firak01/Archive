@@ -112,6 +112,12 @@
 </target>
 
 <target name="KosRepositoryNpp">
+<!-- Example of howto change file modification date, usefull to enforce 'overwrite' -->
+	<!-- <touch>
+	  <fileset dir="${dest.dir}"/>
+	</touch>
+	-->
+	
 	<echo>Notepad++</echo>
 	<mkdir dir="//${dest.dirRepositoryKosPath}"/>
 	<mkdir dir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosNpp}" />

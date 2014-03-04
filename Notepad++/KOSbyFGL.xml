@@ -4,7 +4,9 @@
     <Keyword name="LIST_clear" />
     <Keyword name="LIST_contains" />
     <KeyWord name="LIST_copy" />
+	<KeyWord name="LIST_insertAt" />
     <KeyWord name="LIST_readEntryLast" />
+	<KeyWord name="LIST_removeEntryAt" />
     <KeyWord name="LIST_removeEntryLast" />
   </AutoComplete>
 </NotepadPlus>

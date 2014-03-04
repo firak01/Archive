@@ -26,15 +26,15 @@ run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 
 //TEST:  weil nicht geht set listNumber to langNumberList:COPY.
 set theRowList to LIST().
-set theRowList:ADD to 4. //ich will in der 4. und 6. Zeile drucken.
-set theRowList:ADD to 6.
+set theRowList:ADD to 22. //ich will in der 22. und 24. Zeile drucken.
+set theRowList:ADD to 24.
 run PrintRow(langNumberList,theRowList).
 
 //TODO MEthode: removeListEntryAll()
 //set theRowList:CLEAR.
 set theRowList:REMOVE TO 1. //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
 set theRowList:REMOVE TO 0.
-set theRowList:ADD to 5.
+set theRowList:ADD to 23.  //folgendes in der 23. Zeile drucken.
 
 set theStringList to LIST().
 set theStringList:ADD to "top tools by FGL".
