@@ -1,7 +1,7 @@
 //Zeilenweise die Werte ausgeben
 DECLARE PARAMETER argsIn,theRowList.
 
-run PrintCaller1("PrintRow").
+run DEBUG_Caller1("PRINT_RowsRepeated").
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
@@ -18,11 +18,18 @@ run PrintCaller1("PrintRow").
 
 for lineToPrint in theRowList {
 
-set iIndex to -1.
-//for character in removeListEntryLast {
-for character in argsIn {
-	set iIndex to iIndex + 1.         //TODO: Stringfunktion, die die Laenge eines Strings ermittelt waere toll.
-	print character at (iIndex, lineToPrint).
-}.
+	set iIndex to -1.
+	set iColumn to -1.
+	//for character in removeListEntryLast {
+	Until iColumn > langScreenSizeColumn {
+		set iColumn to iColumn + 1.
+		for character in argsIn {
+			set iIndex to iIndex + 1.         //TODO: Stringfunktion, die die Laenge eines Strings ermittelt waere toll.
+			print character at (iIndex, lineToPrint).
+		}.
+
+	}.
+
+
 }.
 

@@ -2,7 +2,7 @@
 DECLARE PARAMETER argsIn.
 set subConsoleDataStart to LIST().
 
-run PrintCaller1("subConsoleDataStart").
+run DEBUG_Caller1("subConsoleDataStart").
 
 set constDegreeTxt to "G".
 print "--- " + SHIP + " ---" at (0,2).
@@ -10,19 +10,19 @@ print "--- " + SHIP + " ---" at (0,2).
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
 //1. das Hauptziel aus der argsIn Liste holen.
-run printDebug0("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
+run DEBUG_print0("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
 set iIndex To -1.
 set listTarg to LIST().
 for argIn IN argsIn {
-	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
 		set targMain to argIn.
-		run printDebug0("TargMain = " + targMain).
+		run DEBUG_print0("TargMain = " + targMain).
 		}.	
 	if iIndex >= 1 {
 		set listTarg:ADD to argIn.  //Fuelle die liste der sonstigen ziele
-		run printDebug("Weiteres Ziel = " + argIn).
+		run DEBUG_print0("Weiteres Ziel = " + argIn).
 		}.
 	if iIndex = 2 {
 		}.

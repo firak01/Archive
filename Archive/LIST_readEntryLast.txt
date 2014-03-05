@@ -2,11 +2,11 @@
 //Dazu muss man die Anzahl der Elemente zählen.
 //und mit einer Zahl kann man dann als Variable diesen Eintrag abfragen.
 DECLARE PARAMETER argsIn,readListEntryLast.
-run PrintCaller1("readListEntryLast").
+run DEBUG_Caller1("LIST_readEntryLast").
 
-run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+run DEBUG_print0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
 set countList To LIST().
-run countList(argsIn,countList).
+run LIST_count(argsIn,countList).
 set iIndexMax to countList#0.   //Rueckgabewert ist immer an Stelle 0.
 set lineToPrint to argsIn#iIndexMax.
 

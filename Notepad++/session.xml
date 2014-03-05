@@ -1,7 +1,7 @@
 <NotepadPlus>
     <Session activeView="0">
-        <mainView activeIndex="0">
-            <File firstVisibleLine="3" xOffset="0" scrollWidth="1085" startPos="531" endPos="531" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\job.txt" />
+        <mainView activeIndex="1">
+            <File firstVisibleLine="12" xOffset="0" scrollWidth="1085" startPos="1195" endPos="1195" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\job.txt" />
         </mainView>
         <subView activeIndex="0" />
     </Session>

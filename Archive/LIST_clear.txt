@@ -1,0 +1,19 @@
+DECLARE PARAMETER argsIn.
+
+//ACHTUNG: FUNKTIONIERT NICHT, DA PARAMETER ARGUMENTE NICHT "by reference" übergeben werden.
+//                 Wie bei LIST_copy vorzugehen ist unsinnig, weil man statt des umständlichen 2. Parameters eher eine neue Liste deklarieren kann, die man nicht erst leeren muss.
+
+run DEBUG_Caller1("List_clear").
+run DEBUG_print("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+
+set countList To LIST().
+run LIST_count(argsIn,countList).
+set iMax to countList#0.
+run DEBUG_print("gezaehlte Elemente in argsIn= " + iMax).
+
+//!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
+set iIndex to iMax-1.
+until iIndex < 0 {
+	set argsIn:REMOVE TO iIndex.
+	set iIndex to iIndex - 1.
+}.

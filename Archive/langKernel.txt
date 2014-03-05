@@ -10,8 +10,8 @@ set langCallerTime to 0.25. //Die Zeit, die ein Ausdruck einer Funktion sichtbar
 set langCallerName to "Name der zuletzt aufgerufenen Function". //Wird dann als Paramter an die function landCaller(sName) übergeben.
 
 //Die Größe der Konsole
-set langScreenSizeRow to 30.
-set langScreenSizeColumn to 20.
+set langScreenSizeRow to 35.
+set langScreenSizeColumn to 50.
 
 set langCountGlobal to 0. //Globale Zählvariable, die über alle PRogramme hinaus deklariert ist.
 

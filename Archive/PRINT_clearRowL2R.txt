@@ -1,0 +1,7 @@
+DECLARE PARAMETER lineNumber.
+set iCount to 0.
+until iCount >= langScreenSizeColumn {
+   print (" ") at (iCount,lineNumber).
+   set iCount to iCount + 1.
+}.
+        

@@ -1,6 +1,7 @@
-DECLARE PARAMETER string. //time. //Es scheint nur 1 Paramter zu funktionieren.
-//Debug, d.h. auf der Zeile mit dem Index0  ausprinten, Zeile 0 ist für das Programm, 1 für sonstige
-run ClearLine(0).
+DECLARE PARAMETER string.
+//Debug, d.h. auf der Zeile mit dem Index 0  ausprinten, Zeile 0 ist für das Programm, 1 für sonstige
+//Die 1 im Funktionsnamen bedeutet, dass nur geprintet, nicht aber gewartet werden soll.
+run PRINT_ClearRow(0).
 print string at (0,0).
 //wait langCallerTime. //in der Bibliothek definierte Wartezeit nach der Ausgabe.
 

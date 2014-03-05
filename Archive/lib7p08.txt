@@ -1,6 +1,6 @@
 //Deklaration der Flugzeugkonstanten
 //
 set libGroundSteeringSpeedMax to 20. //
-set libLaunchGroundSteeringSpeedMax to 90. //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
+set libLaunchGroundSteeringSpeedMax to 100. //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
 set libLaunchSpeedMin to 105. //Sets the Surfacespeed, which must be reached for "pull up"
 set libGroundSpeedMax to 105.

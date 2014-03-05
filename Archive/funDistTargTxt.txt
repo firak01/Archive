@@ -1,5 +1,5 @@
 DECLARE PARAMETER targ.
-run PrintCaller1("funDistTargTxt").
+run DEBUG_Caller1("funDistTargTxt").
 set distTargTxt to ROUND(targ:DISTANCE/10000,3) + " Km".
 if Round(targ:DISTANCE)<Round(10000.0) {
 	set distTargTxt to ROUND(targ:DISTANCE) + " m".

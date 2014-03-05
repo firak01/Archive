@@ -5,6 +5,10 @@ https://github.com/Erendrake/KOS/blob/master/README.md
 //Die zu pflegende Liste mit den KOS Befehlen (autocomplete) über die Tasten strg + space liegt hier:
 C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL.xml
 
+Dabei ist zu beachten, dass nur Unterstriche als Trennmöglichkeit der "Klasse" und der "Methode" möglich ist.
+Alle andereren Sonderzeichen - inklusive Punkt - führen zu einem Compilier/Interpreterfehler im KOS - Interpreter.
+
+
 Die Datei mit den benutzerdefinierten Sprachen liegt hier:
 C:\Users\lindhaueradmin\AppData\Roaming\Notepad++\userDefineLang.xml
 Die Sprache wird aber als KOSbyFGL.udl aus dem Repository importiert und wieder exportiert.
@@ -204,7 +208,17 @@ set test to argsIn:libLaunchSpeedMin.
 print test. wait 5.
 
 
+#################################################
+Übergabeparameter von Funktionen:
 
+//FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
+//FGL:      DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
+
+
+
+
+
+#################################################
 
 
 

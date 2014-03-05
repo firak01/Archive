@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="Windows-1252" ?>
 <NotepadPlus>
   <AutoComplete>
-	<!-- KOS-Bibliothekskern. Zu jedem hier angegebenen keywords muss eine entsprechende .txt Datei vorhanden sein. -->
-	<!-- Nach einer Änderung muss Notepad++ neu gestartet werden. Damit die Änderung wirkt -->
-	<Keyword name="DEBUG_Caller0" />
-	<Keyword name="DEBUG_Caller1" />
-	<Keyword name="LIST_clear" />
-    	<Keyword name="LIST_contains" />
-    	<KeyWord name="LIST_copy" />
-	<KeyWord name="LIST_insertAt" />
-    	<KeyWord name="LIST_readEntryLast" />
-	<KeyWord name="LIST_removeEntryAt" />
-    	<KeyWord name="LIST_removeEntryLast" />
-	<KeyWord name="PRINT_Column" />
-	<KeyWord name="PRINT_ColumnRepeated" />
-	<KeyWord name="PRINT_Row" />
-	<KeyWord name="PRINT_RowRepeated" />
-	<Keyword name="TRACE_Caller" />
+    <!-- KOS-Bibliothekskern. Zu jedem hier angegebenen keywords muss eine entsprechende .txt Datei vorhanden sein. -->
+  <!-- Nach einer Änderung muss Notepad++ neu gestartet werden. Damit die Änderung wirkt -->
+<KeyWord name="DEBUG_Caller"/>
+<KeyWord name="DEBUG_Caller0"/>
+<KeyWord name="DEBUG_Caller1" />
+<KeyWord name="DEBUG_print" />
+<KeyWord name="DEBUG_print0" />
+<KeyWord name="DEBUG_print1" />
+<KeyWord name="LIST_count" />
+<KeyWord name="LIST_clear" />
+<KeyWord name="LIST_contains" />
+<KeyWord name="LIST_copy" />
+<KeyWord name="LIST_insertAt" />
+<KeyWord name="LIST_readEntryLast" />
+<KeyWord name="LIST_removeEntryAt" />
+<KeyWord name="LIST_removeEntryLast" />
+<KeyWord name="PRINT_clearRow" />
+<KeyWord name="PRINT_clearRowL2R" />
+<KeyWord name="PRINT_clearRows" />
+<KeyWord name="PRINT_clearRowsL2R" />
+<KeyWord name="PRINT_Column" />
+<KeyWord name="PRINT_ColumnRepeated" />
+<KeyWord name="PRINT_Rows" />
+<KeyWord name="PRINT_RowsL2R" />
+<KeyWord name="PRINT_RowsRepeated" />
+<KeyWord name="PRINT_RowsRepeatedL2R" />
   </AutoComplete>
 </NotepadPlus>

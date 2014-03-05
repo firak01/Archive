@@ -1,11 +1,2 @@
 //Todos für weitere Entwicklung
 
-Sprachdatei ins Archiv.
-
-Ausprobieren vom Plugin ccAutocomplete
-Versuche ein Befehlsdatei in ccAutocomplete einzubinden.
-
-Ggf. Befehle in der Form static Methoden.
-z.B. List.removeEntryLast
-statt removeListEntryLast.
-

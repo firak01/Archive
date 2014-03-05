@@ -3,21 +3,21 @@
 DECLARE PARAMETER argsIn, prgPlaneFlight.
 
 //erwarte als erstes Argument: Das Ziel 
-run PrintCaller("prgPlaneFlight").
+run DEBUG_Caller1("prgPlaneFlight").
 //LOCK THROTTLE to 1.//wird im aufrufenden Ptogramm gemacht.
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
 //1. Die Startgeschwindigkeit aus der argsIn Liste holen.
 //2. Die erlaubte Steuergeschwindigkeit am Boden.
-run printDebug("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+run DEBUG_print1("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
 set iIndex to -1.
 for argIn IN argsIn {
-	run printDebug("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	run DEBUG_print1("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
 		set groundSpeedMax to argIn.
-		run printDebug("GroundSpeedMax= " + groundSpeedMax).
+		run DEBUG_Caller1("GroundSpeedMax= " + groundSpeedMax).
 		}.
 	if iIndex = 1 {
 		//set launchSteeringSpeedMax to argIn.

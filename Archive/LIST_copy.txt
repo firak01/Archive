@@ -4,11 +4,11 @@
 //Diese Liste funktioniert anschliessend!
 DECLARE PARAMETER argsIn, listCopy.
 
-run PrintCaller1("List.copy").
-run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+run DEBUG_Caller1("LIST_copy").
+run DEBUG_print0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
 set iIndex to -1.
 for argIn IN argsIn {
-	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	set listCopy:ADD TO argIn.
 	}.

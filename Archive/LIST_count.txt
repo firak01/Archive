@@ -4,11 +4,11 @@
 //Der returnwert dieser Funktion funktioniert anschliessend!
 DECLARE PARAMETER argsIn, countList.
 
-run PrintCaller1("countList").
-run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+run DEBUG_Caller1("LIST_count").
+run DEBUG_print0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
 set iIndex to -1.
 for argIn IN argsIn {
-	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	}.
 set countList:ADD to iIndex.

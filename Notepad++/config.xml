@@ -73,7 +73,7 @@
         <GUIConfig name="MRU">yes</GUIConfig>
         <GUIConfig name="URL">2</GUIConfig>
         <GUIConfig name="globalOverride" fg="no" bg="no" font="no" fontSize="no" bold="no" italic="no" underline="no" />
-        <GUIConfig name="auto-completion" autoCAction="2" triggerFromNbChar="1" funcParams="yes" />
+        <GUIConfig name="auto-completion" autoCAction="1" triggerFromNbChar="1" funcParams="yes" />
         <GUIConfig name="multiInst" setting="2" />
         <GUIConfig name="sessionExt"></GUIConfig>
         <GUIConfig name="SmartHighLight">yes</GUIConfig>
@@ -134,8 +134,8 @@
         <File filename="C:\1fgl\repository\KOS4Export\Notepad++\KOSbyFGL.xml" />
         <File filename="C:\1fgl\repository\KOS4Export\Archive\job.txt" />
         <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\PRINT_Row.txt" />
-        <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildExp2Arc_Patton.xml" />
         <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Patton.xml" />
+        <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildExp2Arc_Patton.xml" />
         <File filename="C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL.xml" />
     </History>
     <ProjectPanels>

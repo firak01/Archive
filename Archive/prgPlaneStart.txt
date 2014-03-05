@@ -3,24 +3,24 @@
 DECLARE PARAMETER argsIn, prgPlaneStart.
 
 //erwarte als erstes Argument: Die startgeschwindigkeit.
-run PrintCaller1("prgPlaneStart").
+run DEBUG_Caller1("prgPlaneStart").
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
 //1. Die Startgeschwindigkeit aus der argsIn Liste holen.
 //2. Die erlaubte Steuergeschwindigkeit am Boden.
-run printDebug0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+run DEBUG_print0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
 set iIndex to -1.
 for argIn IN argsIn {
-	run printDebug0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
 		set launchSpeedMin to argIn.
-		run printDebug0("LaunchSpeedMin = " + launchSpeedMin).
+		run DEBUG_print0("LaunchSpeedMin = " + launchSpeedMin).
 		}.
 	if iIndex = 1 {
 		set launchSteeringSpeedMax to argIn.
-		run printDebug0("LaunchSteeringSpeedMax = " + launchSteeringSpeedMax).
+		run DEBUG_print0("LaunchSteeringSpeedMax = " + launchSteeringSpeedMax).
 		}.
 	if iIndex = 2 {
 		//run printDebug("param@2 = " + argIn).
@@ -57,10 +57,10 @@ until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){
 	//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
 	if abs(SHIP:surfacespeed) >= abs(launchSteeringSpeedMax) {
 		UNLOCK WHEELSTEERING.
-		run printDebug1("WHEELSTEERING ist abgestellt.").
+		run DEBUG_print1("WHEELSTEERING ist abgestellt.").
 		}.
 }.
-run printDebug1("Startgeschwindigkeit erreicht.").
+run DEBUG_print1("Startgeschwindigkeit erreicht.").
 
 Set STATUSx to "1".
 set prgPlaneStart:ADD TO STATUSx.

@@ -24,25 +24,10 @@ run DEBUG_Caller(langCallerName).
 run libKerbal(). //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 
-//TEST:  weil nicht geht set listNumber to langNumberList:COPY.
-set theRowList to LIST().
-set theRowList:ADD to 22. //ich will in der 22. und 24. Zeile drucken.
-set theRowList:ADD to 24.
-run PRINT_RowRepeated(langNumberList,theRowList).
+run testList_Contains().
 
+run subConsoleFooter().
 
-
-
-
-//TODO MEthode: removeListEntryAll()
-//set theRowList:CLEAR.
-set theRowList:REMOVE TO 1. //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
-set theRowList:REMOVE TO 0.
-set theRowList:ADD to 23.  //folgendes in der 23. Zeile drucken.
-
-set theStringList to LIST().
-set theStringList:ADD to "top tools by FGL".
-run PRINT_Row(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
 
 
 //Merke: Paramter sind 
@@ -55,7 +40,7 @@ set args:ADD to libTargPolNor.
 LOCK THROTTLE to 1.      //Vollschub
 set prgPlaneStart to LIST(). //Rückgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart).
-run  printDebug1("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
+run DEBUG_print1("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
 UNLOCK STEERING.
 
 //Prüfe den Status des Programms
@@ -63,7 +48,7 @@ UNLOCK STEERING.
 set iIndex to -1.
 set prgPlaneStartStatus to "0".
 for argReturn IN prgPlaneStart {
-	run printDebug("Wert: " + argReturn). //argReturn gilt nur innerhalb der Schleife...
+	run DEBUG_print1("Wert: " + argReturn). //argReturn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
 		set prgPlaneStartStatus to argReturn.		
@@ -76,7 +61,7 @@ for argReturn IN prgPlaneStart {
 	
 //b) Rückgabwerte analysieren.
 if prgPlaneStartStatus = "1" {
-	run DEBUG_  printDebug("Startgeschwindigkeit erreicht. Ziehe automatisiert hoch.").
+	run DEBUG_print1("Startgeschwindigkeit erreicht. Ziehe automatisiert hoch.").
 	
 	//Eingabearray leeren.
 	set iCount to args:LENGTH.
@@ -94,10 +79,10 @@ if prgPlaneStartStatus = "1" {
 	
 	}. //END START ERFOLGREICH
 if prgPlaneStartStatus = "0" {
-	run printDebug("Nicht gestartet.").
+	run DEBUG_print("Nicht gestartet.").
 	}.
 if prgPlaneStartStatus = "-99" {
-	run printDebug( "ERROR beim Start.").
+	run DEBUG_print( "ERROR beim Start.").
 	}.
 
 
