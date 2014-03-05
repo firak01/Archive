@@ -53,6 +53,8 @@
   doLocalConf.xml - a zero length file which is use to determinate where Notepad++ loads the xml files. 
   -->
   
+    <!-- Die erstellten Backup - zip Dateien sollten ausserhalb des Git Repositories sein -->
+  <property name ="dest.dirRepositoryKosBackupPath" value="${dest.dirRepositoryKosPath}Backups" />
   <target name="init">
     <!-- Create the time stamp -->
 	<echo>Receiving timestamp:</echo>
@@ -91,9 +93,10 @@
 	<echo>Notepad++</echo>
 	<mkdir dir="//${dest.dirRepositoryKosPath}"/>
 	<mkdir dir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosNpp}" />
+	<mkdir dir="//${dest.dirRepositoryKosBackupPath}"/>
 	
 	<!-- Mache vom Zielverzeichnis ein Backup -->
-	 <zip destfile="//${dest.dirRepositoryKosPath}/${backup_RepositoryNpp.name}"
+	  <zip destfile="//${dest.dirRepositoryKosBackupPath}/${backup_RepositoryNpp.name}"
        basedir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosNpp}"
 	   includes="KOSbyFGL.xml contextMenu.xml functionList.xml langs.xml session.xml shortcuts.xml stylers.xml userDefineLang.xml"
 	/>
@@ -145,9 +148,10 @@
 	<echo>Kos Files:</echo><!-- Nur die programmdateien kopieren. Nicht die xml / batch files fuer Ant oder fuer die Sprache kopieren. -->
 	<mkdir dir="//${dest.dirRepositoryKosPath}"/>
 	<mkdir dir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosArchive}" />
+	<mkdir dir="//${dest.dirRepositoryKosBackupPath}"/>
 	
 	<!-- Mache vom Zielverzeichnis ein Backup -->
-	  <zip destfile="//${dest.dirRepositoryKosPath}/${backup_RepositoryArchive.name}"
+	<zip destfile="//${dest.dirRepositoryKosBackupPath}/${backup_RepositoryArchive.name}"
        basedir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosArchive}"
 	/>
 	
