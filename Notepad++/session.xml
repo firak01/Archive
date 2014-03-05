@@ -1,9 +1,10 @@
 <NotepadPlus>
     <Session activeView="0">
         <mainView activeIndex="2">
-            <File firstVisibleLine="12" xOffset="0" scrollWidth="1085" startPos="1471" endPos="1471" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\job.txt" />
             <File firstVisibleLine="99" xOffset="0" scrollWidth="2890" startPos="5644" endPos="5644" selMode="0" lang="XML" encoding="-1" filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Patton.xml" />
             <File firstVisibleLine="127" xOffset="0" scrollWidth="2890" startPos="8836" endPos="8836" selMode="0" lang="XML" encoding="-1" filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Umbriel.xml" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="836" startPos="1160" endPos="1160" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\1fgl\repository\KOS4Export\Archive\job.txt" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="952" startPos="1163" endPos="1163" selMode="0" lang="XML" encoding="1252" filename="C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL.xml" />
         </mainView>
         <subView activeIndex="0" />
     </Session>
