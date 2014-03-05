@@ -1,30 +1,88 @@
-﻿<project name="FGLGitPrepare" default="compile" basedir=".">
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<project name="FGLKosArchivePrepareUmbriel" default="compile" basedir=".">
+
+   <!-- Anders als auf Patton wird auf Umbriel direkt im Repository entwickelt. Hier gibt es keine Testmöglichkeit -->
 
   <!-- set global properties for this build -->
-  <!-- Example for using an environment variable, wich is defined e.g. in windows: <property name="build" value="${BUILDTARGET}"/> -->
-  <!-- Beispiele für relative Pfade
+  <!-- Example for using an environment variable, which is defined e.g. in windows: 
+       <property name="build" value="${BUILDTARGET}"/> -->
+  <!-- Beispiele fuer relative Pfade
   <property name="dest" value="target"/>
   <property name="src" value="src"/>
   -->
+
   
-  <!-- mit absoluten Pfaden hat das kopieren so nicht geklappt -->
-  <!-- erst wenn wie unten // vor der property steht, funktioniert es -->
-  <!-- ACHTUNG: Ist man nicht als Administrator angemeldet, erzeugt windows automatisch das Verzeichnis parallel zu dem Original. Die Funktionalität wird nicht erreicht. -->
-  <!-- <property name="dest.dirNotepadPP" value="c:/Program Files (x86)/Notepad++/plugins/APIs" /> -->
-  <property name="dest.dirNotepadPP" value="c:/Programme (x86)/Notepad++/plugins/APIs" />
-  <property name="src.dirRepositoryKos" value="c:/1fgl/repository/archive" />
-  <!-- -->
   
-  <!-- relative Pfade funktionieren  -->
-  <property name="dest.dir" value="src" /> 
-  <property name="src.dir" value="target" />
+  <!-- Ausgangsverzeichnis: Das Repository -->
+  <property name="src.dirRepositoryKosPath" value="c:/1fgl/repository/KOS4Export" />
+  <property name="src.dirRepositoryKosNpp" value="Notepad++" />
+  <property name="src.dirRepositoryKosArchive" value="Archive" /> 
+  
+  <!-- mit absoluten Pfaden hat das kopieren so nicht geklappt, erst wenn wie unten // vor der property steht, funktioniert es -->
+  <!-- Achtung: verwende auch auf deutschen Systemen C:\Program Files (x86), Abaenderung in deutschen Namen Programme... bewirkt nur, das scheinbar das Verzeichnis doppelt angelegt wird. -->
+  <!-- Datei KOSbyFGL.xml --> <!--"C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL._orig.xml"-->
+  <property name="dest.dirNpp_plugins_Path" value="c:/Program Files (x86)/Notepad++/plugins" />
+  <property name="dest.dirNpp_pluginsAPIs" value="APIs" />
+  <property name="dest.dirNpp_pluginsAPIsPath" value="${dest.dirNpp_plugins_Path}/${dest.dirNpp_pluginsAPIs}" />
+  
+  <!-- Spezialfall: Auf dem Rechner Umbriel liegt die Datei KOSbyFGL im "VirtualStore": C:\Users\fritz\AppData\Local\VirtualStore\Program Files (x86)\Notepad++\plugins\APIs
+                   Dieser Ordner ist/wurde wohl von Windows "aus Kompatibilitätsgründen" eingerichtet.
+				   LÖSUNG: für Notepad++: Das Löschend dieses Ordners hat geholfen, dann wird die KOSbyFGL.xml im normalen API - Verzeichnis genommen.
+				   ABER:   Die .zip Dateien werden trotzdem noch in dem "virtualStore" Ordner erzeugt.
+				   -->  
+ 
+ 
+  <!-- alle .txt Dateien, die ein juengeres Aenderungsdatum haben. Also die reinen KOS-Programdateien --> 
+  <!-- keine Testumgebung, nicht notwendig 
+  <property name="dest.dirKosArchive" value="Archive" /> 
+  <property name="dest.dirKosPath" value="C:/Spiel/ksp-win-0-23-0/KSP_win/Plugins/PluginData"/>
+  <property name="dest.dirKosArchivePath" value="${dest.dirKosPath}/${dest.dirKosArchive}" /> 
+  -->
+  
+  <!-- Einstellungen für Notepad++ -->
+  <!--userDefineLang.xml - this file contains all the definitions for user defined languages to be highlighted
+  C:\Users\lindhaueradmin\AppData\Roaming\Notepad++\userDefineLang.xml
+    
+  config.xml - the GUI and MISC settings are stored in this file. 
+  langs.xml - all the keywords of supported languages to be highlighted are in this file. 
+  stylers.xml - all the syntax highlighting (colours, fonts, etc...) are saved in this file. 
+  contextMenu.xml - the configure file of Notepad++ context menu.
+  session.xml - the file which contains the list of full file path name of previous session. 
+  shortcuts.xml - this file contains all the recorded macro, user defined commands and remapped shortcuts information. 
+  -->
+  <property name="dest.dirNpp_AppData" value="Notepad++" />
+  <property name="dest.dirNpp_AppPath" value="C:/Users/fritz/AppData/Roaming" />
+  <property name="dest.dirNpp_AppDataPath" value="${dest.dirNpp_AppPath}/${dest.dirNpp_AppData}" />
+  
+  <!--weitere Einstellungsdateien von Notepad++
+  allowAppDataPlugins.xml - a zero length file which, if present, will allow plugins installed in %APPDATA\Notepad++\plugins to be loaded as well as "local" plugins. This behaviour is configurable from the last install wizard page. And it is as easy to change as deleting/creating a file. 
+  asNotepad.xml - a zero length file which is use to make Notepad++ behaviour similar to MS Notepad (ie. always open a file in a new instance with single document interface). 
+  toolbarIcons.xml - this file will enable you to customise the icons on your toolbar - but not the set of buttons. See Toolbar Customisation for more on this topic. 
+  nativeLang.xml - When using a localization from Settings -> Preferences -> Global, the corresponding file from the Localizations subfolder is copied to nativeLang.xml and elements of the user interface are being translated. The localization files are described in Localisation. 
+  -->
+  <!-- im notepad++ ordner
+  doLocalConf.xml - a zero length file which is use to determinate where Notepad++ loads the xml files. 
+  -->
   
   <target name="init">
     <!-- Create the time stamp -->
-    <tstamp/>
+	<echo>Receiving timestamp:</echo>
+    <!--<tstamp/>-->
+	<tstamp>
+	<format property="current.time" pattern="yyyyMMdd_HHmmss" locale="en,GB"/>
+	<!-- keine Testumgebung, nicht notwendig <format property="backup_KosArchive.name" pattern="'${dest.dirKosArchive}'yyyyMMdd_HHmmss'.zip'" locale="en,GB"/> -->
+	<format property="backup_NppAppData.name" pattern="'${dest.dirNpp_AppData}'yyyyMMdd_HHmmss'.zip'" locale="en,GB"/>
+	<format property="backup_NppApis.name" pattern="'${dest.dirNpp_pluginsAPIs}'yyyyMMdd_HHmmss'.zip'" locale="en,GB" />
+	</tstamp>
+	<echo>Current Timestamp: ${current.time}</echo>
+	<!-- keine Testumgebung, nicht notwendig <echo>Backup-Filename: ${backup_KosArchive.name}</echo> -->
+	<echo>Backup-Notepad++ AppData: ${backup_NppAppData.name}</echo>
+	<echo>Backup-Notepad++ APIs: ${backup_NppApis.name}</echo>
+	      
   </target>
   
-    <target name="compile" depends="init,KOSArchive">
+    <!-- Keine Testumgebug, auf KosArchive kann verzichtet werden <target name="compile" depends="init,KosArchive,KosNpp"> -->
+	<target name="compile" depends="init,KosNpp">
     <!-- Compile the java code from ${src} into ${build} -->
 	<!-- example how to create a directory -->
     <!-- <mkdir dir="${build}"/>
@@ -36,47 +94,95 @@
     </javac>
 	-->
   </target>
+  <target name="KosNpp">
+	<echo>Notepad++</echo>
+	<echo>NPP APPData Directory:</echo>
+	<mkdir dir="//${dest.dirNpp_AppPath}" />
+	<mkdir dir="//${dest.dirNpp_AppPath}/${dest.dirNpp_AppData}"/>
+	
+	<!-- Mache vom Zielverzeichnis ein Backup -->
+	 <zip destfile="//${dest.dirNpp_AppPath}/${backup_NppAppData.name}"
+       basedir="//${dest.dirNpp_AppDataPath}"
+	   includes="config.xml contextMenu.xml functionList.xml langs.xml session.xml shortcuts.xml stylers.xml userDefineLang.xml"
+	/>
+	
+	<!-- HIER NIX LOESCHEN -->
+	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die Programmdateien!!!)erst loeschen -->
+	<!-- <delete includeemptydirs="false">
+		<fileset dir="//${dest.dirKOSArchivePath}" includes="**/*.txt"/>
+	</delete> -->
+	
+	<!-- Dateien, die neuer sind, werden nicht ueberschrieben, obwohl alle txt - Dateien gelöscht worden sein sollen. -->	  	
+	<copy todir="//${dest.dirNpp_AppDataPath}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
+	  <fileset dir="//${src.dirRepositoryKosPath}/${src.dirRepositoryKosNpp}">
+		<include name="**/**config.xml"/>
+		<include name="**/**contextMenu.xml"/>
+		<include name="**/**functionList.xml"/>
+		<include name="**/**langs.xml"/>
+		<include name="**/**session.xml"/>
+		<include name="**/**shortcuts.xml"/>
+		<include name="**/**stylers.xml"/>
+		<include name="**/**userDefineLang.xml"/>
+	  </fileset>
+	</copy>
+	
+	
+	<echo>NPP Plugins API Directory:</echo>
+	<mkdir dir="//${dest.dirNpp_plugins_Path}"/>
+	<mkdir dir="//${dest.dirNpp_pluginsAPIsPath}"/>
+	
+	<!-- Mache vom Zielverzeichnis ein Backup -->
+	 <zip destfile="//${dest.dirNpp_plugins_Path}/${backup_NppApis.name}"
+       basedir="//${dest.dirNpp_pluginsAPIsPath}"
+	   includes="KOSbyFGL.xml"
+	/>
+	
+	<!-- HIER NIX LOESCHEN -->
+	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die Programmdateien!!!)erst loeschen -->
+	<!-- <delete includeemptydirs="false">
+		<fileset dir="//${dest.dirKOSArchivePath}" includes="**/*.txt"/>
+	</delete> -->
+	<copy todir="//${dest.dirNpp_pluginsAPIsPath}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
+	  <fileset dir="//${src.dirRepositoryKosPath}/${src.dirRepositoryKosNpp}">
+		<include name="**/**KOSbyFGL.xml"/>
+	  </fileset>
+	</copy>
+	
+</target>  
   
-<target name="KOSArchive">
-	<echo>KOS Archive</echo>
-	<!-- Example of howto change file modification date -->
+  <!-- ####################################################################################################
+  Keine Testumgebung, daher kann auf KosArchive als Target verzichtet werden -->
+<target name="KosArchive">
+	<echo>KOS Archive:</echo>
+	<!-- Example of howto change file modification date, usefull to enforce 'overwrite' -->
 	<!-- <touch>
 	  <fileset dir="${dest.dir}"/>
 	</touch>
 	-->
-	<copy todir="//${dest.dirNotepadPP}" overwrite="false">
-	  <fileset dir="//${src.dirRepositoryKos}">
-		<include name="**/KOSbyFGL.xml"/>
+	
+	<echo>KOS Files:</echo><!-- Nur die programmdateien kopieren. Nicht die xml / batch files fuer Ant oder fuer die Sprache kopieren. -->
+	<mkdir dir="//${dest.dirKosArchivePath}"/>
+	
+	<!-- Mache vom Zielverzeichnis ein Backup -->
+	  <zip destfile="//${dest.dirKosPath}/${backup_KosArchive.name}"
+       basedir="//${dest.dirKosArchivePath}"
+	/>
+	
+	<!-- damit die Aenderung: Datei wurde geloescht mitbekommen wird, alle Dateien (nur die Programmdateien!!!)erst loeschen -->
+	 <delete includeemptydirs="false">
+		<fileset dir="//${dest.dirKosArchivePath}" includes="**/*.txt"/>
+	</delete>
+	
+	<!-- Dateien, die neuer sind, werden nicht ueberschrieben, obwohl alle txt - Dateien gelöscht worden sein sollen. -->	  
+	<copy todir="//${dest.dirKosArchivePath}" overwrite="false"  preservelastmodified="true"> 
+	  <fileset dir="//${src.dirRepositoryKosPath}/${src.dirRepositoryKosArchive}">
+		<include name="**/**.txt"/>		
+		<!--<exclude name="**/**KOSbyFGL*.*"/>
+		<exclude name="**/**.bat"/>
+		<exclude name="**/**.xml"/>-->
 	  </fileset>
 	</copy>
 </target>
 
-<target name="example">
-	<echo>Example</echo>
-	<mkdir dir="${dest}"/>
-	<copy todir="${dest}" overwrite="false">
-	  <fileset dir="${src}">
-		<include name="**/**.*"/>
-	  </fileset>
-	</copy>
-	
-	<!-- Copy dtd to workspace -->
-	<!-- example
-	<echo>Copy gom-mapping.dtd / hibernate.cfg.xml / ehcache files</echo>
-	<copy todir="${build}/de/incony/anteros/backend/GOM/hibernate/mappings/">
-		<fileset dir="${src}/de/incony/anteros/backend/GOM/hibernate/mappings/">		    
-			<include name="**/*gom-mapping*.dtd"/>		       
-		</fileset>
-	 </copy>
-	<copy todir="${build}">
-		<fileset dir="${src}">		    
-	    	<include name="**/*hibernate*.cfg.xml"/>
-			<include name="**/*hibernate*.properties"/>	
-			<include name="**/*ehcache*.xml"/>
-		</fileset>
-	</copy>
-	-->
-	
-</target>
 
 </project>
