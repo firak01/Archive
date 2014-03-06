@@ -1,12 +1,9 @@
 <NotepadPlus>
     <Session activeView="0">
-        <mainView activeIndex="5">
-            <File firstVisibleLine="99" xOffset="0" scrollWidth="2890" startPos="5644" endPos="5644" selMode="0" lang="XML" encoding="-1" filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Patton.xml" />
-            <File firstVisibleLine="127" xOffset="0" scrollWidth="2890" startPos="8836" endPos="8836" selMode="0" lang="XML" encoding="-1" filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Umbriel.xml" />
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="1190" startPos="1194" endPos="1194" selMode="0" lang="XML" encoding="1252" filename="C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL.xml" />
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="806" startPos="291" endPos="291" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\1Todo.txt" />
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="900" startPos="0" endPos="0" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\LIST_contains.txt" />
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="844" startPos="0" endPos="0" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\testLIST_contains.txt" />
+        <mainView activeIndex="1">
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="730" startPos="696" endPos="696" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\1fgl\repository\KOS4Export\Archive\OBJECT_isList.txt" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="657" startPos="217" endPos="217" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\1fgl\repository\KOS4Export\Archive\testOBJECT_isList.txt" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="712" startPos="1573" endPos="1573" selMode="0" lang="KOSbyFGL" encoding="-1" filename="C:\1fgl\repository\KOS4Export\Archive\1Todo.txt" />
         </mainView>
         <subView activeIndex="0" />
     </Session>

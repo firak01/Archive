@@ -14,9 +14,11 @@
 <KeyWord name="LIST_contains" />
 <KeyWord name="LIST_copy" />
 <KeyWord name="LIST_insertAt" />
+<KeyWord name="LIST_intersection" />
 <KeyWord name="LIST_readEntryLast" />
 <KeyWord name="LIST_removeEntryAt" />
 <KeyWord name="LIST_removeEntryLast" />
+<KeyWord name="OBJECT_isList" />
 <KeyWord name="PRINT_clearRow" />
 <KeyWord name="PRINT_clearRowL2R" />
 <KeyWord name="PRINT_clearRows" />
@@ -27,7 +29,5 @@
 <KeyWord name="PRINT_RowsL2R" />
 <KeyWord name="PRINT_RowsRepeated" />
 <KeyWord name="PRINT_RowsRepeatedL2R" />
-<KeyWord name="TEST09" />
-<KeyWord name="TEST10" />
   </AutoComplete>
 </NotepadPlus>

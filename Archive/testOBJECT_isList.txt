@@ -1,0 +1,13 @@
+
+set listMain to LIST().  //Merke: In der aufgerufenen Funktion muss der erste Parameter NICHT gleich heissen.
+set listMain:ADD to "Apfel".
+set listMain:ADD to "Birne".
+set listMain:ADD to "Banane".
+set listMain:ADD to "Pflaume".
+
+set listReturn to List(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
+run OBJECT_isList(listMain, listReturn).
+
+set return to listReturn#0.
+print "OBJECT_isList liefert zurueck: '" + return + "'".
+wait 1.

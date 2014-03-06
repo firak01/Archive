@@ -113,13 +113,14 @@
 	</delete> -->
 	
 	<!-- Dateien, die neuer sind, werden nicht ueberschrieben, obwohl alle txt - Dateien gelöscht worden sein sollen. -->	  	
+		<!-- Folgende Dateien werden beim Wechsel des Rechners immer geändert, das hat aber keinen spürbaren positiven Effekt
+        <include name="**/**config.xml"/><include name="**/**session.xml"/>
+  -->
 	<copy todir="//${dest.dirNpp_AppDataPath}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
 	  <fileset dir="//${src.dirRepositoryKosPath}/${src.dirRepositoryKosNpp}">
-		<include name="**/**config.xml"/>
 		<include name="**/**contextMenu.xml"/>
 		<include name="**/**functionList.xml"/>
 		<include name="**/**langs.xml"/>
-		<include name="**/**session.xml"/>
 		<include name="**/**shortcuts.xml"/>
 		<include name="**/**stylers.xml"/>
 		<include name="**/**userDefineLang.xml"/>

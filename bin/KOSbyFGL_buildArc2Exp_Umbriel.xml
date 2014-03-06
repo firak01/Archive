@@ -121,14 +121,15 @@
 	</delete> -->
 	
 	<!-- Kopiere NPP Konfigurationsdateien (nur ältere Dateien werden überschrieben, obwohl alle .xml Dateien schon gelöscht sein sollten.)-->
+		<!-- Folgende Dateien werden beim Wechsel des Rechners immer geändert, das hat aber keinen spürbaren positiven Effekt
+        <include name="**/**config.xml"/><include name="**/**session.xml"/>
+  -->
 	<echo>NPP AppDAta Directory:</echo>
 	<copy todir="//${dest.dirRepositoryKosPath}/${dest.dirRepositoryKosNpp}" overwrite="false" preservelastmodified="true"> <!-- Dateien, die neuer sind, werden nicht ueberschrieben -->	  
 	  <fileset dir="//${src.dirNpp_AppDataPath}">
-		<include name="**/**config.xml"/>
 		<include name="**/**contextMenu.xml"/>
 		<include name="**/**functionList.xml"/>
 		<include name="**/**langs.xml"/>
-		<include name="**/**session.xml"/>
 		<include name="**/**shortcuts.xml"/>
 		<include name="**/**stylers.xml"/>
 		<include name="**/**userDefineLang.xml"/>

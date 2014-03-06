@@ -85,7 +85,7 @@
         <GUIConfig name="ScintillaGlobalSettings" enableMultiSelection="no" />
         <GUIConfig name="openSaveDir" value="0" defaultDirPath="" />
         <GUIConfig name="titleBar" short="no" />
-        <GUIConfig name="stylerTheme" path="C:\Users\lindhaueradmin\AppData\Roaming\Notepad++\stylers.xml" />
+        <GUIConfig name="stylerTheme" path="C:\Users\fritz\AppData\Roaming\Notepad++\stylers.xml" />
         <GUIConfig name="delimiterSelection" leftmostDelimiter="40" rightmostDelimiter="41" delimiterSelectionOnEntireDocument="yes" />
         <GUIConfig name="DockingManager" leftWidth="503" rightWidth="136" topHeight="200" bottomHeight="200">
             <FloatingWindow cont="4" x="-1250" y="213" width="-506" height="769" />
@@ -123,18 +123,19 @@
         <Find name="&#x00FC;" />
     </FindHistory>
     <History nbMaxFile="15" inSubMenu="no" customLength="-1">
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\subConsoleDataStart.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\removeListEntryLast.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\saves\Firak06-Career\Ships\SPH\7p08b-JetFighter 2  (long Range).craft" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\saves\Firak06-Career\Ships\SPH\7p08h-JetFighter 2  (long Range).craft" />
-        <File filename="C:\Users\lindhaueradmin\AppData\Roaming\Notepad++\contextMenu.xml" />
-        <File filename="C:\1fgl\repository\KOS4Export\KOSbyFGL_buildExp2Arc_Patton.xml" />
-        <File filename="C:\1fgl\repository\KOS4Export\job.txt" />
-        <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\test001.txt" />
-        <File filename="C:\1fgl\repository\KOS4Export\Notepad++\KOSbyFGL.xml" />
         <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\PRINT_Row.txt" />
         <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildExp2Arc_Patton.xml" />
+        <File filename="C:\Program Files (x86)\Notepad++\plugins\APIs\KOSbyFGL.xml" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\LIST_contains.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\LIST_copy.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\LIST_count.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\testLIST_contains.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\LIST_intersection.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\testLIST_intersection.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Umbriel.xml" />
+        <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildArc2Exp_Patton.xml" />
         <File filename="C:\1fgl\repository\KOS4Export\Archive\job.txt" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\subConsoleFooter.txt" />
     </History>
     <ProjectPanels>
         <ProjectPanel id="0" workSpaceFile="" />

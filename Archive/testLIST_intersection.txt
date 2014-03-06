@@ -10,8 +10,13 @@ set listSub:ADD to "Banane".
 set listSub:ADD to "nicht da".
 
 set listReturn to List(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
-run LIST_contains(listMain, listSub, listReturn).
+run LIST_intersection(listMain, listSub, listReturn).
 
-set return to listReturn#0.
-print "LIST_contains liefert zurueck: '" + return + "'".
-wait 1.
+if listReturn:LENGTH = 0 {
+	print "Keine Schnittmenge vorhanden.".
+}.
+for intersect listReturn{
+	print "LIST_contains liefert zurueck: '" + intersect + "'".
+	wait 1.
+}.
+

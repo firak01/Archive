@@ -5,11 +5,11 @@
 //            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
 DECLARE PARAMETER argsIn, listSub, listReturn.
 
-run DEBUG_Caller1("LIST_contains").
+run DEBUG_Caller1("LIST_intersection").
 
-set iFound to -1.
+//set iFound to -1.
 set iIndex to -1.
-set bReturn to "true".
+//set bReturn to "true".
 for suchwert IN listSub {
 	run DEBUG_print0("SuchWert: " + suchwert).
 	set iIndex to iIndex + 1.
@@ -18,16 +18,18 @@ for suchwert IN listSub {
 		run DEBUG_print0("argWert: " + arg + " | Suchwert: " + suchwert).
 		if arg = suchwert {
 			run DEBUG_print0("Bingo!").
-			set iFound to iFound + 1.
-			break.
-			//in einer "Schnittmengenfunktion" käme jetzt der index in die returnList.
+			//set iFound to iFound + 1.
+			//break.
+			
+			//in einer "Schnittmengenfunktion" komm jetzt der index in die returnList.
+			set listReturn:ADD to iIndex.
 		}	
 	}.
 	
-	//Falls nix gefunden wurde... raus mit fehler
-	if iIndex!=iFound {
-		set bReturn to "false".
-		break.
-	}
+	//Falls nix gefunden wurde... raus mit fehler, bei contains
+	//if iIndex!=iFound {
+	//	set bReturn to "false".
+	//	break.
+	//}
 }.
-set listReturn:ADD to bReturn.
+//set listReturn:ADD to bReturn.
