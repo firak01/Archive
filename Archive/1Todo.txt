@@ -1,2 +1,27 @@
 //Todos für weitere Entwicklung
+Bei den ListenMethoden muss man differenzieren zwischen
+a) allgemeinen ListenMethoden
+b) String- Listen 
+c) ZahlenListen
+Da keine Datentypen überprüfbar sind, muss man sich auf den Typ verlassen können.
+Der Datentypname muss im MEthodennamen auftauchen.
+
+
+
+LIST_ Methode, einen Index der vorkommenden Einträge zurückzuliefern. Namen s. ZKernel.
+
+ArrayStringIndexRange
+
+ArrayStringIndexInsert
+
+OrderByIndex			
+Ändert die Reihenfolge in einem Array entsprechen der Reihenfolge des übergebenen Index-Arrays ab.
+	Dabei entsprechen die Werte im Index-Array den aktuellen/alten Indexpositionen.
+	Die Position im Index-Array entspricht der neuen Zielposition .
+
+
+
+RemoveByIndex
+
+
 

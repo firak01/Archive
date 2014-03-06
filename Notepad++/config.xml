@@ -85,7 +85,7 @@
         <GUIConfig name="ScintillaGlobalSettings" enableMultiSelection="no" />
         <GUIConfig name="openSaveDir" value="0" defaultDirPath="" />
         <GUIConfig name="titleBar" short="no" />
-        <GUIConfig name="stylerTheme" path="C:\Users\fritz\AppData\Roaming\Notepad++\stylers.xml" />
+        <GUIConfig name="stylerTheme" path="C:\Users\lindhaueradmin\AppData\Roaming\Notepad++\stylers.xml" />
         <GUIConfig name="delimiterSelection" leftmostDelimiter="40" rightmostDelimiter="41" delimiterSelectionOnEntireDocument="yes" />
         <GUIConfig name="DockingManager" leftWidth="503" rightWidth="136" topHeight="200" bottomHeight="200">
             <FloatingWindow cont="4" x="-1250" y="213" width="-506" height="769" />
@@ -134,6 +134,7 @@
         <File filename="C:\1fgl\repository\KOS4Export\Notepad++\KOSbyFGL.xml" />
         <File filename="C:\Spiel\ksp-win-0-23-0\KSP_win\Plugins\PluginData\Archive\PRINT_Row.txt" />
         <File filename="C:\1fgl\repository\KOS4Export\bin\KOSbyFGL_buildExp2Arc_Patton.xml" />
+        <File filename="C:\1fgl\repository\KOS4Export\Archive\job.txt" />
     </History>
     <ProjectPanels>
         <ProjectPanel id="0" workSpaceFile="" />
