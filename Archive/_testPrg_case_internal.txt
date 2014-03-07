@@ -1,0 +1,21 @@
+//Prüft, wie die Parameterübergabe sich verhält
+//Da der Fehler nicht abgefangen werden kann, wird auf der Konsole eine Fehlermeldung ausgegeben, die ist nicht vermeidbar.
+
+//FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
+//            IST DAS NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"?
+//Der returnwert dieser Funktion gibt anschliessend ein "true" oder "false" zurück!
+DECLARE PARAMETER argIn, listReturn.
+run DEBUG_Caller("_testPrg_Case_internal").
+
+set iTemp = argIn#0.
+if iTemp = 0 {
+	set sReturn to "false".
+}
+if iTemp = 1 {
+	set sReturn to "false".
+}
+set listReturn:ADD to sReturn.
+
+
+
+

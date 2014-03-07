@@ -1,0 +1,25 @@
+//Prüft, ob das Object eine Liste ist.
+//Da der Fehler nicht abgefangen werden kann, wird auf der Konsole eine Fehlermeldung ausgegeben, die ist nicht vermeidbar.
+//Der returnwert dieser Funktion gibt anschliessend ein "true" oder "false" zurück!
+
+//FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
+//            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
+DECLARE PARAMETER argIn, listReturn.
+
+run DEBUG_Caller("_OBJECT_isList").
+
+set bReturn to "false".
+set listReturn:ADD to bReturn.
+
+//Fehler oder nicht, das ist die Frage...
+set size to argIn:LENGTH.
+
+//print "### private FUNKTIONSTEST hat geklappt ###".
+//wait 5.
+
+//Ohne Fehler ein "true" zurückgeben.
+set bReturn to "true".
+set listReturn:REMOVE to 0.
+set listReturn:ADD to bReturn.
+
+

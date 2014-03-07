@@ -1,0 +1,59 @@
+//Test: Rufe ein Unterprogramm auf. Beide Parameter unterscheiden sich im Namen von den Übergabeparametern.
+run DEBUG_Caller("_testPrg_caseParameterDifferFirst").
+set xDifferFirst to LIST().
+set listReturn to LIST().
+
+print "1. Testlauf: ".
+set xDifferFirst to 1.
+DEBUG_print("Versuche den Aufruf zu machen.").
+run _testPrg_case_internal(xDifferFirst, listReturn).
+DEBUG_print("Aufruf wurde gemacht.").
+
+set sReturnDifferFirst to listReturn#0.
+if(xDifferFirst=1){
+	if sReturnDifferFirst = "true"{
+		print("Erfolgreich den Wert true zurueckbekommen.").
+	}.
+	if sReturnDifferFirst = "false"{
+		print("FALSCHEN Wert false zurueckbekommen.").
+	}.
+}.
+if(xDifferFirst=0){
+	if sReturnDifferFirst = "true"{
+		print("FALSCHEN Wert true zurueckbekommen.").
+	}.
+	if sReturnDifferFirst = "false"{
+		print("Erfolgreich den Wert false zurueckbekommen.").
+	}.
+}.
+
+
+print "2. Testlauf: ".
+set xDifferFirst to 0.
+set listReturnDifferFirst:REMOVE to 0. 
+DEBUG_print("Versuche den Aufruf zu machen.").
+run _testPrg_case_internal(xDifferFirst, listReturn).
+DEBUG_print("Aufruf wurde gemacht.").
+
+set sReturnDifferFirst to listReturn#0.
+if(xDifferFirst=1){
+	if sReturnDifferFirst = "true"{
+		print("Erfolgreich den Wert true zurueckbekommen.").
+	}.
+	if sReturnDifferFirst = "false"{
+		print("FALSCHEN Wert false zurueckbekommen.").
+	}.
+}.
+if(xDifferFirst=0){
+	if sReturnDifferFirst = "true"{
+		print("FALSCHEN Wert true zurueckbekommen.").
+	}.
+	if sReturnDifferFirst = "false"{
+		print("Erfolgreich den Wert false zurueckbekommen.").
+	}.
+}.
+
+
+
+
+run DEBUG_print("+++ Test beendet +++ ").

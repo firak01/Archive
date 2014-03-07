@@ -1,0 +1,15 @@
+//Test die PArameterübergabe an ein Unterprogram
+run DEBUG_Caller("testPrg").
+
+//1. Fall: Aufruf eines Programms, das den Fall "abweichende Parameternamen" testet.
+print "1. Versuch: Beide Parameter unterscheiden sich im Namen.".
+wait 1.
+run _testPrg_CaseParameterDifferBoth().
+wait 1.
+
+print "2. Versuch: Nur der erste Parameter unterscheidet sich im Namen.".
+wait 1.
+run _testPrg_CaseParameterDifferFirst().
+wait 1.
+
+run DEBUG_print("+++ Alle Tests beendet +++ ").

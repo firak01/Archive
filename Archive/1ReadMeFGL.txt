@@ -38,7 +38,46 @@ You can still reference Archie as volume 0. I doubt we would change that as ther
 
 //Merke: Fehlermeldungszeilen bestehen aus Leerzeichenzeilen plus den Zeilen der aufgerufenen Programme
 
+//#########################################
+//##### PROGRAMME ########## ################
+# Werden mit run ... gestartet.
 
+# Aufruf- und Namensstruktur als Konvention:
+job... => prg...=> sub...=> fun...
+Merke: Code auf Jobebene kann nicht "on the fly im laufenden Program geändert werden, sonst schon."
+
+lang... dient der Deklaration von Konstanten und globalen Variablen für den "Kernel".
+          Darin definierte Konstanten haben lang als Präfix.
+		  
+lib... dient der deklaration von constanten und globalen variablen. Muss mit "run" eingebunden werde, am besten auf Job-Ebene, da ja global.
+       Darin definierte Konstanten haben lib als Präfix.
+	   
+test... Kennzeichnet spezielle Testfunktionen, die mit der API arbeiten.
+
+_ Kennzeichnet private Programme, z.B. _OBJECT_isList.txt
+      Hier wird Code ausgeführt, der nicht von woanders aufgerufen werden soll. 
+	  Im Beispiel wird beim Testen der Datentypen ein gewollter Fehler erzeugt.
+	  Im eigentlichen Programm wird dann die Consolenfehlerausgabe wieder gelöscht.
+	  
+ABSCDE_yxc.txt Kennzeichnet "Klassen und deren 'statische Methoden'"	   
+
+
+#Übergabewerte als Konvention:
+Eingabewert von prg ist eine LIST beliebigen Namens.
+Eingabewerte von fun sind frei definiert und auch beliebige Namen.
+Nur prg und fun geben Werte zurück. 
+Rückgabewert von prg ist eine LIST namens prgXyz. An erster Stelle steht ein StatusKey: prgXyz:STATUS mit den Werten TRUE, FALSE, ERROR
+                                                                               weitere Stellen der Liste können dann noch gefüllt werden.
+Rückgabewert von fun ist beliebiger Wert.
+
+
+# Allgemeion gilt für Übergabeparameter von Funktionen:
+//FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
+//FGL:     DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
+
+
+
+###########################################
 ######### VARIABLEN #######################
 //Alle Variablen sind global, so dass sie nicht explizit einer Methode uebergeben werden muessen.
 //ABER: In einer Funktion eine Variable hochzaehlen, in einer Schleife
@@ -65,6 +104,24 @@ Einzige LÖSUNG: Deklariere eine globale Variable in einem anderen Program.
 set sZahl to "2".
 wait sZahl. 
 
+
+###################################################
+######## Funktionen zum Testen der Datentypen #####
+Da es keine Möglichkeit gibt einen Fehler abzufangen, muss man wie folgt verfahren:
+Man muss mit einem "gewollten Fehler" arbeiten. Im Fehlerfall wird das Programm zwar abgebrochen
+aber es wird im aufrufenden Programm fortgefahren. 
+Dort kann ein ReturnWert, der am Anfang des Programms in einer globalen Variablen gespeichert ist abgeprüft werden. 
+Dieser Returnwert wird erst den "false-Fall" beinhalten. Funktioniert der Test, wird er mit "true" ersetzt.
+Merke: Damit die oben in der Console stehenden Fehlerzeilen nicht stören, 
+       lagert man den eigentlichen Test in einem PRIVATEN Programm aus. 
+       Solch ein Private Program wird mit einem beginnenden Unterstrich gekennzeichnet und heisst so wie das Ausgangsprogramm.
+
+
+Beispiele: Object - Klasse
+OBJECT_isList
+OBJECT_isNumeric
+
+############################################
 ######### LISTEN ###########################
 //Merke:
 https://github.com/erendrake/KOS/wiki/List
@@ -207,12 +264,6 @@ print "was ist launchspeedmin". wait 5.
 set test to argsIn:libLaunchSpeedMin.
 print test. wait 5.
 
-
-#################################################
-Übergabeparameter von Funktionen:
-
-//FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
-//FGL:      DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
 
 
 

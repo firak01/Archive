@@ -65,7 +65,7 @@
 	<format property="backup_RepositoryNpp.name" pattern="'${dest.dirRepositoryKosNpp}'yyyyMMdd_HHmmss'.zip'" locale="en,GB"/>
 	</tstamp>
 	<echo>Current Timestamp: ${current.time}</echo>
-	<echo>Backup-Filename: ${backup_RepositoryArchive.name}</echo>
+	<!-- keine Testumgebung, wird nicht benötigt <echo>Backup-Filename: ${backup_RepositoryArchive.name}</echo> -->
 	<echo>Backup-Notepad++: ${backup_RepositoryNpp.name}</echo>
   </target>
   

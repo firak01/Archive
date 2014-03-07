@@ -1,15 +1,22 @@
+##################
+TEST schreiben für den Aufruf von Programmen und der Möglichkeit Parameternamen zu übergeben.
+testPrg
+
+#######################################
+
+OBJECT_isNumeric
+
+###################################
 //Todos für weitere Entwicklung
 Bei den ListenMethoden muss man differenzieren zwischen
 a) allgemeinen ListenMethoden
 b) String- Listen 
 c) ZahlenListen
 Da keine Datentypen überprüfbar sind, muss man sich auf den Typ verlassen können.
-Der Datentypname muss im MEthodennamen auftauchen.
-
+Der Datentypname muss im Methodennamen auftauchen.
 
 
 LIST_ Methode, einen Index der vorkommenden Einträge zurückzuliefern. Namen s. ZKernel.
-
 ArrayStringIndexRange
 
 ArrayStringIndexInsert
@@ -21,29 +28,18 @@ OrderByIndex
 
 
 RemoveEntryAt 
-Einen wert an einer Stelle herausnehmen
+Einen Wert an einer Stelle herausnehmen
 
 RemoveByIndex
 Mehrerer Werte an den Stellen der Indexliste herausnehmen
 Das setzt voraus, das die Indexliste sortiert wird, damit der Index von "hinten nach vorne" entfernt werden kann.
 
 #######################################
-Funktionen zum Testen der Datentypen:
-Da es keine Möglichkeit gibt einen Fehler abzufangen, 
-kann man vielleicht wie folgt mit einem "gewollten Fehler" arbeiten.
-Im Fehlerfall wird das Programm nämlich abgebrochen.
-D.h. ein ReturnWert, der am Anfang des Programms in einer globalen Variablen gespeichert ist, 
-KÖNNTE ggf. den "false-Fall" beinhalten.
-
-Idee: Object - Klasse
-OBJECT_isList
-OBJECT_isNumeric
-#######################################
 
 PRINT - Methoden
 _column[(Repeated)L2R])
 wie bei den Rows vorgehen...
 
-#######################################
+
 
 

@@ -1,18 +1,3 @@
-//Aufrufstruktur als Konvention:
-//job... => prg...=> sub...=> fun...
-//Merke: Code auf Jobebene kann nicht "on the fly im laufenden Program geändert werden, sonst schon."
-//lang... dient der Deklaration von Konstanten und globalen Variablen für den "Kernel".
-//          Darin definierte Konstanten haben lang als Präfix.
-//lib... dient der deklaration von constanten und globalen variablen. Muss mit "run" eingebunden werde, am besten auf Job-Ebene, da ja global.
-//       Darin definierte Konstanten haben lib als Präfix.
-
-//Übergabewerte als Konvention:
-//Eingabewert von prg ist eine LIST beliebigern Namens.
-//Eingabewerte von fun sind frei definiert und auch beliebige Namen.
-//Nur prg und fun geben Werte zurück. 
-//Rückgabewert von prg ist eine LIST namens prgXyz. An erster Stelle steht ein StatusKey: prgXyz:STATUS mit den Werten TRUE, FALSE, ERROR
-//                                                                               weitere Stellen der Liste können dann noch gefüllt werden.
-//Rückgabewert von fun ist beliebiger Wert.
 clearscreen.
 run langKernel(). //Deklariere die "Language Konstanten."
 set langCallerName to "job".

@@ -1,0 +1,22 @@
+//Prüft, ob das Object eine Liste ist.
+//Da der Fehler nicht abgefangen werden kann, wird auf der Konsole eine Fehlermeldung ausgegeben, die ist nicht vermeidbar.
+//Der returnwert dieser Funktion gibt anschliessend ein "true" oder "false" zurück!
+
+//FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
+//            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
+DECLARE PARAMETER argIn, listReturn.
+
+run DEBUG_Caller("OBJECT_isList").
+
+run _Object_isList(argIn, listReturn).
+
+//set returnB to listReturn#0.
+//print "private function  _OBJECT_isList liefert zurueck: '" + returnB + "'".
+//wait 5.
+
+//egal was passiert, die ersten beiden Zeilen leer machen. Dort könen auch Fehelrmeldungen drinstehen.
+run PRINT_clearRow(0).
+run PRINT_clearRow(1).
+
+
+
