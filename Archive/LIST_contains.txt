@@ -4,7 +4,6 @@
 //FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
 //            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
 DECLARE PARAMETER argsIn, listSub, listReturn.
-
 run DEBUG_Caller1("LIST_contains").
 
 set iFound to -1.

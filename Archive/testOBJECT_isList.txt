@@ -1,13 +1,22 @@
+run DEBUG_Caller("testOBJECT_isList").
+
+set listReturn to List(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
+set x to "nixList".
+run OBJECT_isList(x, listReturn).
+
+set return to listReturn#0.
+print "1. Versuch FALSE - Fall: OBJECT_isList liefert zurueck: '" + return + "'".
+wait 1.
 
 set listMain to LIST().  //Merke: In der aufgerufenen Funktion muss der erste Parameter NICHT gleich heissen.
 set listMain:ADD to "Apfel".
 set listMain:ADD to "Birne".
 set listMain:ADD to "Banane".
 set listMain:ADD to "Pflaume".
-
-set listReturn to List(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
+set listReturn:REMOVE to 0. //Wichtig: die Liste für den neuen Test wieder leer machen
 run OBJECT_isList(listMain, listReturn).
 
-set return to listReturn#0.
-print "OBJECT_isList liefert zurueck: '" + return + "'".
+set returnB to listReturn#0.
+print "2. Versuch TRUE - Fall: OBJECT_isList liefert zurueck: '" + returnB + "'".
 wait 1.
+run DEBUG_print("+++ Test beendet +++ ").

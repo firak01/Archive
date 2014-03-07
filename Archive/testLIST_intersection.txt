@@ -1,3 +1,4 @@
+run DEBUG_Caller("testLIST_intersection").
 
 set listMain to LIST().  //Merke: In der aufgerufenen Funktion muss der erste Parameter NICHT gleich heissen.
 set listMain:ADD to "Apfel".
@@ -9,14 +10,53 @@ set listSub To LIST().  //Merke: In der aufgerufenen Funktion muss dieser Parame
 set listSub:ADD to "Banane".
 set listSub:ADD to "nicht da".
 
-set listReturn to List(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
-run LIST_intersection(listMain, listSub, listReturn).
+set listList_intersection to LIST(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
+run LIST_intersection(listMain, listSub, listList_intersection).
+//for ltemp in listList_intersection {
+// print "Indexwert: " + ltemp.
+// wait 1.
+//}.
+run DEBUG_print("+++ Testergebnis: ").
 
-if listReturn:LENGTH = 0 {
-	print "Keine Schnittmenge vorhanden.".
-}.
-for intersect listReturn{
-	print "LIST_contains liefert zurueck: '" + intersect + "'".
+set countList To LIST().
+run LIST_count(listList_intersection,countList).
+set iLength to countList#0.   //Rueckgabewert ist immer an Stelle 0.
+run DEBUG_print("listList_intersection Laenge " + iLength). 
+
+//nun kann man nicht mehr mit iLength als Zahlwert arbeiten!!!
+//set iLengthB to countList#0.
+if iLength=0 {
+	print "LIST_intersection liefert zurueck: Keine Schnittmenge vorhanden".
 	wait 1.
 }.
-
+if iLength!=0 {
+	print "LIST_intersection liefert zurueck: Schnittmenge vorhanden".
+	wait 1.
+	
+	for objB in listList_intersection {
+		print "uebernommen: " + objB. //geht... 		
+		wait 1.
+				
+		//Merke: Mit Textwert kann man nicht vergleichen, aber mit dem Zahlenwert schon.
+		if objB = 0 {
+			print "LIST_intersection liefert zurueck: 0 (Zahlwert)".
+		}.
+		if objB = 1 {
+			print "LIST_intersection liefert zurueck: 1 (Zahlwert)".
+		}.
+		if objB = 2 {
+			print "LIST_intersection liefert zurueck: 2 (Zahlwert)".
+		}.
+		if objB = 3 {
+			print "LIST_intersection liefert zurueck: 3 (Zahlwert)".
+		}.
+		if objB = 4 {
+			print "LIST_intersection liefert zurueck: 4 (Zahlwert)".
+		}.
+		if objB >= 5 {
+			print "LIST_intersection liefert einen Wert >= zurueck (Zahlwert)".
+		}.
+		wait 1.
+	}.
+}.
+run DEBUG_print("+++ Test beendet +++ ").

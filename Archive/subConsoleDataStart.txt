@@ -5,7 +5,7 @@ set subConsoleDataStart to LIST().
 run DEBUG_Caller1("subConsoleDataStart").
 
 set constDegreeTxt to "G".
-print "--- " + SHIP + " ---" at (0,2).
+print "--- " + SHIP + " ---" at (0,langConsoleRowFirst + 2).
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
@@ -27,7 +27,7 @@ for argIn IN argsIn {
 	if iIndex = 2 {
 		}.
 	}.
-print langCountGlobal + ". Messung:" at (0,4).     //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
+print langCountGlobal + ". Messung:" at (0,langConsoleRowFirst + 4).     //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
 
 //Ausgabe des Hauptziels
 //Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
@@ -37,11 +37,11 @@ set distTargTxt to funDistTargTxt.
 
 set iColumn to 0. //Die Tabellenzeile.
 set lineOffSet to (iColumn*5).
-Print (iColumn+1) + ". Das Hauptziel: " at (0, 9 + lineOffset).
-Print "Distance: " + distTargTxt + "                " at (0,10+lineOffset).
-Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,11+lineOffset).
-Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt + "                         " at (25,11+lineOffset).
-Print "--------------------------------------------------" at (0,12+lineOffset).
+Print (iColumn+1) + ". Das Hauptziel: " at (0, langConsoleRowFirst+6 + lineOffset).
+Print "Distance: " + distTargTxt + "                " at (0,langConsoleRowFirst+7+lineOffset).
+Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,langConsoleRowFirst+8+lineOffset).
+Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt + "                         " at (25,langConsoleRowFirst+8+lineOffset).
+Print "--------------------------------------------------" at (0,langConsoleRowFirst+9+lineOffset).
 
 
 set iIndex to -1.
@@ -55,13 +55,13 @@ FOR targ IN listTarg {
 	set distTargTxt to funDistTargTxt.
 	
 	set lineOffSet to (iColumn*5).
-	Print (iColumn+1) + ". Ziel: " at (0, 9 + lineOffset).
-	Print "Distance: " + distTargTxt at (0,10+lineOffset).
-	Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,11+lineOffset).
-	Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt at (25,11+lineOffset).
-	Print "--------------------------------------------------" at (0,12+lineOffset).
+	Print (iColumn+1) + ". Ziel: " at (0, langConsoleRowFirst+10 + lineOffset).
+	Print "Distance: " + distTargTxt at (0,langConsoleRowFirst+11+lineOffset).
+	Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,langConsoleRowFirst+12+lineOffset).
+	Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt at (25,langConsoleRowFirst+12+lineOffset).
+	Print "--------------------------------------------------" at (0,langConsoleRowFirst+13+lineOffset).
 }.
 	
 	
-print "Facing: " + facing at (0,13+lineOffset).
-print "Heading: " + HEADING at(0,14+lineOffset).
+print "Facing: " + facing at (0,langConsoleRowFirst+14+lineOffset).
+print "Heading: " + HEADING at(0,langConsoleRowFirst+15+lineOffset).

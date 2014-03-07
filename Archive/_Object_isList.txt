@@ -6,17 +6,20 @@
 //            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
 DECLARE PARAMETER argIn, listReturn.
 
-run DEBUG_Caller("OBJECT_isList").
+run DEBUG_Caller("_OBJECT_isList").
 
-run _Object_isList(argIn, listReturn).
+set bReturn to "false".
+set listReturn:ADD to bReturn.
 
-//set returnB to listReturn#0.
-//print "private function  _OBJECT_isList liefert zurueck: '" + returnB + "'".
+//Fehler oder nicht, das ist die Frage...
+set size to argIn:LENGTH.
+
+//print "### private FUNKTIONSTEST hat geklappt ###".
 //wait 5.
 
-//egal was passiert, die ersten beiden Zeilen leer machen. Dort könen auch Fehelrmeldungen drinstehen.
-run PRINT_clearRow(0).
-run PRINT_clearRow(1).
-
+//Ohne Fehler ein "true" zurückgeben.
+set bReturn to "true".
+set listReturn:REMOVE to 0.
+set listReturn:ADD to bReturn.
 
 

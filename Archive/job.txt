@@ -24,14 +24,15 @@ run DEBUG_Caller(langCallerName).
 run libKerbal(). //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 
-run testList_intersection().
-run testOBJECT_isList().
+//### UNIT - TESTS
+//run testLIST_count().
+//run testLIST_intersection().
+//run testLIST_contains().
+//run testOBJECT_isList().
+//wait 10.
 
-run testList_contains().
-
-run subConsoleFooter().
-
-
+//TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der Terminalgröße ausgehen.
+//run subConsoleFooter().
 
 //Merke: Paramter sind 
 set args TO LIST().

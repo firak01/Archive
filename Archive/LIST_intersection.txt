@@ -3,33 +3,27 @@
 
 //FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
 //            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
-DECLARE PARAMETER argsIn, listSub, listReturn.
-
+DECLARE PARAMETER argsIn, listSub, listList_intersection.
 run DEBUG_Caller1("LIST_intersection").
 
-//set iFound to -1.
-set iIndex to -1.
-//set bReturn to "true".
 for suchwert IN listSub {
+	set iIndexList_intersection to -1.
 	run DEBUG_print0("SuchWert: " + suchwert).
-	set iIndex to iIndex + 1.
+	
 	
 	for arg in argsIn {
-		run DEBUG_print0("argWert: " + arg + " | Suchwert: " + suchwert).
+		set iIndexList_intersection to iIndexList_intersection + 1.
+		run DEBUG_print0("Suchwert: " + suchwert + " | argWert: " + arg).
 		if arg = suchwert {
 			run DEBUG_print0("Bingo!").
-			//set iFound to iFound + 1.
-			//break.
 			
-			//in einer "Schnittmengenfunktion" komm jetzt der index in die returnList.
-			set listReturn:ADD to iIndex.
+			//in der "Schnittmengenfunktion" kommt jetzt der index in die returnList.
+			set listList_intersection:ADD to iIndexList_intersection.
 		}	
 	}.
-	
-	//Falls nix gefunden wurde... raus mit fehler, bei contains
-	//if iIndex!=iFound {
-	//	set bReturn to "false".
-	//	break.
-	//}
 }.
-//set listReturn:ADD to bReturn.
+
+//for ltemp in listList_intersection {
+// print "Indexwert: " + ltemp.
+// wait 1.
+//}.

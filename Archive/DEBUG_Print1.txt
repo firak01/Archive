@@ -3,8 +3,8 @@ DECLARE PARAMETER string. //,time.
 //Teilweise deaktivierte DebugZeile, nicht mehr warten, nur ausgeben, etc.
 
 //Debug, d.h. auf der Zeile mit dem Index ausprinten, Zeile 0 ist für das Programm, 1 hierfür.
-run PRINT_ClearRow(1).
-print string at (0,1). 
+run PRINT_ClearRow(3).
+print string at (0,3). 
 //wait langDebugTime.
 
 //Merke: Fehlermeldungszeilen bestehen aus Leerzeichenzeilen plus den Zeilen der aufgerufenen Programme
