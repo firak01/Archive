@@ -1,7 +1,7 @@
 DECLARE PARAMETER string. //,time.
 
 //Debug, d.h. auf der Zeile mit dem Index ausprinten, Zeile 0 ist für das Programm, 1 hierfür.
-run PRINT_ClearRow(3).
+run PRINT_ClearRowAt(3).
 print string at (0,3). 
 wait langDebugTime.
 

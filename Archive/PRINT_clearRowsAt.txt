@@ -2,6 +2,6 @@
 DECLARE PARAMETER theRowList.
 for lineToPrint in theRowList {
 //print ("                                                  ") at (0,lineToPrint).
-run PRINT_clearRow(lineToPrint).
+run PRINT_clearRowAt(lineToPrint).
 }.
         

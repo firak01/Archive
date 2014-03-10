@@ -19,15 +19,20 @@
 <KeyWord name="LIST_removeEntryAt" />
 <KeyWord name="LIST_removeEntryLast" />
 <KeyWord name="OBJECT_isList" />
+<KeyWord name="OBJECT_isNumeric" />
+<KeyWord name="PRINT_clearConsole" />
 <KeyWord name="PRINT_clearRow" />
-<KeyWord name="PRINT_clearRowL2R" />
-<KeyWord name="PRINT_clearRows" />
-<KeyWord name="PRINT_clearRowsL2R" />
+<KeyWord name="PRINT_clearRowAt" />
+<KeyWord name="PRINT_clearRowL2rAt" />
+<KeyWord name="PRINT_clearRowsAt" />
+<KeyWord name="PRINT_clearRowsL2rAt" />
 <KeyWord name="PRINT_Column" />
 <KeyWord name="PRINT_ColumnRepeated" />
-<KeyWord name="PRINT_Rows" />
-<KeyWord name="PRINT_RowsL2R" />
-<KeyWord name="PRINT_RowsRepeated" />
-<KeyWord name="PRINT_RowsRepeatedL2R" />
+<KeyWord name="PRINT_delimitRow" />
+<KeyWord name="PRINT_delimitRowAt" />
+<KeyWord name="PRINT_RowsAt" />
+<KeyWord name="PRINT_RowsL2rAt" />
+<KeyWord name="PRINT_RowsRepeatedAt" />
+<KeyWord name="PRINT_RowsRepeatedL2rAt" />
   </AutoComplete>
 </NotepadPlus>

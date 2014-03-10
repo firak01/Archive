@@ -41,7 +41,7 @@ Print (iColumn+1) + ". Das Hauptziel: " at (0, langConsoleRowFirst+6 + lineOffse
 Print "Distance: " + distTargTxt + "                " at (0,langConsoleRowFirst+7+lineOffset).
 Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,langConsoleRowFirst+8+lineOffset).
 Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt + "                         " at (25,langConsoleRowFirst+8+lineOffset).
-Print "--------------------------------------------------" at (0,langConsoleRowFirst+9+lineOffset).
+run PRINT_delimitRowAt(langConsoleRowFirst+9+lineOffset).
 
 
 set iIndex to -1.
@@ -59,7 +59,7 @@ FOR targ IN listTarg {
 	Print "Distance: " + distTargTxt at (0,langConsoleRowFirst+11+lineOffset).
 	Print "Heading:  " + ROUND(targ:HEADING) + " " + constDegreeTxt at (0,langConsoleRowFirst+12+lineOffset).
 	Print "Bearing: " + ROUND(targ:BEARING) + " " + constDegreeTxt at (25,langConsoleRowFirst+12+lineOffset).
-	Print "--------------------------------------------------" at (0,langConsoleRowFirst+13+lineOffset).
+	run PRINT_delimitRowAt(langConsoleRowFirst+13+lineOffset).
 }.
 	
 	

@@ -7,13 +7,17 @@
 DECLARE PARAMETER argIn, listReturn.
 run DEBUG_Caller("_testPrg_Case_internal").
 
-set iTemp = argIn#0.
+print "ERFOLGREICH INTERNE FUNKTION AUFGERUFEN".
+wait 1.
+
+set iTemp to argIn#0.
 if iTemp = 0 {
 	set sReturn to "false".
 }
 if iTemp = 1 {
-	set sReturn to "false".
+	set sReturn to "true".
 }
+set listReturn:REMOVE to 0.
 set listReturn:ADD to sReturn.
 
 

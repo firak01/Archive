@@ -1,3 +1,2 @@
-DECLARE PARAMETER lineNumber.
-print ("                                                         ") at (0,lineNumber).
+print ("                                                         ").
         

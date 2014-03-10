@@ -5,7 +5,7 @@ run DEBUG_Caller1("subConsoleFooter").
 set theRowList to LIST().
 set theRowList:ADD to (langScreenSizeRow-3). 
 set theRowList:ADD to (langScreenSizeRow).
-run PRINT_RowsRepeatedL2R(langNumberList,theRowList).
+run PRINT_RowsRepeatedL2rAt(langNumberList,theRowList).
 
 //funktioniert nicht  set theRowList:CLEAR.
 //funktioniert nicht run LIST_clear(theRowList).
@@ -16,9 +16,9 @@ set theRowList:ADD to (langScreenSizeRow-1).
 
 set theStringList to LIST().  
 set theStringList:ADD to "top tools by FGL".
-run PRINT_RowsL2R(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
+run PRINT_RowsL2rAt(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
 
 set theRowList:REMOVE TO 0. //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
 set theRowList:ADD to (langScreenSizeRow-3). 
 set theRowList:ADD to (langScreenSizeRow).
-run PRINT_clearRows(theRowList).
+run PRINT_clearRowsAt(theRowList).

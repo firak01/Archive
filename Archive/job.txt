@@ -13,8 +13,10 @@ run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 //run testLIST_count().
 //run testLIST_intersection().
 //run testLIST_contains().
-//run testOBJECT_isList().
-//wait 10.
+run testOBJECT_isList().
+wait 10.
+run testPrg().
+wait 30.
 
 //TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der Terminalgröße ausgehen.
 //run subConsoleFooter().

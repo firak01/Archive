@@ -15,8 +15,8 @@ run _Object_isList(argIn, listReturn).
 //wait 5.
 
 //egal was passiert, die ersten beiden Zeilen leer machen. Dort könen auch Fehelrmeldungen drinstehen.
-run PRINT_clearRow(0).
-run PRINT_clearRow(1).
+run PRINT_clearRowAt(0).
+run PRINT_clearRowAt(1).
 
 
 

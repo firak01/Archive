@@ -1,15 +1,24 @@
 //Test die PArameterübergabe an ein Unterprogram
 run DEBUG_Caller("testPrg").
+run PRINT_clearConsole().
 
 //1. Fall: Aufruf eines Programms, das den Fall "abweichende Parameternamen" testet.
 print "1. Versuch: Beide Parameter unterscheiden sich im Namen.".
 wait 1.
 run _testPrg_CaseParameterDifferBoth().
 wait 1.
+//FGL: 20140308 Ich erwarte, dass hier ein "Error im internen Aufruf" ausgegeben wird.
 
+run PRINT_clearConsole().
 print "2. Versuch: Nur der erste Parameter unterscheidet sich im Namen.".
 wait 1.
-run _testPrg_CaseParameterDifferFirst().
+run _testPrg_caseParameterDifferFirst().
+wait 1.
+
+run PRINT_clearConsole().
+print "3. Versuch: Kein Parameter unterscheidet sich im Namen.".
+wait 1.
+run _testPrg_caseParameterDifferNone().
 wait 1.
 
 run DEBUG_print("+++ Alle Tests beendet +++ ").

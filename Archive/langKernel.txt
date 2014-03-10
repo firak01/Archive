@@ -13,7 +13,11 @@ set langCallerName to "Name der zuletzt aufgerufenen Function". //Wird dann als 
 set langScreenSizeRow to 35.
 set langScreenSizeColumn to 50.
 set langConsoleRowFirst to 4.    //die ersten Reihen sind für "gezielt" geworfenen Fehler wie in _OBJECT_isList() und für DEBUG-Print-Ausgaben.
+//wegen der ersten 4 Reihen für die Fehler und die Debug-Anweisungen, wird durch diese 4 Prints sichergestellt, dass 
+//ein erster normaler Print in der 5. Zeile landet!!!
+run PRINT_clearConsole().
 set langConsoleRowLast to 32.
+
 
 set langCountGlobal to 0. //Globale Zählvariable, die über alle PRogramme hinaus deklariert ist.
 

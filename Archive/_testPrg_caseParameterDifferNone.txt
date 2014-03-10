@@ -1,36 +1,36 @@
 //Test: Rufe ein Unterprogramm auf. Beide Parameter unterscheiden sich im Namen von den Übergabeparametern.
 run DEBUG_Caller("_testPrg_caseParameterDifferFirst").
-set xDifferFirst to LIST().
+set argIn to LIST().
 set listReturn to LIST().
 
 print "1. Testlauf: ".
 wait 1.
-set iDifferFirst to 1.
-set xDifferFirst:ADD to iDifferFirst.
+set iDifferNone to 0.
+set argIn:ADD to iDifferNone.
 set sReturn to "error".
 set listReturn:ADD to sReturn.
 run DEBUG_print("Versuche den Aufruf zu machen.").
-run _testPrg_case_internal(xDifferFirst, listReturn).
+run _testPrg_case_internal(argIn, listReturn).
 run DEBUG_print("Aufruf wurde gemacht.").
 
-set sReturnDifferFirst to listReturn#0.
-if sReturnDifferFirst = "error" {
+set sReturnDifferNone to listReturn#0.
+if sReturnDifferNone = "error" {
 	print "ERROR im internen Aufruf".
 	wait 5.
 }.
-if iDifferFirst=1 {
-	if sReturnDifferFirst = "true"{
+if iDifferNone=1 {
+	if sReturnDifferNone = "true" {
 		print "Erfolgreich den Wert true zurueckbekommen.".
 	}.
-	if sReturnDifferFirst = "false"{
+	if sReturnDifferNone = "false" {
 		print "FALSCHEN Wert false zurueckbekommen.".
 	}.
 }.
-if iDifferFirst=0{
-	if sReturnDifferFirst = "true"{
+if iDifferNone=0{
+	if sReturnDifferNone = "true" {
 		print "FALSCHEN Wert true zurueckbekommen.".
 	}.
-	if sReturnDifferFirst = "false"{
+	if sReturnDifferNone = "false" {
 		print "Erfolgreich den Wert false zurueckbekommen.".
 	}.
 }.
@@ -38,34 +38,34 @@ if iDifferFirst=0{
 
 print "2. Testlauf: ".
 wait 1.
-set iDifferFirst to 0.
-set xDifferFirst:REMOVE to 0.
-set xDifferFirst:ADD to iDifferFirst.
+set iDifferNone to 1.
+set argIn:REMOVE to 0.
+set argIn:ADD to iDifferNone.
 set listReturn:REMOVE to 0.
 set sReturn to "error".
 set listReturn:ADD to sReturn.
 run DEBUG_print("Versuche den Aufruf zu machen.").
-run _testPrg_case_internal(xDifferFirst, listReturn).
+run _testPrg_case_internal(argIn, listReturn).
 run DEBUG_print("Aufruf wurde gemacht.").
 
-set sReturnDifferFirst to listReturn#0.
-if sReturnDifferFirst = "error" {
+set sReturnDifferNone to listReturn#0.
+if sReturnDifferNone = "error" {
 	print "ERROR im internen Aufruf".
 	wait 5.
 }.
-if iDifferFirst=1 {
-	if sReturnDifferFirst = "true"{
+if iDifferNone=1 {
+	if sReturnDifferNone = "true" {
 		print "Erfolgreich den Wert true zurueckbekommen.".
 	}.
-	if sReturnDifferFirst = "false"{
+	if sReturnDifferNone = "false" {
 		print "FALSCHEN Wert false zurueckbekommen.".
 	}.
 }.
-if iDifferFirst=0{
-	if sReturnDifferFirst = "true"{
+if iDifferNone=0{
+	if sReturnDifferNone = "true" {
 		print "FALSCHEN Wert true zurueckbekommen.".
 	}.
-	if sReturnDifferFirst = "false"{
+	if sReturnDifferNone = "false" {
 		print "Erfolgreich den Wert false zurueckbekommen.".
 	}.
 }.

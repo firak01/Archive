@@ -67,13 +67,15 @@ Eingabewert von prg ist eine LIST beliebigen Namens.
 Eingabewerte von fun sind frei definiert und auch beliebige Namen.
 Nur prg und fun geben Werte zurück. 
 Rückgabewert von prg ist eine LIST namens prgXyz. An erster Stelle steht ein StatusKey: prgXyz:STATUS mit den Werten TRUE, FALSE, ERROR
-                                                                               weitere Stellen der Liste können dann noch gefüllt werden.
+!!! Der Errorwert muss schon vor der Übergabe in die Liste geschrieben werden. Er kann dann in der Funktion erstetzt werden.
+   So weiss man, ob im Unterprogramm ein Fehler aufgetreten ist.                                                                                weitere Stellen der Liste können dann noch gefüllt werden.
 Rückgabewert von fun ist beliebiger Wert.
 
 
-# Allgemeion gilt für Übergabeparameter von Funktionen:
+# Allgemein gilt für Übergabeparameter von Funktionen:
 //FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
 //FGL:     DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
+//FGL ANTWORT 20140308: Durch testPrg() nach gewiesen, dass es tatsächlich so sein muss, dass nur der 1. Parameter einen anderern Namen haben darf.
 
 
 

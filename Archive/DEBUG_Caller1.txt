@@ -1,8 +1,8 @@
 DECLARE PARAMETER string.
 //Debug, d.h. auf der Zeile mit dem Index 0  ausprinten, Zeile 0 ist für das Programm, 1 für sonstige
 //Die 1 im Funktionsnamen bedeutet, dass nur geprintet, nicht aber gewartet werden soll.
-run PRINT_ClearRow(2).
+run PRINT_ClearRowAt(2).
 print string at (0,2).
-run PRINT_ClearRow(3). //Damit Restausgaben aus der vorherigen Methode verschwinden.
+run PRINT_ClearRowAt(3). //Damit Restausgaben aus der vorherigen Methode verschwinden.
 //wait langCallerTime. //in der Bibliothek definierte Wartezeit nach der Ausgabe.
 

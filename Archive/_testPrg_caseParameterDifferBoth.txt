@@ -4,56 +4,70 @@ set xDifferBoth to LIST().
 set listReturnDifferBoth to LIST().
 
 print "1. Testlauf: ".
-set xDifferBoth to 1.
-DEBUG_print("Versuche den Aufruf zu machen.").
+wait 1.
+set iDifferBoth to 0.
+set xDifferBoth:ADD to iDifferBoth.
+set sReturn to "error".
+set listReturnDifferBoth:ADD to sReturn.
+run DEBUG_print("Versuche den Aufruf zu machen.").
 run _testPrg_case_internal(xDifferBoth, listReturnDifferBoth).
-DEBUG_print("Aufruf wurde gemacht.").
+run DEBUG_print("Aufruf wurde gemacht.").
 
 set sReturnDifferBoth to listReturnDifferBoth#0.
-if(xDifferBoth=1){
+if sReturnDifferBoth = "error" {
+	print "ERROR im internen Aufruf".
+	wait 5.
+}.
+if iDifferBoth=1 {
 	if sReturnDifferBoth = "true"{
-		print("Erfolgreich den Wert true zurueckbekommen.").
+		print "Erfolgreich den Wert true zurueckbekommen.".
 	}.
 	if sReturnDifferBoth = "false"{
-		print("FALSCHEN Wert false zurueckbekommen.").
+		print "FALSCHEN Wert false zurueckbekommen.".
 	}.
 }.
-if(xDifferBoth=0){
+if iDifferBoth=0 {
 	if sReturnDifferBoth = "true"{
-		print("FALSCHEN Wert true zurueckbekommen.").
+		print "FALSCHEN Wert true zurueckbekommen.".
 	}.
 	if sReturnDifferBoth = "false"{
-		print("Erfolgreich den Wert false zurueckbekommen.").
+		print "Erfolgreich den Wert false zurueckbekommen.".
 	}.
 }.
 
 
 print "2. Testlauf: ".
-set xDifferBoth to 0.
+wait 1.
+set iDifferBoth to 1.
+set xDifferBoth:REMOVE to 0.
+set xDifferBoth:ADD to iDifferBoth.
 set listReturnDifferBoth:REMOVE to 0. 
-DEBUG_print("Versuche den Aufruf zu machen.").
+set sReturn to "error".
+set listReturnDifferBoth:ADD to sReturn.
+run DEBUG_print("Versuche den Aufruf zu machen.").
 run _testPrg_case_internal(xDifferBoth, listReturnDifferBoth).
-DEBUG_print("Aufruf wurde gemacht.").
+run DEBUG_print("Aufruf wurde gemacht.").
 
 set sReturnDifferBoth to listReturnDifferBoth#0.
-if(xDifferBoth=1){
+if sReturnDifferBoth = "error" {
+	print "ERROR im internen Aufruf".
+	wait 5.
+}.
+if iDifferBoth=1 {
 	if sReturnDifferBoth = "true"{
-		print("Erfolgreich den Wert true zurueckbekommen.").
+		print "Erfolgreich den Wert true zurueckbekommen.".
 	}.
 	if sReturnDifferBoth = "false"{
-		print("FALSCHEN Wert false zurueckbekommen.").
+		print "FALSCHEN Wert false zurueckbekommen.".
 	}.
 }.
-if(xDifferBoth=0){
+if iDifferBoth=0 {
 	if sReturnDifferBoth = "true"{
-		print("FALSCHEN Wert true zurueckbekommen.").
+		print "FALSCHEN Wert true zurueckbekommen.".
 	}.
 	if sReturnDifferBoth = "false"{
-		print("Erfolgreich den Wert false zurueckbekommen.").
+		print "Erfolgreich den Wert false zurueckbekommen.".
 	}.
 }.
-
-
-
 
 run DEBUG_print("+++ Test beendet +++ ").
