@@ -2,7 +2,6 @@
 TODO:
 Konsolenheader für Debugausgaben wieder auf 2 Zeilen reduzieren.
 
-
 ######################################
 !!! Die Datentyp-MEthoden liefern einen "gewollten Fehler".
 Anders als geplant, wird der Fehler immer an der nächsten Print Position ausgedruckt und nicht beginnend in der obersten Zeile.

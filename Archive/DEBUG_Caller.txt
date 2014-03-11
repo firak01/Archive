@@ -1,7 +1,8 @@
 DECLARE PARAMETER string. //time. //Es scheint nur 1 Paramter zu funktionieren.
 //Debug, d.h. auf der Zeile mit dem Index0  ausprinten, Zeile 0 ist für das Programm, 1 für sonstige
-run PRINT_ClearRowAt(2).
-print string at (0,2).
-run PRINT_ClearRowAt(3). //Damit Restausgaben aus der vorherigen Methode verschwinden.
+run PRINT_ClearRowAt(langDebugRowStart).
+run PRINT_ClearRowAt(langDebugRowStart+1). //Damit Restausgaben aus der vorherigen Methode verschwinden.
+print string at (0,langDebugRowStart).
+
 wait langCallerTime. //in der Bibliothek definierte Wartezeit nach der Ausgabe.
 

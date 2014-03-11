@@ -118,6 +118,7 @@ Merke: Damit die oben in der Console stehenden Fehlerzeilen nicht stören,
        lagert man den eigentlichen Test in einem PRIVATEN Programm aus. 
        Solch ein Private Program wird mit einem beginnenden Unterstrich gekennzeichnet und heisst so wie das Ausgangsprogramm.
 
+	   ABER: Leider wird die Fehlermeldung nicht immer auf den obersten Zeilen ausgegeben, sondern hinter der letzten Print -Anweisung.
 
 Beispiele: Object - Klasse
 OBJECT_isList

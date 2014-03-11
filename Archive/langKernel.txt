@@ -7,19 +7,44 @@ set langFC TO LIST().  // Rückgabewert eines "FunctionCalls".
 
 set langDebugTime to 1. //Die Zeit, die ein Debugausdruck sichtbar bleiben soll, auf Zeile 1.					
 set langCallerTime to 0.25. //Die Zeit, die ein Ausdruck einer Funktion sichtbar bleiben soll auf Zeile 0.
-set langCallerName to "Name der zuletzt aufgerufenen Function". //Wird dann als Paramter an die function landCaller(sName) übergeben.
+set langCallerName to "Name der zuletzt aufgerufenen Funktion". //Wird dann als Paramter an die function DEBUG_Caller(sName) übergeben.
 
 //Die Größe der Konsole
 set langScreenSizeRow to 35.
 set langScreenSizeColumn to 50.
-set langConsoleRowFirst to 4.    //die ersten Reihen sind für "gezielt" geworfenen Fehler wie in _OBJECT_isList() und für DEBUG-Print-Ausgaben.
-//wegen der ersten 4 Reihen für die Fehler und die Debug-Anweisungen, wird durch diese 4 Prints sichergestellt, dass 
-//ein erster normaler Print in der 5. Zeile landet!!!
-run PRINT_clearConsole().
-set langConsoleRowLast to 32.
+set langDebugRowStart to 0.
+set langDebugRowsCount to 2.
+set langDebugRowList to List().
+SET XStart to langDebugRowStart + langDebugRowsCount.
+SET XEnd to XStart - langDebugRowsCount .
+UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
+    Set langDebugRowList:ADD to XStart.
+    SET XStart to XStart - 1.
+}.
+
+set langConsoleRowFirst to langDebugRowStart + langDebugRowsCount + 1.    //die ersten Reihen sind für "gezielt" geworfenen Fehler wie in _OBJECT_isList() und für DEBUG-Print-Ausgaben.
+set langConsoleRowLast to 31.
+
+//Die Delimiter zählen so gesehen nicht zur Konsole
+set langConsoleDelimitRowList to LIST().
+set langConsoleDelimtRowList:ADD to langConsoleRowLast + 1
+set langConsoleDelimtRowList:ADD to langConsoleRowFirst -1.
 
 
-set langCountGlobal to 0. //Globale Zählvariable, die über alle PRogramme hinaus deklariert ist.
+//wegen der ersten 2 Reihen für die Fehler und die Debug-Anweisungen, wird durch diese 4 Prints sichergestellt, dass 
+//ein erster normaler Print in der 3. Zeile landet!!!
+set langConsoleRowList to LIST().
+SET XStart to langConsoleRowLast.
+SET XEnd to langConsoleRowFirst.
+UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
+	Set langConsoleRowList:ADD to XStart.
+	SET XStart to XStart - 1.
+}
+run PRINT_clearConsoleScreen(). //Loesche den ganzen Screen und setze den Print Cursor auf die oberste Consolenzeile
+
+
+
+set langCountGlobal to 0. //Globale Zählvariable, die über alle Programme hinaus deklariert ist.
 
 set langNumberList to List().
 set langNumberList:ADD to "1".

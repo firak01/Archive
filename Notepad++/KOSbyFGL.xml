@@ -21,6 +21,7 @@
 <KeyWord name="OBJECT_isList" />
 <KeyWord name="OBJECT_isNumeric" />
 <KeyWord name="PRINT_clearConsole" />
+<KeyWord name="PRINT_clearConsoleScreen" />
 <KeyWord name="PRINT_clearRow" />
 <KeyWord name="PRINT_clearRowAt" />
 <KeyWord name="PRINT_clearRowL2rAt" />
