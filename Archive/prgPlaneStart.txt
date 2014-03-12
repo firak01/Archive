@@ -28,6 +28,15 @@ for argIn IN argsIn {
 		}.
 	}.
 
+
+//################################
+//LOCK THROTTLE to 1. //Vollschub wird im aufrufenden Programm schon gegeben.
+set iCount to 0. //Messungszähler
+
+//Liste mit den Argumenten an die ConsolenData-Ausbabe uebergeben!
+set args to LIST().
+set args:ADD to targMain.
+
 //######################
 //Funktionen mit der Steuerung verknuepfen
 set horizonStart to 0.         //Horizont beim Start, TODO: Auslesen wie er wirklich ist.
@@ -35,24 +44,65 @@ set horizonCurrent to horizonStart.
 //set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
 set gradeStart to targMain:BEARING.
 set gradeCurrent to gradeStart.
-set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+//set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+
+//LOCK STEERING TO targMain.
+
+set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+
+//set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 LOCK WHEELSTEERING TO targMain.           // Steer the vessel in the direction suggested by direction X.
-//################################
-//LOCK THROTTLE to 1. //Vollschub wird im aufrufenden Programm schon gegeben.
+//LOCK WHEELSTEERING TO W.           // Steer the vessel in the direction suggested by direction X.
 
 //Los geht´s....
-set iCount to 0. //Messungszähler
 stage. //Spare das Druecken der "Spacebar"-Taste 
 BRAKES On.
 BRAKES OFF. //Funktioniert alleine nicht.
 
-//Liste mit den Argumenten an die ConsolenData-Ausbabe uebergeben!
-set args to LIST().
-set args:ADD to targMain.
 until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){	
 	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
 	set langCountGlobal to langCountGlobal+1.////Das ist der einzige Weg eine Zählvariable an eine Unterfunktion zu uebergeben. Die Variable ist in einem "ueberprogramm" deklariert und daher global
 	run subConsoleDataStart(args).
+	
+	
+	set iCountSoft to 0.
+	//TODO ueberarbeiten.
+	set gradeCurrent to targMain:HEADING. //TODO: fexibles Ziel, funktoniert das
+	//if gradeCurrent != ROUND(targKscRunEnd:BEARING) {
+		set iCountSoft to iCountSoft + 3.
+		//if abs(gradeCurrent - abs(ROUND(targMain:BEARING))) >= 180 {
+		if ROUND(targMain:BEARING) > 0 {
+			SAS OFF.
+			print "... korrektursteuern nach rechts..." at (0,0).
+			set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
+			if gradeCurrent > 360 { set gradeCurrent to 360. }.
+		}.
+		//if abs(gradeCurrent - abs(ROUND(targMain:BEARING))) < 180 {
+		if ROUND(targMain:BEARING) < 0 {
+			SAS OFF.
+			print "... korrektursteuern nach links..." at (0,0).
+			set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
+			if gradeCurrent < 0 { set gradeCurrent to 0. }.
+		}.
+		//set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+		//set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+	//}.
+	
+	//+++ Steuern, falls noch nicht zu schnell	
+	if abs(SHIP:surfacespeed) > launchSteeringSpeedMax {
+		//wait 0.5.
+	}
+	if abs(SHIP:surfacespeed) <= launchSteeringSpeedMax {
+		
+		print "... korregiere ...".
+		set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+		//set W to HEADING(horizonCurrent, gradeCurrent).
+		//wait 0.25. //schneller reagieren.... weniger pause.
+		SAS ON.
+	}.
+	
+	
 	
 	//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
 	if abs(SHIP:surfacespeed) >= abs(launchSteeringSpeedMax) {
