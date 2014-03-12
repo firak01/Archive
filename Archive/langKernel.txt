@@ -27,8 +27,8 @@ set langConsoleRowLast to 31.
 
 //Die Delimiter zählen so gesehen nicht zur Konsole
 set langConsoleDelimitRowList to LIST().
-set langConsoleDelimtRowList:ADD to langConsoleRowLast + 1
-set langConsoleDelimtRowList:ADD to langConsoleRowFirst -1.
+set langConsoleDelimitRowList:ADD to langConsoleRowLast + 1
+set langConsoleDelimitRowList:ADD to langConsoleRowFirst -1.
 
 
 //wegen der ersten 2 Reihen für die Fehler und die Debug-Anweisungen, wird durch diese 4 Prints sichergestellt, dass 

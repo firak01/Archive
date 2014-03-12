@@ -1,6 +1,8 @@
 //Deklaration der Flugzeugkonstanten
 //
 set libGroundSteeringSpeedMax to 20. //
-set libLaunchGroundSteeringSpeedMax to 100. //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
-set libLaunchSpeedMin to 105. //Sets the Surfacespeed, which must be reached for "pull up"
-set libGroundSpeedMax to 105.
+
+//!!! Bei 100 m/s faellt die Antenne ab. Daher unbedingt vorher schon starten.
+set libLaunchGroundSteeringSpeedMax to 110. //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
+set libLaunchSpeedMin to 110. //Sets the Surfacespeed, which must be reached for "pull up"
+set libGroundSpeedMax to 110.

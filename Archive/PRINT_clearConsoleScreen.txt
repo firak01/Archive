@@ -1,5 +1,5 @@
 //Methode clearconsole, welche clearscreen ersetzt.
-//und zuerst 4 print " ". macht, um sicherzustellen, dass der nächste Print auf der 5. zeile landet.
+//und zuerst 2 print " ". macht, um sicherzustellen, dass der nächste Print auf der 5. zeile landet.
 clearscreen.
 print " ".
 print " ".
