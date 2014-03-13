@@ -2,7 +2,7 @@
 //Der Befehl set listeNeu To listeOriginal:COPY 
 //bewirkt anschliessend nicht, dass mit listeNeu 100%ig gearbeitewrden kann. Man kann dies nicht als Liste ansehen.
 //Diese Liste funktioniert anschliessend!
-DECLARE PARAMETER argsIn, listCopy.
+DECLARE PARAMETER argsIn, listListCopy.
 
 run DEBUG_Caller1("LIST_copy").
 run DEBUG_print0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
@@ -10,7 +10,7 @@ set iIndex to -1.
 for argIn IN argsIn {
 	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
-	set listCopy:ADD TO argIn.
+	set listListCopy:ADD TO argIn.
 	}.
 	
 // Kopieren einer Liste, mit neuer Static Object Syntax....

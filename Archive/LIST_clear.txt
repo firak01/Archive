@@ -6,9 +6,9 @@ DECLARE PARAMETER argsIn.
 run DEBUG_Caller1("List_clear").
 run DEBUG_print("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
 
-set countList To LIST().
-run LIST_count(argsIn,countList).
-set iMax to countList#0.
+set listListCount To LIST().
+run LIST_count(argsIn,listListCount).
+set iMax to listListCount#0.
 run DEBUG_print("gezaehlte Elemente in argsIn= " + iMax).
 
 //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.

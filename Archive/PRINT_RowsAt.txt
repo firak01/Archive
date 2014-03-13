@@ -1,5 +1,6 @@
 //Zeilenweise die Werte ausgeben
-DECLARE PARAMETER argsIn,theRowList.
+//Zweiter Parameter muss global sein und daher einer Konvention entsprechen
+DECLARE PARAMETER argsIn,listPrintRowsAt.
 
 run DEBUG_Caller1("Print_Rows").
 
@@ -16,7 +17,7 @@ run DEBUG_Caller1("Print_Rows").
 //run removeListEntryLast(argsIn,removeListEntryLast).
 //run printDebug0("Anzahl von Parametern in rueckgabewert= " + removeListEntryLast:LENGTH).
 
-for lineToPrint in theRowList {
+for lineToPrint in listPrintRowsAt {
 
 set iIndex to -1.
 set string to "".

@@ -2,16 +2,16 @@
 //Der Befehl der Befehle set anzahl to argsIn:LENGTH gibt zwar die Anzahl der Elemente zurück.
 //aber der Wert ist keine mathematische Zahl und kann z.B. mit einer echten Zahl nicht verglichen werden. 
 //Der returnwert dieser Funktion funktioniert anschliessend!
-DECLARE PARAMETER argsIn, countList.
+DECLARE PARAMETER argsIn, listListCount.
 
 run DEBUG_Caller1("LIST_count").
 run DEBUG_print0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH). //Aber: Mit argsIn:LENGTH kann man nicht rechnen!
 set iIndexList_count to 0.
-set countList:ADD to iIndexList_count. //Falls ein Fehler auftritt , ist der Wert schon auf -1 gesetzt.
+set listListCont:ADD to iIndexList_count. //Falls ein Fehler auftritt , ist der Wert schon auf -1 gesetzt.
 for argIn IN argsIn {
 	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndexList_count to iIndexList_count + 1.
 	}.
-set countList:REMOVE to 0.
-set countList:ADD to iIndexList_count.
+set listListCount:REMOVE to 0.
+set listListCount:ADD to iIndexList_count.
 

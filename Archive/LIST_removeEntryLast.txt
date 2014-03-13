@@ -1,11 +1,11 @@
 //Komfortfunktion um den letzten Eintrag einer Liste zu entfernen.
 //Mit dem zurückgelieferen Ergebnis kann man weiterarbeiten und die reingegebene Liste wird nicht veraendert.
-DECLARE PARAMETER argsIn,removeListEntryLast.
+DECLARE PARAMETER argsIn,listListRemoveEntryLast.
 run DEBUG_Caller1("LIST_removeEntryLast").
 
-set countList To LIST().
-run LIST_count(argsIn,countList).
-set iIndexMax to countList#0.
+set listListCount To LIST().
+run LIST_count(argsIn,listListCount).
+set iIndexMax to listListCount#0.
 run DEBUG_print0("gezaehlte Elemente in argsIn= " + iIndexMax).
 
 set iIndexReduced to iIndexMax - 1.
@@ -13,6 +13,6 @@ set iIndex to -1.
 for argIn IN argsIn {
 	set iIndex to iIndex + 1.
 
-	set removeListEntryLast:ADD TO argIn.
+	set listListRemoveEntryLast:ADD TO argIn.
 	if iIndex = iIndexReduced { break. }.
 }.

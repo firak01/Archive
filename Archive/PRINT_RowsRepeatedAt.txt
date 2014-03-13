@@ -1,5 +1,5 @@
 //Zeilenweise die Werte ausgeben
-DECLARE PARAMETER argsIn,theRowList.
+DECLARE PARAMETER argsIn,listPrintRowsRepeatedAt.
 
 run DEBUG_Caller1("PRINT_RowsRepeated").
 
@@ -16,7 +16,7 @@ run DEBUG_Caller1("PRINT_RowsRepeated").
 //run removeListEntryLast(argsIn,removeListEntryLast).
 //run printDebug0("Anzahl von Parametern in rueckgabewert= " + removeListEntryLast:LENGTH).
 
-for lineToPrint in theRowList {
+for lineToPrint in listPrintRowsRepeatedAt {
 
 	set iIndex to -1.
 	set iColumn to -1.

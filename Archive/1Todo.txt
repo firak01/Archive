@@ -1,5 +1,13 @@
 #######################################
 TODO:
+Antenne Stabiler anbringen, sie fällt ab!!!
+
+listListRemoveEntryByValueInt_ ist die Liste der zu entfernenden Werte.
+TODO: List_removeEntryByValueInt(listIn, listListRemoveEntryByValueInt_01, listListRemoveEntryByValueInt_Return).
+      PRINT_RowsByTermL2rAt
+	  wie PRINT_RowsL2rAt, aber nun wird jeder eingegebenen String in einer anderen Zeile ausgegeben.
+	  
+TODO:
 Konsolenheader für Debugausgaben wieder auf 2 Zeilen reduzieren.
 
 ######################################

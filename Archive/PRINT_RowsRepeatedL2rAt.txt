@@ -1,5 +1,5 @@
 //Zeilenweise die Werte ausgeben
-DECLARE PARAMETER argsIn,theRowList.
+DECLARE PARAMETER argsIn,listPrintRowsRepeatedL2rAt.
 
 run DEBUG_Caller1("PRINT_RowsRepeatedL2R").
 
@@ -16,7 +16,7 @@ run DEBUG_Caller1("PRINT_RowsRepeatedL2R").
 //run removeListEntryLast(argsIn,removeListEntryLast).
 //run printDebug0("Anzahl von Parametern in rueckgabewert= " + removeListEntryLast:LENGTH).
 
-for lineToPrint in theRowList {
+for lineToPrint in listPrintRowsRepeatedL2rAt {
 
 	set iIndex to -1.
 	set iColumn to -1.
@@ -27,9 +27,6 @@ for lineToPrint in theRowList {
 			set iIndex to iIndex + 1.         //TODO: Stringfunktion, die die Laenge eines Strings ermittelt waere toll.
 			print character at (iIndex, lineToPrint).
 		}.
-
 	}.
-
-
 }.
 

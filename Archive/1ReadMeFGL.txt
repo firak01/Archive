@@ -66,7 +66,7 @@ ABSCDE_yxc.txt Kennzeichnet "Klassen und deren 'statische Methoden'"
 Eingabewert von prg ist eine LIST beliebigen Namens.
 Eingabewerte von fun sind frei definiert und auch beliebige Namen.
 Nur prg und fun geben Werte zurück. 
-Rückgabewert von prg ist eine LIST namens prgXyz. An erster Stelle steht ein StatusKey: prgXyz:STATUS mit den Werten TRUE, FALSE, ERROR
+Rückgabewert von prg ist eine LIST namens prgXyz_Return. An erster Stelle steht ein StatusKey: prgXyz:STATUS mit den Werten TRUE, FALSE, ERROR
 !!! Der Errorwert muss schon vor der Übergabe in die Liste geschrieben werden. Er kann dann in der Funktion erstetzt werden.
    So weiss man, ob im Unterprogramm ein Fehler aufgetreten ist.                                                                                weitere Stellen der Liste können dann noch gefüllt werden.
 Rückgabewert von fun ist beliebiger Wert.
@@ -77,6 +77,12 @@ Rückgabewert von fun ist beliebiger Wert.
 //FGL:     DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
 //FGL ANTWORT 20140308: Durch testPrg() nach gewiesen, dass es tatsächlich so sein muss, dass nur der 1. Parameter einen anderern Namen haben darf.
 
+//FGL KONVENTION:  Bei der Deklaration und dem Aufruf von Paramtern gilt:
+              Der zweite Parameter einer Funktion, heisst dann: DatentypPräfix + NameDerFunktion selbst. 
+              Der dritte Parameter hat dahinter noch ein Suffix in Form von _01, usw.
+			  ReturnParameter, der wie oben beschrieben eine feste Struktur hat, heisst listNameDerFunktion_Return.
+			  
+			  
 
 
 ###########################################

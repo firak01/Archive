@@ -9,42 +9,12 @@ set langDebugTime to 1. //Die Zeit, die ein Debugausdruck sichtbar bleiben soll,
 set langCallerTime to 0.25. //Die Zeit, die ein Ausdruck einer Funktion sichtbar bleiben soll auf Zeile 0.
 set langCallerName to "Name der zuletzt aufgerufenen Funktion". //Wird dann als Paramter an die function DEBUG_Caller(sName) übergeben.
 
-//Die Größe der Konsole
-set langScreenSizeRow to 35.
-set langScreenSizeColumn to 50.
-set langDebugRowStart to 0.
-set langDebugRowsCount to 2.
-set langDebugRowList to List().
-SET XStart to langDebugRowStart + langDebugRowsCount.
-SET XEnd to XStart - langDebugRowsCount .
-UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
-    Set langDebugRowList:ADD to XStart.
-    SET XStart to XStart - 1.
-}.
-
-set langConsoleRowFirst to langDebugRowStart + langDebugRowsCount + 1.    //die ersten Reihen sind für "gezielt" geworfenen Fehler wie in _OBJECT_isList() und für DEBUG-Print-Ausgaben.
-set langConsoleRowLast to 31.
-
-//Die Delimiter zählen so gesehen nicht zur Konsole
-set langConsoleDelimitRowList to LIST().
-set langConsoleDelimitRowList:ADD to langConsoleRowLast + 1
-set langConsoleDelimitRowList:ADD to langConsoleRowFirst -1.
-
-
-//wegen der ersten 2 Reihen für die Fehler und die Debug-Anweisungen, wird durch diese 4 Prints sichergestellt, dass 
-//ein erster normaler Print in der 3. Zeile landet!!!
-set langConsoleRowList to LIST().
-SET XStart to langConsoleRowLast.
-SET XEnd to langConsoleRowFirst.
-UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
-	Set langConsoleRowList:ADD to XStart.
-	SET XStart to XStart - 1.
-}
-run PRINT_clearConsoleScreen(). //Loesche den ganzen Screen und setze den Print Cursor auf die oberste Consolenzeile
-
-
-
 set langCountGlobal to 0. //Globale Zählvariable, die über alle Programme hinaus deklariert ist.
+
+//#### Globale Listen
+set langDelimiterList01 to List().
+set langDelimiterList01:ADD to "+".
+set langDelimiterList01:ADD to "-".
 
 set langNumberList to List().
 set langNumberList:ADD to "1".
@@ -85,3 +55,61 @@ set langLetterList:ADD to "W".
 set langLetterList:ADD to "X".
 set langLetterList:ADD to "Y".
 set langLetterList:ADD to "Z".
+
+//#####################################################
+//### Konsole initialisieren
+
+//Die Größe der Konsole
+//Merke: In den Abschnitten Debug / Status / Footer ist auch die Delimiter - Zeile eingerechnet.
+
+//Bildschirmgroesse
+set langScreenSizeRow to 35.
+set langScreenSizeColumn to 50.
+
+//Debug-Abschnitt
+set langDebugRowStart to 0.
+set langDebugRowsCount to 3.
+set langDebugRowList to List().
+SET XStart to langDebugRowStart + langDebugRowsCount -1.
+SET XEnd to XStart - langDebugRowsCount .
+UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
+    Set langDebugRowList:ADD to XStart.
+    SET XStart to XStart - 1.
+}.
+
+//Footer-Abschnitt
+set langFooterRowsCount to 2.
+set langFooterRowStart to langScreenSizeRow - langFooterRowsCount + 1.
+set langFooterRowList to List().
+SET XStart to langFooterRowStart + langFooterRowsCount -1.
+SET XEnd to XStart - langFooterRowsCount .
+UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
+    Set langFooterRowList:ADD to XStart.
+    SET XStart to XStart - 1.
+}.
+
+//Status-Abschnitt
+set langStatusRowsCount to 2.
+set langStatusRowStart to langFooterRowStart - langStatusRowsCount + 1.
+set langStatusRowList to LIST().
+SET XStart to langStatusRowStart + langStatusRowsCount -1.
+SET XEnd to XStart - langStatusRowsCount .
+UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
+    Set langStatusRowList:ADD to XStart.
+    SET XStart to XStart - 1.
+}.
+
+//Console
+//Merke: Die Delimiter der anderen Abschnitte zählen nicht zur Konsole
+set langConsoleRowFirst to langDebugRowStart + langDebugRowsCount -1.    //die ersten Reihen sind für DEBUG-Print-Ausgaben. Danach die Konsole, dann Status-Ausgaben, dann der Footer.
+set langConsoleRowLast to langScreenSizeRow - langFooterRowsCount - langStatusRowsCount.
+set langConsoleRowList to LIST().
+SET XStart to langConsoleRowLast.
+SET XEnd to langConsoleRowFirst.
+UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
+	Set langConsoleRowList:ADD to XStart.
+	SET XStart to XStart - 1.
+}
+
+//Ausprinten
+run PRINT_clearConsoleScreen(). //Loesche den ganzen Screen und setze den Print Cursor auf die oberste Consolenzeile

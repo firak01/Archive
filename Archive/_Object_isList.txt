@@ -4,12 +4,12 @@
 
 //FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
 //            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
-DECLARE PARAMETER argIn, listReturn.
+DECLARE PARAMETER argIn, listObjectIsList.
 
 run DEBUG_Caller("_OBJECT_isList").
 
 set bReturn to "false".
-set listReturn:ADD to bReturn.
+set listObjectIsList:ADD to bReturn.
 
 //Fehler oder nicht, das ist die Frage...
 set size to argIn:LENGTH.
@@ -19,7 +19,7 @@ set size to argIn:LENGTH.
 
 //Ohne Fehler ein "true" zurückgeben.
 set bReturn to "true".
-set listReturn:REMOVE to 0.
-set listReturn:ADD to bReturn.
+set listObjectIsList:REMOVE to 0.
+set listObjectIsList:ADD to bReturn.
 
 

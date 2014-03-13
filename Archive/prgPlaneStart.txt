@@ -1,9 +1,11 @@
 //Program "Plane Start"
 //Starte ein Flugzeug: 1) Beschleunige, 2) Ziehe hoch
-DECLARE PARAMETER argsIn, prgPlaneStart.
+DECLARE PARAMETER argsIn, prgPlaneStart_Return.
 
 //erwarte als erstes Argument: Die startgeschwindigkeit.
 run DEBUG_Caller1("prgPlaneStart").
+set STATUSx to "-99".
+set prgPlaneStart_Return:ADD TO STATUSx.
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
@@ -44,10 +46,8 @@ set horizonCurrent to horizonStart.
 //set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
 set gradeStart to targMain:BEARING.
 set gradeCurrent to gradeStart.
-//set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 
 //LOCK STEERING TO targMain.
-
 set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
 
@@ -73,7 +73,7 @@ until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){
 		set iCountSoft to iCountSoft + 3.
 		//if abs(gradeCurrent - abs(ROUND(targMain:BEARING))) >= 180 {
 		if ROUND(targMain:BEARING) > 0 {
-			SAS OFF.
+			SAS OFF. //sonst ist Steuern nicht möglich
 			print "... korrektursteuern nach rechts..." at (0,0).
 			set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
 			if gradeCurrent > 360 { set gradeCurrent to 360. }.
@@ -85,6 +85,7 @@ until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){
 			set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
 			if gradeCurrent < 0 { set gradeCurrent to 0. }.
 		}.
+		//Merke: bei = 0 ist Steuern nicht notwendig.
 		//set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 		//set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 	//}.
@@ -113,4 +114,5 @@ until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){
 run DEBUG_print1("Startgeschwindigkeit erreicht.").
 
 Set STATUSx to "1".
-set prgPlaneStart:ADD TO STATUSx.
+set prgPlaneStart_Return:REMOVE to 0.
+set prgPlaneStart_Return:ADD TO STATUSx.

@@ -9,7 +9,7 @@ run DEBUG_Caller(langCallerName).
 run libKerbal(). //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 
-//### UNIT - TESTS
+//### UNIT - TESTS --- NICHT löschen
 //run testLIST_count().
 //run testLIST_intersection().
 //run testLIST_contains().
@@ -29,8 +29,8 @@ set args:ADD to libTargKscRunEnd.
 set args:ADD to libTargPolNor.
 
 LOCK THROTTLE to 1.      //Vollschub
-set prgPlaneStart to LIST(). //Rückgabewert, muss hier schon deklariert werden.
-run prgPlaneStart (args,prgPlaneStart).
+set prgPlaneStart_Return to LIST(). //Rückgabewert, muss hier schon deklariert werden.
+run prgPlaneStart (args,prgPlaneStart_Return).
 run DEBUG_print1("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
 UNLOCK STEERING.
 
@@ -38,11 +38,12 @@ UNLOCK STEERING.
 //a) Rückgabwerte entgegennehmen.
 set iIndex to -1.
 set prgPlaneStartStatus to "0".
-for argReturn IN prgPlaneStart {
-	run DEBUG_print1("Wert: " + argReturn). //argReturn gilt nur innerhalb der Schleife...
+for argReturn IN prgPlaneStart_Return {
+	set sReturn to argReturn.
+	run DEBUG_print1("ReturnWert: " + sReturn). //argReturn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
-		set prgPlaneStartStatus to argReturn.		
+		set prgPlaneStartStatus to sReturn.		
 		}.
 	if iIndex = 1 {		
 		}.

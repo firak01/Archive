@@ -6,9 +6,9 @@ set listMain:ADD to "Birne".
 set listMain:ADD to "Banane".
 set listMain:ADD to "Pflaume".
 
-set countList To LIST().
-run LIST_count(listMain, countList).
-set iLength to countList#0.   //Rueckgabewert ist immer an Stelle 0.
+set listListCount To LIST().
+run LIST_count(listMain, listListCount).
+set iLength to listListCount#0.   //Rueckgabewert ist immer an Stelle 0.
 run DEBUG_print("Die Liste umfasst " + iLength + " Elemente."). 
 run DEBUG_print("+++ Test beendet +++ ").
 

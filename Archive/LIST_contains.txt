@@ -3,13 +3,13 @@
 
 //FRAGE: Können die Paramternamen von denen der übergebenen Variablennamen abweichen?
 //            DAS IST NUR BEIM ersten Paramter der Fall, die anderen müssen den gleichen Namen haben "sind also global"
-DECLARE PARAMETER argsIn, listSub, listReturn.
+DECLARE PARAMETER argsIn, listListContains, listListContains_Return.
 run DEBUG_Caller1("LIST_contains").
 
 set iFound to -1.
 set iIndex to -1.
 set bReturn to "true".
-for suchwert IN listSub {
+for suchwert IN listListContains {
 	run DEBUG_print0("SuchWert: " + suchwert).
 	set iIndex to iIndex + 1.
 	
@@ -29,4 +29,4 @@ for suchwert IN listSub {
 		break.
 	}
 }.
-set listReturn:ADD to bReturn.
+set listListContains_Return:ADD to bReturn.

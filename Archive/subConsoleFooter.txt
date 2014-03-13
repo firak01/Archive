@@ -1,24 +1,24 @@
-
 run DEBUG_Caller1("subConsoleFooter").
 
 //TEST:  weil nicht geht set listNumber to langNumberList:COPY.
-set theRowList to LIST().
-set theRowList:ADD to (langScreenSizeRow-3). 
-set theRowList:ADD to (langScreenSizeRow).
-run PRINT_RowsRepeatedL2rAt(langNumberList,theRowList).
+set listPrintRowsRepeatedL2rAt to LIST().
+set listPrintRowsRepeatedL2rAt:ADD to (langFooterRowStart). 
+run PRINT_RowsRepeatedL2rAt(langDelimiterList01,listPrintRowsRepeatedL2rAt).
 
 //funktioniert nicht  set theRowList:CLEAR.
 //funktioniert nicht run LIST_clear(theRowList).
-set theRowList:REMOVE TO 1. //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
-set theRowList:REMOVE TO 0.
+//set theRowList:REMOVE TO 1. //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
+//set theRowList:REMOVE TO 0.
 
-set theRowList:ADD to (langScreenSizeRow-1).
+
+SET listPrintRowsL2rAt to LIST().
+SET XStart to langFooterRowStart.// + langFooterRowsCount -1.
+SET XEnd to langFooterRowStart + langFooterRowsCount -1.
+UNTIL XStart > XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
+    Set listPrintRowsL2rAt:ADD to XStart.
+    SET XStart to XStart + 1.
+}.
 
 set theStringList to LIST().  
 set theStringList:ADD to "top tools by FGL".
-run PRINT_RowsL2rAt(theStringList,theRowList). //Das geht nicht, es muss der gleiche Variablen name sein?
-
-set theRowList:REMOVE TO 0. //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
-set theRowList:ADD to (langScreenSizeRow-3). 
-set theRowList:ADD to (langScreenSizeRow).
-run PRINT_clearRowsAt(theRowList).
+run PRINT_RowsL2rAt(theStringList,listPrintRowsL2rAt). //Das geht nicht, es muss der gleiche Variablen name sein?
