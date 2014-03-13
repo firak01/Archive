@@ -60,27 +60,31 @@ stage. //Spare das Druecken der "Spacebar"-Taste
 BRAKES On.
 BRAKES OFF. //Funktioniert alleine nicht.
 
-until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){	
+set bIsLaunched to 0.
+until bIsLaunched = 1 {	
 	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
 	set langCountGlobal to langCountGlobal+1.////Das ist der einzige Weg eine Zählvariable an eine Unterfunktion zu uebergeben. Die Variable ist in einem "ueberprogramm" deklariert und daher global
 	run subConsoleDataStart(args).
 	
 	
 	set iCountSoft to 0.
-	//TODO ueberarbeiten.
 	set gradeCurrent to targMain:HEADING. //TODO: fexibles Ziel, funktoniert das
 	//if gradeCurrent != ROUND(targKscRunEnd:BEARING) {
 		set iCountSoft to iCountSoft + 3.
 		//if abs(gradeCurrent - abs(ROUND(targMain:BEARING))) >= 180 {
 		if ROUND(targMain:BEARING) > 0 {
-			SAS OFF. //sonst ist Steuern nicht möglich
+			if abs(SHIP:surfacespeed) < abs(launchSpeedMin){
+			SAS OFF.
+			}.//sonst ist Steuern nicht möglich
 			print "... korrektursteuern nach rechts..." at (0,0).
 			set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
 			if gradeCurrent > 360 { set gradeCurrent to 360. }.
 		}.
 		//if abs(gradeCurrent - abs(ROUND(targMain:BEARING))) < 180 {
 		if ROUND(targMain:BEARING) < 0 {
+			if abs(SHIP:surfacespeed) < abs(launchSpeedMin){
 			SAS OFF.
+			}.
 			print "... korrektursteuern nach links..." at (0,0).
 			set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
 			if gradeCurrent < 0 { set gradeCurrent to 0. }.
@@ -100,18 +104,29 @@ until abs(SHIP:surfacespeed) >= abs(launchSpeedMin){
 		set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 		//set W to HEADING(horizonCurrent, gradeCurrent).
 		//wait 0.25. //schneller reagieren.... weniger pause.
-		SAS ON.
+		if abs(SHIP:surfacespeed) < abs(launchSpeedMin){
+			SAS ON.
+	    }.
 	}.
-	
-	
-	
+			
 	//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
 	if abs(SHIP:surfacespeed) >= abs(launchSteeringSpeedMax) {
 		UNLOCK WHEELSTEERING.
 		run DEBUG_print1("WHEELSTEERING ist abgestellt.").
-		}.
+	}.
+	
+	//Unbedingt vor Tempo 100 versuchen hochzuziehen. Ggf. Antenne einziehen und Programm damit beenden.
+	if abs(SHIP:surfacespeed) >= abs(launchSpeedMin) {
+		UNLOCK STEERING.
+		run DEBUG_print1("Startgeschwindigkeit erreicht. STEERING ist abgestellt.").
+		SAS OFF.
+	}.
+	
+	//abs(SHIP:surfacespeed) >= abs(launchSpeedMin)
+	if Round(alt:radar) >= 10 {
+	set bIsLaunched to 1.
+	}
 }.
-run DEBUG_print1("Startgeschwindigkeit erreicht.").
 
 Set STATUSx to "1".
 set prgPlaneStart_Return:REMOVE to 0.

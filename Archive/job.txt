@@ -29,10 +29,14 @@ set args:ADD to libTargKscRunEnd.
 set args:ADD to libTargPolNor.
 
 LOCK THROTTLE to 1.      //Vollschub
+UNLOCK STEERING.
+UNLOCK WHEELSTEERING.
 set prgPlaneStart_Return to LIST(). //Rückgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart_Return).
-run DEBUG_print1("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
+run DEBUG_print("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
+run DEBUG_print("ReturnWerte: " + prgPlaneStart_Return:LENGTH). 
 UNLOCK STEERING.
+UNLOCK WHEELSTEERING.
 
 //Prüfe den Status des Programms
 //a) Rückgabwerte entgegennehmen.
@@ -40,7 +44,7 @@ set iIndex to -1.
 set prgPlaneStartStatus to "0".
 for argReturn IN prgPlaneStart_Return {
 	set sReturn to argReturn.
-	run DEBUG_print1("ReturnWert: " + sReturn). //argReturn gilt nur innerhalb der Schleife...
+	run DEBUG_print("ReturnWert: " + sReturn). //argReturn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
 		set prgPlaneStartStatus to sReturn.		

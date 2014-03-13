@@ -4,5 +4,6 @@ set libGroundSteeringSpeedMax to 20. //
 
 //!!! Bei 100 m/s faellt die Antenne ab. Daher unbedingt vorher schon starten.
 set libLaunchGroundSteeringSpeedMax to 110. //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
-set libLaunchSpeedMin to 110. //Sets the Surfacespeed, which must be reached for "pull up"
 set libGroundSpeedMax to 110.
+
+set libLaunchSpeedMin to 85.

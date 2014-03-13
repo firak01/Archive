@@ -1,11 +1,11 @@
 //Merke: Man kann nur sinnvoll 1 Parameter (auch als Liste) uebergeben.  DECLARE PARAMETER iCount,targMain,listTarg To list().
 DECLARE PARAMETER argsIn.
-set subConsoleDataStart to LIST().
-
 run DEBUG_Caller1("subConsoleDataStart").
 
 set constDegreeTxt to "G".
 print "--- " + SHIP + " ---" at (0,langConsoleRowFirst + 2).
+set height to ALT:RADAR.
+print langCountGlobal + ". Messung | RadarHoehe= " + ROUND(height) + "            " at (0,langConsoleRowFirst + 3). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
@@ -27,7 +27,6 @@ for argIn IN argsIn {
 	if iIndex = 2 {
 		}.
 	}.
-print langCountGlobal + ". Messung:" at (0,langConsoleRowFirst + 4).     //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
 
 //Ausgabe des Hauptziels
 //Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
