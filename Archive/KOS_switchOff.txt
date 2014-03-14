@@ -1,0 +1,6 @@
+//uebergib die Steuerung wieder an manuell zurueck.
+UNLOCK STEERING.
+UNLOCK WHEELSTEERING.
+UNLOCK THROTTLE.
+SAS off.
+TOGGLE AG9. //Console aus, Communitron einziehen.

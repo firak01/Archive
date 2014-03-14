@@ -24,7 +24,8 @@ run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 //Merke: Paramter sind 
 set args TO LIST().
 set args:ADD to libLaunchSpeedMin.
-set args:ADD to libLaunchGroundSteeringSpeedMax.
+set args:ADD to libLaunchSpeedAutoMax.
+set args:ADD to libLaunchGroundSteeringSpeedAutoMax
 set args:ADD to libTargKscRunEnd.
 set args:ADD to libTargPolNor.
 

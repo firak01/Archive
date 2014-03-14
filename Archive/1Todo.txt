@@ -1,14 +1,28 @@
 #######################################
-TODO:
-Antenne Stabiler anbringen, sie fällt ab!!!
+TODO: Antenne Stabiler anbringen, sie fällt ab!!!
+TODO: Joint Reinforcement Plugin deinstallieren! Es bringt nix
+TODO: AG9 mit der Antenne koppeln. Antenne im eingezogenen Status ans schiff anbringen.
+
+#######################################
+Wenn die kritische Bodengeschwindigkeit VOR abfallen der Antenne erreicht wird, diese Einfahren und alle Steuerung wieder zurück nach manuell.
+run KOS_switchOff().)
+
+
+#######################################
+
+TODO: STATUS_Print
+Ausgabe in der Statuszeile, unterhalb der Konsole.
+Warum wird der Screen geloescht und nicht nur der reine Konsolenteil?
+
+
+######################################
 
 listListRemoveEntryByValueInt_ ist die Liste der zu entfernenden Werte.
 TODO: List_removeEntryByValueInt(listIn, listListRemoveEntryByValueInt_01, listListRemoveEntryByValueInt_Return).
       PRINT_RowsByTermL2rAt
 	  wie PRINT_RowsL2rAt, aber nun wird jeder eingegebenen String in einer anderen Zeile ausgegeben.
 	  
-TODO:
-Konsolenheader für Debugausgaben wieder auf 2 Zeilen reduzieren.
+
 
 ######################################
 !!! Die Datentyp-MEthoden liefern einen "gewollten Fehler".

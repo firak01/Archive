@@ -1,9 +1,9 @@
 //Deklaration der Flugzeugkonstanten
-//
-set libGroundSteeringSpeedMax to 20. //
-
 //!!! Bei 100 m/s faellt die Antenne ab. Daher unbedingt vorher schon starten.
-set libLaunchGroundSteeringSpeedMax to 110. //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
-set libGroundSpeedMax to 110.
+set libLaunchSpeedMin to 110. //Was das Flugzeug benötigt.... Erfahrungswert
+set libLaunchSpeedAutoMax to to Min(85,libGroundSpeedMax). //Ab wann KOS deaktivert werden soll und manuelle Steuerung notwendig ist
 
-set libLaunchSpeedMin to 85.
+set libLaunchGroundSteeringSpeedMax to 95. 
+set libLaunchGroundSteeringSpeedAutoMax to Min(110,libLaunchGroundSteeringSpeedMax). //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
+
+set libGroundSteeringSpeedMax to 20. //
