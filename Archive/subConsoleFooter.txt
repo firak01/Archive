@@ -1,7 +1,7 @@
 run DEBUG_Caller1("subConsoleFooter").
 set listPrintRowsRepeatedL2rAt to LIST().
 set listPrintRowsRepeatedL2rAt:ADD to (langFooterRowStart). 
-run PRINT_RowsRepeatedL2rAt(langDelimiterList01,listPrintRowsRepeatedL2rAt).
+run PRINT_RowsRepeatedAt(langDelimiterList01,listPrintRowsRepeatedL2rAt).
 
 //funktioniert nicht  set theRowList:CLEAR.
 //funktioniert nicht run LIST_clear(theRowList).

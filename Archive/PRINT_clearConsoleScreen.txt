@@ -4,5 +4,7 @@ clearscreen.
 print " ".
 print " ".
 run PRINT_delimitRow().
+run subConsoleStatus().
 run subConsoleFooter().
+
 

@@ -1,0 +1,13 @@
+clearscreen.
+switch to 0.
+LIST FILES in colFiles.
+print colFiles:LENGTH.
+for a in colFiles {
+print "test".
+}.
+
+List VOLUMES in colTemp.
+print colTemp:LENGTH.
+for a in colTemp {
+print "test2".
+}.

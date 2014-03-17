@@ -25,19 +25,14 @@ run lib7p08().   //Deklariere die "Flugzeug Konstanten"
 set args TO LIST().
 set args:ADD to libLaunchSpeedMin.
 set args:ADD to libLaunchSpeedAutoMax.
-set args:ADD to libLaunchGroundSteeringSpeedAutoMax
+set args:ADD to libLaunchGroundSteeringSpeedAutoMax.
 set args:ADD to libTargKscRunEnd.
 set args:ADD to libTargPolNor.
 
-LOCK THROTTLE to 1.      //Vollschub
-UNLOCK STEERING.
-UNLOCK WHEELSTEERING.
 set prgPlaneStart_Return to LIST(). //Rückgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart_Return).
 run DEBUG_print("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
 run DEBUG_print("ReturnWerte: " + prgPlaneStart_Return:LENGTH). 
-UNLOCK STEERING.
-UNLOCK WHEELSTEERING.
 
 //Prüfe den Status des Programms
 //a) Rückgabwerte entgegennehmen.
@@ -75,6 +70,9 @@ if prgPlaneStartStatus = "1" {
 	run prgPlaneFlight(args,prgPlaneFlight).
 	
 	}. //END START ERFOLGREICH
+	if prgPlaneStartStatus = "2" {
+	run DEBUG_print("Erfolgreich hochgezogen. Nehme Kurs auf.").
+	}.
 if prgPlaneStartStatus = "0" {
 	run DEBUG_print("Nicht gestartet.").
 	}.

@@ -1,6 +1,5 @@
 #######################################
 TODO: Antenne Stabiler anbringen, sie fällt ab!!!
-TODO: Joint Reinforcement Plugin deinstallieren! Es bringt nix
 TODO: AG9 mit der Antenne koppeln. Antenne im eingezogenen Status ans schiff anbringen.
 
 #######################################

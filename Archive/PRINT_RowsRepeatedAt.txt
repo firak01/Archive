@@ -16,20 +16,22 @@ run DEBUG_Caller1("PRINT_RowsRepeated").
 //run removeListEntryLast(argsIn,removeListEntryLast).
 //run printDebug0("Anzahl von Parametern in rueckgabewert= " + removeListEntryLast:LENGTH).
 
+set string to "".
+set iWordLength to 0.
+for character in argsIn {
+	set iWordLength to iWordLength + 1.         //TODO: Stringfunktion, die die Laenge eines Strings ermittelt waere toll.
+	set string to string + character.
+}.
+
+
 for lineToPrint in listPrintRowsRepeatedAt {
-
-	set iIndex to -1.
-	set iColumn to -1.
-	//for character in removeListEntryLast {
+	set iWordCount to 0.
+	set iColumn to 0.
+	
 	Until iColumn > langScreenSizeColumn {
-		set iColumn to iColumn + 1.
-		for character in argsIn {
-			set iIndex to iIndex + 1.         //TODO: Stringfunktion, die die Laenge eines Strings ermittelt waere toll.
-			print character at (iIndex, lineToPrint).
-		}.
-
+		print string at (iColumn, lineToPrint).
+		set iColumn to iColumn + iWordLength.
+		set iWordCount to iWordCount + 1.
 	}.
-
-
 }.
 

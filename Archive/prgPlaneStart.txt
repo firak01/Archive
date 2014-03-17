@@ -17,19 +17,22 @@ for argIn IN argsIn {
 	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
+	run Debug_print("param@0 = " + argIn).
 		set launchSpeedMin to argIn.
 		run DEBUG_print0("LaunchSpeedMin = " + launchSpeedMin).
 		}.
 	if iIndex = 1 {
+	run Debug_print("param@1 = " + argIn).
 		set launchSpeedAutoMax to argIn.
 		run DEBUG_print0("LaunchSpeedMaxAuto = " + launchSpeedAutoMax).
 		}.	
 	if iIndex = 2 {
+	run Debug_print("param@2 = " + argIn).
 		set launchSteeringSpeedAutoMax to argIn.
 		run DEBUG_print0("LaunchSteeringSpeedAutoMax = " + launchSteeringSpeedAutoMax).
 		}.	
 	if iIndex = 3 {
-		//run printDebug("param@2 = " + argIn).
+		run Debug_print("param@3 = " + argIn).
 		set targMain to argIn.
 		}.
 	}.
@@ -47,8 +50,8 @@ set args:ADD to targMain.
 //Funktionen mit der Steuerung verknuepfen
 set horizonStart to 0.         //Horizont beim Start, TODO: Auslesen wie er wirklich ist.
 set horizonCurrent to horizonStart.
-//set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
-set gradeStart to targMain:BEARING.
+set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
+//set gradeStart to targMain:BEARING.
 set gradeCurrent to gradeStart.
 
 //LOCK STEERING TO targMain.
@@ -59,6 +62,8 @@ set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startric
 //LOCK WHEELSTEERING TO targMain.           // Steer the vessel in the direction suggested by direction X.
 LOCK WHEELSTEERING TO W.           // Steer the vessel in the direction suggested by direction X.
 
+LOCK THROTTLE to 1.
+
 //Los geht´s....
 stage. //Spare das Druecken der "Spacebar"-Taste 
 BRAKES On.
@@ -67,31 +72,41 @@ BRAKES OFF. //Funktioniert alleine nicht.
 set bIsFastEnough to 0.
 set bIsLaunched to 0.
 set bContinue to 0.
+set iCountSoft to 0.
 until bContinue >= 1 {	
 	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
 	set langCountGlobal to langCountGlobal+1.////Das ist der einzige Weg eine Zählvariable an eine Unterfunktion zu uebergeben. Die Variable ist in einem "ueberprogramm" deklariert und daher global
 	run subConsoleDataStart(args).
 	
 	if ROUND(SHIP:SURFACESPEED) < MIN(launchSteeringSpeedAutoMax, launchSpeedAutoMax){
-		//Korrektursteuerung
-		set iCountSoft to 0.
-		
-		set gradeCurrent to targMain:HEADING. //TODO: fexibles Ziel, funktoniert das
-		set iCountSoft to iCountSoft + 3.     // 3 Grad korrektursteuerung.
-		if ROUND(targMain:BEARING) > 0 {
+		//Korrektursteuerungen			
+		//set gradeCurrent to targMain:HEADING. //TODO: fexibles Ziel, funktioniert das?
+		set iCountSoft to iCountSoft + 1.     // 2 Grad korrektursteuerung.
+
+		if iCountSoft >= 10 { set iCountSoft to 10. }.
+		set iBearing to targMain:BEARING.
+		if ROUND(iBearing) > 0 {          //als String?, ist keine Zahl
 			SAS OFF. //sonst ist Steuern nicht möglich
-			run STATUS_print("... Korrektursteuern nach rechts...").
+			run STATUS_print1("... Korrektursteuern nach rechts...").			
 			set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
-			if gradeCurrent > 360 { set gradeCurrent to 360. }.
+			run DEBUG_print1("Grad nach rechts: " + gradeCurrent).
+			if gradeCurrent <= 0 { set gradeCurrent to 360-gradeCurrent. }.
+			if gradeCurrent >= 360 { set gradeCurrent to gradeCurrent-360. }.
 		}.
-		if ROUND(targMain:BEARING) < 0 {		
+		if ROUND(iBearing) < 0 {		
 			SAS OFF. //sonst ist Steuern nicht möglich
-			run STATUS_print( "... Korrektursteuern nach links...").
+			run STATUS_print1( "... Korrektursteuern nach links...").
 			set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
-			if gradeCurrent < 0 { set gradeCurrent to 0. }.
+			run DEBUG_print1("Grad nach links: " + gradeCurrent).
+			if gradeCurrent <= 0 { set gradeCurrent to 360-gradeCurrent. }.
+			if gradeCurrent >= 360 { set gradeCurrent to gradeCurrent-360. }.
 		}.
-		if ROUND(targMain:BEARING = 0) {	
+		if ROUND(iBearing) = 0 {			
 			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
+			run STATUS_print1( "").		
+			run DEBUG_print1("").
+			//set iCountSoft to 0.
+			set gradeCurrent to gradeStart.
 		}.
 		set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 		set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
@@ -100,24 +115,26 @@ until bContinue >= 1 {
 	
 	//+++ Steuern, falls noch nicht zu schnell				
 	//Unbedingt vor Tempo 100 versuchen hochzuziehen. Ggf. Antenne einziehen und Programm damit beenden.
-	if abs(SHIP:surfacespeed) >= abs(launchSpeedAutoMax) {
+	set iSurfaceSpeed to SHIP:SURFACESPEED.
+	if abs(iSurfaceSpeed) >= abs(launchSpeedAutoMax) {
 		UNLOCK STEERING.
-		run STATUS_print("AUTOMAX Startgeschwindigkeit erreicht. STEERING ist abgestellt. MANUELL HOCHZIEHEN.").
+		run STATUS_print1("AUTOMAX: STEERING aus. HOCHZIEHEN."). 
 		SAS OFF.
 	}.
 	
 	//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
-	if abs(SHIP:surfacespeed) >= abs(launchGroundSteeringSpeedAutoMax) {
+	if abs(iSurfaceSpeed) >= abs(launchSteeringSpeedAutoMax) {
 		UNLOCK WHEELSTEERING.
-		run STATUS_print("AUTOMAX Steuereungsgeschwindigkeit erreicht. WHEELSTEERING ist abgestellt.").
+		run STATUS_print1("AUTOMAX: WHEELSTEERING  abgestellt.").
 		SAS OFF.
 	}.
 	
-	if abs(SHIP:surfacespeed)	>= max(llaunchSpeedAutoMax, launchGroundSteeringSpeedAutoMax) {
-	  run KOS_switchOff().)
+	if abs(iSurfaceSpeed)	>= max(launchSpeedAutoMax, launchSteeringSpeedAutoMax) {
+		run STATUS_print("AUTOMAX: KOS aus. HOCHZIEHEN."). //warte einige Zeit
+		run KOS_switchOff().
 	}. 
 	
-	if abs(SHIP:sufacespeed >= launchSpeedMin) {
+	if abs(iSurfaceSpeed) >= abs(launchSpeedMin) {
 	set bIsFastEnought to 1.
 	Set STATUSx to "1".     //Automatisiert hochziehen
 	}

@@ -274,8 +274,8 @@
             <Keywords name="Folders in comment, close"></Keywords>
             <Keywords name="Keywords1">print at lock unlock to break clearscreen on off wait switch copy edit rename toggle if until when FOR IN then</Keywords>
             <Keywords name="Keywords2">abs&#x000D;&#x000A;LATLNG&#x000D;&#x000A;LN LOG10 MIN MAX&#x000D;&#x000A;CONSTANT&#x000D;&#x000A;</Keywords>
-            <Keywords name="Keywords3">sas gear rcs lights brakes abort&#x000D;&#x000A;ag0 ag1 ag2 ag3 ag4 ag5 ag6 ag7 ag8 ag9 throttle steering stage</Keywords>
-            <Keywords name="Keywords4">LIST&#x000D;&#x000A;node&#x000D;&#x000A;apoapsis&#x000D;&#x000A;periapsis&#x000D;&#x000A;atl:apoapsis&#x000D;&#x000A;atl:periapsis&#x000D;&#x000A;eta:apoapsis&#x000D;&#x000A;eta:periapsis&#x000D;&#x000A;mag:node eta:node&#x000D;&#x000A;BODY SHIP:BODY TARGET:BODY&#x000D;&#x000A;NODE:ORBIT:APOAPSIS&#x000D;&#x000A;VOLUME:NAME</Keywords>
+            <Keywords name="Keywords3">sas gear rcs lights brakes abort&#x000D;&#x000A;ag0 ag1 ag2 ag3 ag4 ag5 ag6 ag7 ag8 ag9 throttle steering wheelsteering stage</Keywords>
+            <Keywords name="Keywords4">LIST&#x000D;&#x000A;node&#x000D;&#x000A;apoapsis&#x000D;&#x000A;periapsis&#x000D;&#x000A;atl:apoapsis&#x000D;&#x000A;atl:periapsis&#x000D;&#x000A;eta:apoapsis&#x000D;&#x000A;eta:periapsis&#x000D;&#x000A;mag:node eta:node&#x000D;&#x000A;NODE:ORBIT:APOAPSIS&#x000D;&#x000A;SHIP:BODY &#x000D;&#x000A;SHIP:SURFACESPEED&#x000D;&#x000A;TARGET:BODY&#x000D;&#x000A;VOLUME:NAME</Keywords>
             <Keywords name="Keywords5">run declare parameter&#x000D;&#x000A;</Keywords>
             <Keywords name="Keywords6">Bodies Targets Engines Resources &#x000D;&#x000A;Parts Sensors Elements</Keywords>
             <Keywords name="Keywords7">DEBUG_&#x000D;&#x000A;LIST_&#x000D;&#x000A;PRINT_&#x000D;&#x000A;&#x000D;&#x000A;</Keywords>

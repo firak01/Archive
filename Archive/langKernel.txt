@@ -82,7 +82,7 @@ set langFooterRowsCount to 2.
 set langFooterRowStart to langScreenSizeRow - langFooterRowsCount + 1.
 set langFooterRowList to List().
 SET XStart to langFooterRowStart + langFooterRowsCount -1.
-SET XEnd to XStart - langFooterRowsCount .
+SET XEnd to XStart - langFooterRowsCount.
 UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
     Set langFooterRowList:ADD to XStart.
     SET XStart to XStart - 1.
@@ -90,7 +90,7 @@ UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gea
 
 //Status-Abschnitt
 set langStatusRowsCount to 2.
-set langStatusRowStart to langFooterRowStart - langStatusRowsCount + 1.
+set langStatusRowStart to langFooterRowStart - langStatusRowsCount.
 set langStatusRowList to LIST().
 SET XStart to langStatusRowStart + langStatusRowsCount -1.
 SET XEnd to XStart - langStatusRowsCount .
@@ -102,9 +102,9 @@ UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gea
 //Console
 //Merke: Die Delimiter der anderen Abschnitte zählen nicht zur Konsole
 set langConsoleRowFirst to langDebugRowStart + langDebugRowsCount -1.    //die ersten Reihen sind für DEBUG-Print-Ausgaben. Danach die Konsole, dann Status-Ausgaben, dann der Footer.
-set langConsoleRowLast to langScreenSizeRow - langFooterRowsCount - langStatusRowsCount.
+set langConsoleRowLast to langScreenSizeRow - langFooterRowsCount - langStatusRowsCount - 1.
 set langConsoleRowList to LIST().
-SET XStart to langConsoleRowLast.
+SET XStart to langConsoleRowLast-1.
 SET XEnd to langConsoleRowFirst.
 UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
 	Set langConsoleRowList:ADD to XStart.
