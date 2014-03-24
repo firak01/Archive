@@ -304,6 +304,26 @@ https://github.com/erendrake/KOS/wiki/Vessel
     If interested, you can do the same sort of thing to get your pitch but first you need the length of the velocity vector projected onto the east/north plane. Use the pathagorean theorem on just the east and north components (without the Up component) to get the length of that projection, then plug it into ARCTAN2() along with the Up component to get the pitch (you are obtaining the angle between the direction you're actually going with the Up component present versus the direction you would have been going had the Up component been zero.) 
 	
 	
+	#####################################
+	
+	There's no need for an exponential function because there already exists the caret for "to the power of". What you need to perform e^x is not a function but rather a constant - you need the constant "e".
+Like this:
+
+set e to 2.718281828.
+set y to e^x.
+
+There exists a constant 'e' in the system already, but the syntax for accessing it is weird. You have to say:
+
+consts():e.
+
+The place where you *do* need support from the system giving you a function is when going the other way around, and getting the natural log. Doing that on your own is a mess because you'd have to calculate it from a series sum and that's too slow in kosscript.
+
+For that you have ln():
+
+set y to ln(x).
+
+	
+	
 	
 	
 	
