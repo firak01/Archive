@@ -25,6 +25,20 @@ Die Sprache wird aber als KOSbyFGL.udl aus dem Repository importiert und wieder 
   The sensor suffix has been renamed to "sensors".
     So instead of "print ship:sensor:acc:mag" you have to use "print ship:sensors:acc:mag" 
 
+	//###########################
+	//Luftdruck auch ohne Sensor berechnen
+	You can calculate barometric pressure without needing to lug around a sensor:
+set pbaro to 0.
+if  body:atm:scale > 0 {
+   set f to -1 * altitude / body:atm:scale.
+   set pbaro to body:atm:sealevelpressure * ( e ^ f).
+}.
+Should work for every celestial body with an atmosphere
+
+
+	
+	
+	
 #########################
 Einen Node setzen:
 when I'm trying to set a node if I do add node (time+30,0,0,400). it tells me that time does not return a number value. if I do add node (0,0,0,400). it makes a node 3 hours in the past... did the behavior of this change or am I doing something wrong?
