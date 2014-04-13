@@ -3,4 +3,4 @@ UNLOCK STEERING.
 UNLOCK WHEELSTEERING.
 UNLOCK THROTTLE.
 SAS off.
-TOGGLE AG9. //Console aus, Communitron einziehen.
+TOGGLE AG8. //Console aus, Power aus, TODO: Communitron einziehen.

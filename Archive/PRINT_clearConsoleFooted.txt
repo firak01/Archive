@@ -1,7 +1,7 @@
 //Methode clearconsole, welche aber den Rest des Screens bestehen lässt, bzw. die Trennzeilen setzten lässt.
 //Merke: Delimiter werden von der Console selbst nicht ausgegeben.
 run PRINT_clearRowsAt(langConsoleRowList).
-run subConsoleStatus().
-run subConsoleFooter().
+run subConsoleStatus.
+run subConsoleFooter.
 
 

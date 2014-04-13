@@ -1,10 +1,13 @@
 //Program "Plane Start"
 //Starte ein Flugzeug: 1) Beschleunige, 2) Ziehe hoch
-DECLARE PARAMETER argsIn, prgPlaneFlight.
+DECLARE PARAMETER argsIn, prgPlaneFlight_Return.
 
 //erwarte als erstes Argument: Das Ziel 
 run DEBUG_Caller1("prgPlaneFlight").
-//LOCK THROTTLE to 1.//wird im aufrufenden Ptogramm gemacht.
+set STATUSx to "-99".
+set prgPlaneFlight_Return:ADD TO STATUSx.
+
+LOCK THROTTLE to 1.
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
@@ -16,12 +19,12 @@ for argIn IN argsIn {
 	run DEBUG_print1("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
-		set groundSpeedMax to argIn.
-		run DEBUG_Caller1("GroundSpeedMax= " + groundSpeedMax).
+		set iHeightGoal to argIn.
+		run DEBUG_Caller("Height Goal = " + iHeightGoal).
 		}.
 	if iIndex = 1 {
-		//set launchSteeringSpeedMax to argIn.
-		//run printDebug0("LaunchSteeringSpeedMax = " + launchSteeringSpeedMax).
+		set iDistTargGoal to argIn.
+		run DEBUG_Caller("DistTarg Goal = " + iDistTargGoal).
 		}.
 	if iIndex = 2 {
 		//run printDebug("param@2 = " + argIn).
@@ -30,32 +33,103 @@ for argIn IN argsIn {
 	}.
 //Das Hauptziel aus der argsIn Liste holen.
 //TODO: Funktion machen, die den Wert einer Liste an Indexposition x zurueckgibt.
-set iIndex to -1.
-set iIndexToReturn to 0.
+//set iIndex to -1.
+//set iIndexToReturn to 0.
 
-DECLARE targMain.
-set t to argsIn:LENGTH.
-if iIndexToReturn < 1 {
-	for targMain IN argsIn {
-		set iIndex to iIndex + 1.
-		if iIndex = iIndexToReturn { break. }.
-	}.
-}.
+//DECLARE targMain.
+//set t to argsIn:LENGTH.
+//if iIndexToReturn < 1 {
+//	for targMain IN argsIn {
+	//	set iIndex to iIndex + 1.
+		//if iIndex = iIndexToReturn { break. }.
+//	}.
+//}.
 
+set targMain to argsIn#3.
 
 //Gesamtliste aller Ziele
 //TODO: Entferne aus der Liste das als Parameter uebergebene Ziel.
 //      Das als Funktion machen.
 SET listTarg TO LIST().   // Creates a new list in FOO variable
-SET listTarg:ADD TO targKscRunEnd.    // Adds a new element to the end of the list
-SET listTarg:ADD TO targPolNor.
+SET listTarg:ADD TO targMain.
+SET listTarg:ADD TO libTargKscRunEnd.    // Adds a new element to the end of the list
+SET listTarg:ADD TO libTargPolNor.
 
-
-
-set listTarg:REMOVE TO 0.
-set targKscRunEnd to LATLNG(-0.0592,-74.7244). //Endposition auf Runway beim KSC.
-set listTarg:ADD TO targPolNor.
-	wait 1.
+//set listTarg:REMOVE TO 0.
+//set targKscRunEnd to LATLNG(-0.0592,-74.7244). //Endposition auf Runway beim KSC.
+//set listTarg:ADD TO targPolNor.
 	
-	//run subConsoleDataMain (iCount, targMain, listTarg).
+//TODO: Bis auf Zielnähe fliegen.
+until Round(targMain:DISTANCE)<=Round(iDistTargGoal) {
+	set iCount to iCount + 1.
+	run subConsoleDataStart (listTarg).
+	
+	until SHIP:altitude >= iHeightGoal{
+		set iCount to iCount + 1.
+		run subConsoleDataStart (listTarg).
+		
+		
+		//+++ Hoehenangabe
+		//These lines determine if the missile is flying over water. If it is, the missile determins its height based on altitude, not radalt.
+		set height to alt:radar.
+		if alt:radar < 0 {set height to altitude.}.
+		if alt:radar > altitude {set height to altitude.}.
+			
+		set sAltitudeControl to sMissionStepTxt + ": Hoehenkorridor halten.".
+		set horizonExtreme to 0.
+		if ROUND(altitude) < iHeightGoal - (iHeightGoal/10) { 
+			set horizonExtreme to horizonGoalUp.
+			set horizonCurrent to horizonGoalUp.
+			set sAltitudeControl to sMissionStepTxt + ": Hochziehen!".
+			set iCountSoft to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+		}.
+		if ROUND(altitude) > iHeightGoal + (iHeightGoal/10) { 
+			set horizonExtreme to horizonGoalDown.
+			set horizonCurrent to horizonGoalDown.
+			set sAltitudeControl to sMissionStepTxt + ": Runterziehen!".
+			set iCountSoft to 0. //set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+		}.
+		print sAltitudeControl at (0,3).
+		 
+		//+++ Anstiegswinkel verringern und schon leicht eine Kurve fliegen. Aber die Extermbelastungen vermeiden.
+		if horizonExtreme = 0 { 
+			//Teste, fliege gleichmaessiger
+			if abs(horizonCurrent)-iCountSoft > 0 {
+				set iCountSoft to iCountSoft + 1.
+			}.
+			if abs(horizonCurrent)-iCountSoft <= 0 {
+				 set iCountSoft to 0.
+			}.
+			//Vermeide ueberschreiten der erlaubten Belastung.
+			set horizonCurrent to horizonCurrent-iCountSoft.
+			if horizonCurrent > horizonGoalUp {
+				set horizonCurrent to horizonGoalUp.
+			}.
+			if horizonCurrent < horizonGoalDown {
+				set horizonCurrent to horizonGoalDown.
+			}.
+		}.
+		
+		
+		//Ziel: Langsam den Kurs aendern.
+		if height > 200 { 
+			if gradeCurrent != ROUND(targ:BEARING) {
+				if abs(gradeCurrent - abs(ROUND(targ:BEARING))) >= 180 {
+					print "... korrektursteuern nach rechts..." at (0,0).
+					set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
+					if gradeCurrent > 360 { set gradeCurrent to 360. }.
+				}.
+				if abs(gradeCurrent - abs(ROUND(targ:BEARING))) < 180 {
+					print "... korrektursteuern nach links..." at (0,0).
+					set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
+					if gradeCurrent < 0 { set gradeCurrent to 0. }.
+				}.
+			}.
+		}.
+	}.
+}.
+
+Set STATUSx to "1".
+set prgPlaneFlight_Return:REMOVE to 0.
+set prgPlaneFlight_Return:ADD TO STATUSx.
 	

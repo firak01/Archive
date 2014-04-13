@@ -4,7 +4,7 @@ TODO: AG9 mit der Antenne koppeln. Antenne im eingezogenen Status ans schiff anb
 
 #######################################
 Wenn die kritische Bodengeschwindigkeit VOR abfallen der Antenne erreicht wird, diese Einfahren und alle Steuerung wieder zurück nach manuell.
-run KOS_switchOff().)
+run KOS_switchOff.
 
 
 #######################################

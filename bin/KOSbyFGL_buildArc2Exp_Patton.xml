@@ -23,7 +23,7 @@
  
   <!-- alle .txt Dateien, die ein juengeres Aenderungsdatum haben. Also die reinen KOS-Programdateien --> 
   <property name="src.dirKosArchive" value="Archive" /> 
-  <property name="src.dirKosPath" value="C:/Spiel/ksp-win-0-23-0/KSP_win/Plugins/PluginData"/>
+  <property name="src.dirKosPath" value="C:/Spiel/ksp-win-0-23-5/KSP_win/Plugins/PluginData"/>
   <property name="src.dirKosArchivePath" value="${src.dirKosPath}/${src.dirKosArchive}" /> 
   
   <!-- Einstellungen für Notepad++ -->

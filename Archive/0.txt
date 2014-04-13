@@ -1,2 +1,2 @@
 switch to 0.
-run KOS_copyLib().
+run KOS_copyLib.

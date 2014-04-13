@@ -106,7 +106,7 @@ Rückgabewert von fun ist beliebiger Wert.
 Schleifenstart ....
 z.B. set icount to icount +1.
 dann unterfunktion aufrufen
-run mySub().
+run mySub.
 Schleifenende. Zurück zum Start.
 
 In der Unterfuntion den Wert ausgeben lassen, funktioniert.

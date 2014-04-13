@@ -67,10 +67,11 @@ set langScreenSizeRow to 35.
 set langScreenSizeColumn to 50.
 
 //Debug-Abschnitt
-set langDebugRowStart to 0.
+
 set langDebugRowsCount to 3.
 set langDebugRowList to List().
-SET XStart to langDebugRowStart + langDebugRowsCount -1.
+SET XStart to 0 + langDebugRowsCount -1.
+set langDebugRowStart to XStart.
 SET XEnd to XStart - langDebugRowsCount .
 UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gearbeite wird, beim nächsten print !
     Set langDebugRowList:ADD to XStart.
@@ -112,4 +113,4 @@ UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gea
 }
 
 //Ausprinten
-run PRINT_clearConsoleScreen(). //Loesche den ganzen Screen und setze den Print Cursor auf die oberste Consolenzeile
+run PRINT_clearConsoleScreen. //Loesche den ganzen Screen und setze den Print Cursor auf die oberste Consolenzeile

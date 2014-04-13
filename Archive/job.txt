@@ -1,25 +1,25 @@
 clearscreen.
-run langKernel(). //Deklariere die "Language Konstanten."
+run langKernel. //Deklariere die "Language Konstanten."
 set langCallerName to "job".
 run DEBUG_Caller(langCallerName).
 
 //##################################
 //### Starte von der Startbahn 
 //##################################
-run libKerbal(). //Soll die globalen Variablen für den Planeten deklarieren.
-run lib7p08().   //Deklariere die "Flugzeug Konstanten"
+run libKerbal. //Soll die globalen Variablen fÃ¼r den Planeten deklarieren.
+run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 
-//### UNIT - TESTS --- NICHT löschen
-//run testLIST_count().
-//run testLIST_intersection().
-//run testLIST_contains().
-//run testOBJECT_isList().
+//### UNIT - TESTS --- NICHT lÃ¶schen
+//run testLIST_count.
+//run testLIST_intersection.
+//run testLIST_contains.
+//run testOBJECT_isList.
 //wait 10.
-//run testPrg().
+//run testPrg.
 //wait 30.
 
-//TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der Terminalgröße ausgehen.
-//run subConsoleFooter().
+//TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der TerminalgrÃ¶ÃŸe ausgehen.
+//run subConsoleFooter.
 
 //Merke: Paramter sind 
 set args TO LIST().
@@ -29,13 +29,13 @@ set args:ADD to libLaunchGroundSteeringSpeedAutoMax.
 set args:ADD to libTargKscRunEnd.
 set args:ADD to libTargPolNor.
 
-set prgPlaneStart_Return to LIST(). //Rückgabewert, muss hier schon deklariert werden.
+set prgPlaneStart_Return to LIST(). //RÃ¼ckgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart_Return).
-run DEBUG_print("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
+run DEBUG_print("Startphase beendet. Manuell Ã¼bernehmen. Zum Hochziehen.").
 run DEBUG_print("ReturnWerte: " + prgPlaneStart_Return:LENGTH). 
 
-//Prüfe den Status des Programms
-//a) Rückgabwerte entgegennehmen.
+//PrÃ¼fe den Status des Programms
+//a) RÃ¼ckgabwerte entgegennehmen.
 set iIndex to -1.
 set prgPlaneStartStatus to "0".
 for argReturn IN prgPlaneStart_Return {
@@ -51,9 +51,9 @@ for argReturn IN prgPlaneStart_Return {
 		}.
 	}.
 	
-//b) Rückgabwerte analysieren.
+//b) RÃ¼ckgabwerte analysieren.
 if prgPlaneStartStatus = "1" {
-	run DEBUG_print1("Startgeschwindigkeit erreicht. Ziehe automatisiert hoch.").
+	run DEBUG_print1("Startgeschwindigkeit zuspÃ¤t erreicht. Bremse ab hoch.").
 	
 	//Eingabearray leeren.
 	set iCount to args:LENGTH.
@@ -61,17 +61,28 @@ if prgPlaneStartStatus = "1" {
 		set iCount to iCount -1.
 		set args:Remove to iCount.
 	}
-	//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
-	set args:add To libGroundSpeedMax. 
-	set args:add TO libTargPolNor. //Nordpol als Ziel
 	
-	//Nun auf Höhe gehen und das Ziel ansteuern.
-	set prgPlaneFligth to LIST(). //Rückgabewert
-	run prgPlaneFlight(args,prgPlaneFlight).
+	LOCK THROTTLE TO 0.
+	BRAKE On.
 	
 	}. //END START ERFOLGREICH
+	
+	
+	
 	if prgPlaneStartStatus = "2" {
-	run DEBUG_print("Erfolgreich hochgezogen. Nehme Kurs auf.").
+		run DEBUG_print("Erfolgreich hochgezogen. Nehme Kurs auf.").
+		
+			//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
+		set iHeightGoal to 12000. //Sets desired height of plane.
+		set iDistTargGoal to 2000. //Set desired distance to Target in meter.
+
+		set args:add To iHeightGoal. 
+		set args:add TO iDistTargGoal.
+		set args:add TO libTargPolNor. //Nordpol als Ziel
+		
+		//Nun auf HÃ¶he gehen und das Ziel ansteuern.
+		set prgPlaneFligth_Return to LIST(). //RÃ¼ckgabewert
+		run prgPlaneFlight(args,prgPlaneFlight_Return).
 	}.
 if prgPlaneStartStatus = "0" {
 	run DEBUG_print("Nicht gestartet.").
@@ -79,6 +90,9 @@ if prgPlaneStartStatus = "0" {
 if prgPlaneStartStatus = "-99" {
 	run DEBUG_print( "ERROR beim Start.").
 	}.
+
+
+
 
 
 
