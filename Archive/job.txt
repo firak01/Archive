@@ -31,8 +31,7 @@ set args:ADD to libTargPolNor.
 
 set prgPlaneStart_Return to LIST(). //Rückgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart_Return).
-run DEBUG_print("Startphase beendet. Manuell übernehmen. Zum Hochziehen.").
-run DEBUG_print("ReturnWerte: " + prgPlaneStart_Return:LENGTH). 
+run DEBUG_print("Startphase beendet. Anzahl ReturnWerte: " + prgPlaneStart_Return:LENGTH).
 
 //Prüfe den Status des Programms
 //a) Rückgabwerte entgegennehmen.
@@ -53,7 +52,7 @@ for argReturn IN prgPlaneStart_Return {
 	
 //b) Rückgabwerte analysieren.
 if prgPlaneStartStatus = "1" {
-	run DEBUG_print1("Startgeschwindigkeit zuspät erreicht. Bremse ab hoch.").
+	run DEBUG_print1("Startgeschwindigkeit zu spät erreicht. Bremse ab.").
 	
 	//Eingabearray leeren.
 	set iCount to args:LENGTH.
@@ -72,7 +71,7 @@ if prgPlaneStartStatus = "1" {
 	if prgPlaneStartStatus = "2" {
 		run DEBUG_print("Erfolgreich hochgezogen. Nehme Kurs auf.").
 		
-			//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
+		//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
 		set iHeightGoal to 12000. //Sets desired height of plane.
 		set iDistTargGoal to 2000. //Set desired distance to Target in meter.
 

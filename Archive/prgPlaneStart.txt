@@ -50,7 +50,6 @@ set args:ADD to targMain.
 set horizonStart to 0.         //Horizont beim Start, TODO: Auslesen wie er wirklich ist.
 set horizonCurrent to horizonStart.
 set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
-//set gradeStart to targMain:BEARING.
 set gradeCurrent to gradeStart.
 
 //LOCK STEERING TO targMain.
@@ -61,8 +60,7 @@ LOCK STEERING TO X.           // Steer the vessel in the direction suggested by 
 LOCK WHEELSTEERING TO targMain.           // Steer the vessel in the direction suggested by direction X.
 LOCK WHEELSTEERING TO W.           // Steer the vessel in the direction suggested by direction X.
 
-set T to 0.0.
-LOCK THROTTLE TO T.
+
 
 //Los geht´s....
 stage. //Spare das Druecken der "Spacebar"-Taste 
@@ -100,9 +98,7 @@ until bContinue >= 1 {
 			
 	}.
 	
-	
 		//Korrektursteuerungen			
-		//set gradeCurrent to targMain:HEADING. //TODO: fexibles Ziel, funktioniert das?
 		set iCountSoft to iCountSoft + 2.     // 2 Grad korrektursteuerung.
 
 		if iCountSoft >= 10 { set iCountSoft to 10. }.
@@ -180,7 +176,7 @@ until bContinue >= 1 {
 		set horizonCurrent to 70.
 		set X to HEADING(horizonCurrent, targMain:HEADING).     
 		LOCK STEERING TO X.
-		run STATUS_print("AUTOMAX: AUTO HOCHZIEHEN."). //warte einige Zeit
+		run STATUS_print("AUTO HOCHZIEHEN."). //warte einige Zeit
 		SAS ON.
 		Set STATUSx to "1".     //Automatisiert hochziehen
 	}
@@ -193,7 +189,7 @@ until bContinue >= 1 {
 		set horizonCurrent to 30.
 		set X to HEADING(horizonCurrent, targMain:HEADING).     
 		Lock STEERING TO X.
-		run STATUS_print("AUTOMAX: AUTO Weiterfliegen."). //warte einige Zeit
+		run STATUS_print("AUTO Weiterfliegen."). //warte einige Zeit
 		SAS ON.
 		GEAR OFF.   //Fahrwerk einziehen.
 		Set STATUSx to "2".    //Automatisiert weiterfliegen.

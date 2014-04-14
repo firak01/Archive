@@ -7,8 +7,6 @@ run DEBUG_Caller1("prgPlaneFlight").
 set STATUSx to "-99".
 set prgPlaneFlight_Return:ADD TO STATUSx.
 
-LOCK THROTTLE to 1.
-
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
 //1. Die Startgeschwindigkeit aus der argsIn Liste holen.
@@ -31,66 +29,106 @@ for argIn IN argsIn {
 		//set targMain to argIn.
 		}.
 	}.
-//Das Hauptziel aus der argsIn Liste holen.
-//TODO: Funktion machen, die den Wert einer Liste an Indexposition x zurueckgibt.
-//set iIndex to -1.
-//set iIndexToReturn to 0.
+	
+	
+//########################################
+set iCount to 0. //Messungszähler
+	
+//Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
+Set listListReadEntryLast TO LIST().)
+run LIST_readEntryLast(argsIn, listListReadEntryLast).
+set targMain to listListReadEntryLast#0.
 
-//DECLARE targMain.
-//set t to argsIn:LENGTH.
-//if iIndexToReturn < 1 {
-//	for targMain IN argsIn {
-	//	set iIndex to iIndex + 1.
-		//if iIndex = iIndexToReturn { break. }.
-//	}.
-//}.
-
-set targMain to argsIn#3.
-
-//Gesamtliste aller Ziele
-//TODO: Entferne aus der Liste das als Parameter uebergebene Ziel.
-//      Das als Funktion machen.
+//Gesamtliste aller (anderen) Ziele
+//TODO: Entferne aus der Liste das als Parameter uebergebene Haupt-Ziel.
+//           Das als Funktion machen.
 SET listTarg TO LIST().   // Creates a new list in FOO variable
 SET listTarg:ADD TO targMain.
 SET listTarg:ADD TO libTargKscRunEnd.    // Adds a new element to the end of the list
 SET listTarg:ADD TO libTargPolNor.
 
-//set listTarg:REMOVE TO 0.
-//set targKscRunEnd to LATLNG(-0.0592,-74.7244). //Endposition auf Runway beim KSC.
-//set listTarg:ADD TO targPolNor.
-	
-//TODO: Bis auf Zielnähe fliegen.
-until Round(targMain:DISTANCE)<=Round(iDistTargGoal) {
+
+//######################
+//TODO: Diese Werte in die lib der Maschine aufnehmen (lib7p08.txt)
+set constHorizonUpMax to 60. //Die Maximalwerte fuer das Flugverhalten der Maschine.
+set constHorizonDownMax to -20.
+set horizonGoalUp to constHorizonUpMax. //wie stark die Hoehenveraenderung sein soll.
+set horizonGoalDown to -5.
+set horizonCurrent to horizonGoalUp.
+
+//Funktionen mit der Steuerung verknuepfen
+set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
+set gradeCurrent to gradeStart.
+
+LOCK THROTTLE to 1.
+set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+
+//######################	
+//Bis auf Zielnähe fliegen.
+set bContinue to 0.
+//until Round(targMain:DISTANCE)<=Round(iDistTargGoal) {
+until bContinue >= 1 {
 	set iCount to iCount + 1.
 	run subConsoleDataStart (listTarg).
 	
-	until SHIP:altitude >= iHeightGoal{
-		set iCount to iCount + 1.
-		run subConsoleDataStart (listTarg).
+	
+	//+++ Hoehenangabe
+	set altitude to SHIP:ALTITUDE.
 		
-		
-		//+++ Hoehenangabe
-		//These lines determine if the missile is flying over water. If it is, the missile determins its height based on altitude, not radalt.
+	//Ziel: Bei niedriger Hoehe ggf. alt:radar verwenden, um Bergspitzen auszuweichen!
+	//These lines determine if the object is flying over water. If it is, the object determins its height based on altitude, not radalt.
+	if altitude <= 4000 {
 		set height to alt:radar.
 		if alt:radar < 0 {set height to altitude.}.
 		if alt:radar > altitude {set height to altitude.}.
-			
-		set sAltitudeControl to sMissionStepTxt + ": Hoehenkorridor halten.".
-		set horizonExtreme to 0.
-		if ROUND(altitude) < iHeightGoal - (iHeightGoal/10) { 
-			set horizonExtreme to horizonGoalUp.
-			set horizonCurrent to horizonGoalUp.
-			set sAltitudeControl to sMissionStepTxt + ": Hochziehen!".
-			set iCountSoft to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+	}.
+	if altitude > 4000 {
+		set height to altitude.
+	}.
+	
+	//Ziel: Langsam den Kurs aendern.
+	//TODO: Algorithmus aus prgPlaneStart wiederverwenden. (als eigenen Funktion kapseln?)
+	set bGradeGoal to 0.
+	if height > 200 { 
+		set bGradeGoal to 1.
+		if gradeCurrent != ROUND(targMain:BEARING) {			    
+			set bGradeGoal to 0.
+			if abs(gradeCurrent - abs(ROUND(targMain:BEARING))) >= 180 {
+				run STATUS_print("... korrektursteuern nach rechts...").
+				set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
+				if gradeCurrent > 360 { set gradeCurrent to 360. }.
+			}.
+			if abs(gradeCurrent - abs(ROUND(targMain:BEARING))) < 180 {					
+				run STATUS_print("... korrektursteuern nach links...").
+				set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
+				if gradeCurrent < 0 { set gradeCurrent to 0. }.
+			}.
 		}.
-		if ROUND(altitude) > iHeightGoal + (iHeightGoal/10) { 
-			set horizonExtreme to horizonGoalDown.
-			set horizonCurrent to horizonGoalDown.
-			set sAltitudeControl to sMissionStepTxt + ": Runterziehen!".
-			set iCountSoft to 0. //set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
-		}.
-		print sAltitudeControl at (0,3).
+	}. //if height > x
+	
+	//Ziel: Höhe erreichen und dann halten
+	//until SHIP:altitude >= iHeightGoal{
+	set bHightGoal to 1.	
+	set sAltitudeControl to sMissionStepTxt + ": Hoehenkorridor halten.".
+	set horizonExtreme to 0.
+	if ROUND(height) < iHeightGoal - (iHeightGoal/10) { 
+		set horizonExtreme to horizonGoalUp.
+		set horizonCurrent to horizonGoalUp.
+		set sAltitudeControl to sMissionStepTxt + ": Hochziehen!".
+		set iCountSoft to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+		set bHeightGoal to 0.
+	}.
+	if ROUND(height) > iHeightGoal + (iHeightGoal/10) { 
+		set horizonExtreme to horizonGoalDown.
+		set horizonCurrent to horizonGoalDown.
+		set sAltitudeControl to sMissionStepTxt + ": Runterziehen!".
+		set iCountSoft to 0. //set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+		set bHeightGoal to 0.
+	}.
+	run STATUS_print(sAltitudeControl). 
 		 
+	if bHeightGoal = 0 {	 
 		//+++ Anstiegswinkel verringern und schon leicht eine Kurve fliegen. Aber die Extermbelastungen vermeiden.
 		if horizonExtreme = 0 { 
 			//Teste, fliege gleichmaessiger
@@ -109,24 +147,12 @@ until Round(targMain:DISTANCE)<=Round(iDistTargGoal) {
 				set horizonCurrent to horizonGoalDown.
 			}.
 		}.
-		
-		
-		//Ziel: Langsam den Kurs aendern.
-		if height > 200 { 
-			if gradeCurrent != ROUND(targ:BEARING) {
-				if abs(gradeCurrent - abs(ROUND(targ:BEARING))) >= 180 {
-					print "... korrektursteuern nach rechts..." at (0,0).
-					set gradeCurrent to gradeCurrent+iCountSoft.   //rechts herum
-					if gradeCurrent > 360 { set gradeCurrent to 360. }.
-				}.
-				if abs(gradeCurrent - abs(ROUND(targ:BEARING))) < 180 {
-					print "... korrektursteuern nach links..." at (0,0).
-					set gradeCurrent to gradeCurrent-iCountSoft.   //links herum
-					if gradeCurrent < 0 { set gradeCurrent to 0. }.
-				}.
-			}.
-		}.
 	}.
+		
+	//Zielparameter erreicht?
+	set bContinue to 1.
+	if bGradeGoal = 0 { set bContinue to 0. }.
+	if bHeightGoal = 0 { set bContinue to 0. }.	
 }.
 
 Set STATUSx to "1".

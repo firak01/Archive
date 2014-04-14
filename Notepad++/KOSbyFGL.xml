@@ -9,6 +9,7 @@
 <KeyWord name="DEBUG_print" />
 <KeyWord name="DEBUG_print0" />
 <KeyWord name="DEBUG_print1" />
+<KeyWord name="KOS_switchOff" />
 <KeyWord name="LIST_count" />
 <KeyWord name="LIST_clear" />
 <KeyWord name="LIST_contains" />
@@ -35,5 +36,8 @@
 <KeyWord name="PRINT_RowsL2rAt" />
 <KeyWord name="PRINT_RowsRepeatedAt" />
 <KeyWord name="PRINT_RowsRepeatedL2rAt" />
+<KeyWord name="STATUS_print" />
+<KeyWord name="STATUS_print0" />
+<KeyWord name="STATUS_print1" />
   </AutoComplete>
 </NotepadPlus>

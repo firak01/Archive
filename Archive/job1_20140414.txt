@@ -23,7 +23,7 @@ run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 
 //Merke: Paramter sind 
 set args TO LIST().
-run STATUS_print("Nehme Kurs auf"). 
+run DEBUG_print("Nehme Kurs auf.").
 		
 //auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
 set iHeightGoal to 12000. //Sets desired height of plane.
