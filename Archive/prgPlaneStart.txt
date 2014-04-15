@@ -67,7 +67,6 @@ stage. //Spare das Druecken der "Spacebar"-Taste
 BRAKES On.
 BRAKES OFF. //Funktioniert alleine nicht.
 
-set Ttemp to T.
 set iSurfaceSpeedOld to ROUND(SHIP:SURFACESPEED).
 set iSurfaceSpeedOldDelay to 0.
 set bIsFastEnough to 0.
@@ -145,6 +144,7 @@ until bContinue >= 1 {
 	//+++ Steuern, falls noch nicht zu schnell				
 	//Unbedingt vor Tempo 100 versuchen hochzuziehen. Ggf. Antenne einziehen und Programm damit beenden.
 	set iSurfaceSpeed to SHIP:SURFACESPEED.
+	if Round(alt:radar) < 10 { //Nicht einen Start abbrechen, nur weil jetzt die Geschwindigkeit erreicht wurde, aber man schon in der Luft ist.
 	if abs(iSurfaceSpeed) >= abs(launchSpeedAutoMax) {
 	    LOCK THROTTLE TO 1.
 		UNLOCK WHEELSTEERING.
@@ -168,6 +168,7 @@ until bContinue >= 1 {
 		run STATUS_print("AUTOMAX: KOS aus. MANU HOCHZIEHEN."). //warte einige Zeit
 		run KOS_switchOff.
 	}. 
+	}.
 	
 	if abs(iSurfaceSpeed) >= abs(launchSpeedMin) {
 		LOCK THROTTLE TO 1.
@@ -182,7 +183,7 @@ until bContinue >= 1 {
 	}
 	
 	//abs(SHIP:surfacespeed) >= abs(launchSpeedMin)
-	if Round(alt:radar) >= 30 {
+	if Round(alt:radar) >= 60 {
 		LOCK THROTTLE TO 1.
 		set bIsLaunched to 1.
 		SAS OFF.

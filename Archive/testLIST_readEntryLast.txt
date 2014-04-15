@@ -1,0 +1,15 @@
+
+set listMain to LIST().  //Merke: In der aufgerufenen Funktion muss der erste Parameter NICHT gleich heissen.
+set listMain:ADD to "Apfel".
+set listMain:ADD to "Birne".
+set listMain:ADD to "Banane".
+set listMain:ADD to "Pflaume".
+
+//###############################
+set listListReadEntryLast_Return to List(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
+run LIST_readEntryLast(listMain, listListReadEntryLast_Return).
+set return to listListReadEntryLast_Return#0.
+print "LIST_readEntryLast liefert zurueck: '" + return + "'".
+
+wait 1.
+run STATUS_print("+++ Test LIST_readEntryLast beendet +++").

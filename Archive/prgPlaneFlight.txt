@@ -35,9 +35,10 @@ for argIn IN argsIn {
 set iCount to 0. //Messungszähler
 	
 //Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
-Set listListReadEntryLast TO LIST().)
-run LIST_readEntryLast(argsIn, listListReadEntryLast).
-set targMain to listListReadEntryLast#0.
+Set listListReadEntryLast_Return TO LIST().
+run LIST_readEntryLast(argsIn,listListReadEntryLast_Return).
+set targMain to listListReadEntryLast_Return#0.
+run DEBUG_print0("Hauptziel ermittelt!"). 
 
 //Gesamtliste aller (anderen) Ziele
 //TODO: Entferne aus der Liste das als Parameter uebergebene Haupt-Ziel.
@@ -71,21 +72,31 @@ set bContinue to 0.
 until bContinue >= 1 {
 	set iCount to iCount + 1.
 	run subConsoleDataStart (listTarg).
-	
+	run DEBUG_print("Console fertig!"). 
 	
 	//+++ Hoehenangabe
 	set altitude to SHIP:ALTITUDE.
-		
+		run DEBUG_print("Console fertig!  1"). 
+	
 	//Ziel: Bei niedriger Hoehe ggf. alt:radar verwenden, um Bergspitzen auszuweichen!
 	//These lines determine if the object is flying over water. If it is, the object determins its height based on altitude, not radalt.
-	if altitude <= 4000 {
+	if ROUND(altitude) <= 4000 {
+	run DEBUG_print("Console fertig!  1a"). 
+	
 		set height to alt:radar.
+		run DEBUG_print("Console fertig!  1b"). 
+	
 		if alt:radar < 0 {set height to altitude.}.
+		run DEBUG_print("Console fertig!  1c"). 
+	
 		if alt:radar > altitude {set height to altitude.}.
 	}.
+	run DEBUG_print("Console fertig!  2"). 
+	
 	if altitude > 4000 {
 		set height to altitude.
 	}.
+	run DEBUG_print("Hoehenermittlung fertig!"). 
 	
 	//Ziel: Langsam den Kurs aendern.
 	//TODO: Algorithmus aus prgPlaneStart wiederverwenden. (als eigenen Funktion kapseln?)
@@ -106,6 +117,7 @@ until bContinue >= 1 {
 			}.
 		}.
 	}. //if height > x
+	run DEBUG_print("Leichte Kursaenderung fertig!"). 
 	
 	//Ziel: Höhe erreichen und dann halten
 	//until SHIP:altitude >= iHeightGoal{
@@ -148,6 +160,7 @@ until bContinue >= 1 {
 			}.
 		}.
 	}.
+	run DEBUG_print("Hoehenkontrolle fertig!"). 
 		
 	//Zielparameter erreicht?
 	set bContinue to 1.

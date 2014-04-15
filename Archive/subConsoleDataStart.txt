@@ -32,7 +32,9 @@ for argIn IN argsIn {
 //Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
 //            Um die Variable entgegenzunehmen, muss der Returnwert dann dem Programmnamen entsprechen.
 run funDistTargTxt (targMain).
+run DEBUG_print1("funDistTarg fertig!  "). 
 set distTargTxt to funDistTargTxt.
+run DEBUG_print1("funDistTarg fertig!  1"). 
 
 set iColumn to 0. //Die Tabellenzeile.
 set lineOffSet to (iColumn*5).

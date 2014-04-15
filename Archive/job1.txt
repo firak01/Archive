@@ -57,12 +57,15 @@ for argReturn IN prgPlaneFlight_Return {
 		
 if prgPlaneFlightStatus = "1" {
 	run DEBUG_print("Auf Kurs.").
+	UNLOCK STEERING.
 	}.	
 if prgPlaneFlightStatus = "0" {
 	run DEBUG_print("Nicht auf Kurs.").
+	UNLOCK STEERING.
 	}.
 if prgPlaneFlightStatus = "-99" {
 	run DEBUG_print( "ERROR beim Kursaufnehmen.").
+	UNLOCK STEERING.
 }.
 
 

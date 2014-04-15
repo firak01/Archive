@@ -1,15 +1,22 @@
 //Gib den letzten Eintrag einer Liste zurück. 
 //Dazu muss man die Anzahl der Elemente zählen.
 //und mit einer Zahl kann man dann als Variable diesen Eintrag abfragen.
-DECLARE PARAMETER argsIn,listListReadEntryLast.
-run DEBUG_Caller1("LIST_readEntryLast").
+DECLARE PARAMETER argsIn, listListReadEntryLast_Return.
+run DEBUG_Caller("LIST_readEntryLast").
 
 run DEBUG_print0("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
-set listListCount To LIST().
-run LIST_count(argsIn,listListCount).
-set iIndexMax to listListCount#0.   //Rueckgabewert ist immer an Stelle 0.
-set lineToPrint to argsIn#iIndexMax.
+set listListCount_Return To LIST().
+run LIST_count(argsIn,listListCount_Return).
+set iIndexMax to listListCount_Return#0.   //Rueckgabewert ist immer an Stelle 0.
+run DEBUG_print0("Letzte Position: " + iIndexMax).
+if iIndexMax >= 1 {
+	set lineToPrint to argsIn#iIndexMax-1.
+	
+	//Als Rueckgabewert
+	set listListReadEntryLast_Return:ADD to lineToPrint.
+}.
+if iIndexMax = 0 {
+	set listListReadEntryLast_Return:ADD to NULL.
+}	
 
-//Als Rueckgabewert
-set listListReadEntryLast:ADD to lineToPrint.
 

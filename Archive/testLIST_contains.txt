@@ -9,10 +9,18 @@ set listListContains To LIST().  //Merke: In der aufgerufenen Funktion muss dies
 set listListContains:ADD to "Banane".
 set listListContains:ADD to "nicht da".
 
+//###############################
 set listListContains_Return to List(). //Merke: In der aufgerufenen Funktion muss dieser Parameter gleich heissen.
 run LIST_contains(listMain, listListContains, listListContains_Return).
+set return to listListContains_Return#0.
+print "LIST_contains liefert zurueck: '" + return + "'".
+//###############################
+set listListContains:REMOVE to 1.
+set listListContains:ADD to "Apfel".
 
+set listListContains_Return to List().
+run LIST_contains(listMain, listListContains, listListContains_Return).
 set return to listListContains_Return#0.
 print "LIST_contains liefert zurueck: '" + return + "'".
 wait 1.
-run DEBUG_print("+++ Test beendet +++ ").
+run STATUS_print("+++ Test LIST_Contains beendet +++ ").

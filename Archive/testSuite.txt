@@ -1,0 +1,15 @@
+clearscreen.
+run langKernel. //Deklariere die "Language Konstanten."
+set langCallerName to "job".
+run DEBUG_Caller(langCallerName).
+
+//### UNIT - TESTS --- NICHT löschen
+run testLIST_count.
+//run testLIST_intersection.
+//run testLIST_contains.
+//run testOBJECT_isList.
+//wait 10.
+//run testPrg.
+//wait 30.
+
+run testList_readEntryLast.

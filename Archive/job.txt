@@ -9,15 +9,6 @@ run DEBUG_Caller(langCallerName).
 run libKerbal. //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 
-//### UNIT - TESTS --- NICHT löschen
-//run testLIST_count.
-//run testLIST_intersection.
-//run testLIST_contains.
-//run testOBJECT_isList.
-//wait 10.
-//run testPrg.
-//wait 30.
-
 //TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der Terminalgröße ausgehen.
 //run subConsoleFooter.
 
@@ -69,7 +60,7 @@ if prgPlaneStartStatus = "1" {
 	
 	
 	if prgPlaneStartStatus = "2" {
-		run DEBUG_print("Erfolgreich hochgezogen. Nehme Kurs auf.").
+		run DEBUG_print1("Erfolgreich hochgezogen. Nehme Kurs auf.").
 		
 		//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
 		set iHeightGoal to 12000. //Sets desired height of plane.
@@ -80,14 +71,47 @@ if prgPlaneStartStatus = "1" {
 		set args:add TO libTargPolNor. //Nordpol als Ziel
 		
 		//Nun auf Höhe gehen und das Ziel ansteuern.
-		set prgPlaneFligth_Return to LIST(). //Rückgabewert
+		set prgPlaneFlight_Return to LIST(). //Rückgabewert
 		run prgPlaneFlight(args,prgPlaneFlight_Return).
+		
+		//Prüfe den Status des Programms
+		//a) Rückgabwerte entgegennehmen.
+		set iIndex to -1.
+		set prgPlaneFlightStatus to "0".
+		for argReturn IN prgPlaneFlight_Return {
+			set sReturn to argReturn.
+			run DEBUG_print("ReturnWert: " + sReturn). //argReturn gilt nur innerhalb der Schleife...
+			set iIndex to iIndex + 1.
+			if iIndex = 0 {
+				set prgPlaneFlightStatus to sReturn.		
+				}.
+			if iIndex = 1 {		
+				}.
+			if iIndex = 2 {
+				}.
+			}.
+		
+		
+		if prgPlaneFlightStatus = "1" {
+			run DEBUG_print("Auf Position.").
+			UNLOCK STEERING.
+			}.	
+		if prgPlaneFlightStatus = "0" {
+			run DEBUG_print("Nicht auf Kurs/Position.").
+			UNLOCK STEERING.
+			}.
+		if prgPlaneFlightStatus = "-99" {
+			run DEBUG_print( "ERROR beim Kursaufnehmen.").
+			UNLOCK STEERING.
+		}.
 	}.
 if prgPlaneStartStatus = "0" {
 	run DEBUG_print("Nicht gestartet.").
+	UNLOCK STEERING.
 	}.
 if prgPlaneStartStatus = "-99" {
 	run DEBUG_print( "ERROR beim Start.").
+	UNLOCK STEERING.
 	}.
 
 

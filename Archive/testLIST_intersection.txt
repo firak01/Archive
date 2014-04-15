@@ -18,9 +18,9 @@ run LIST_intersection(listMain, listListIntersection, listListIntersection_01).
 //}.
 run DEBUG_print("+++ Testergebnis: ").
 
-set listListCount To LIST().
-run LIST_count(listList_intersection_01,listListCount).
-set iLength to listListCount#0.   //Rueckgabewert ist immer an Stelle 0.
+set listListCount_Return To LIST().
+run LIST_count(listList_intersection_01,listListCount_Return).
+set iLength to listListCount_Return#0.   //Rueckgabewert ist immer an Stelle 0.
 run DEBUG_print("listList_intersection Laenge " + iLength). 
 
 //nun kann man nicht mehr mit iLength als Zahlwert arbeiten!!!
@@ -59,4 +59,4 @@ if iLength!=0 {
 		wait 1.
 	}.
 }.
-run DEBUG_print("+++ Test beendet +++ ").
+run STATUS_print("+++ Test LIST_intersection beendet +++ ").

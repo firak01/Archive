@@ -1,4 +1,7 @@
+
 //Deklaration der "Kernel Spachkonstanten""
+set NULL TO "<!--NULL-->".
+
 set langFC TO LIST().  // Rückgabewert eines "FunctionCalls".  
 					// Element der Liste ist RETURN 
 					// Mit Wert -99 , dh. fehler
