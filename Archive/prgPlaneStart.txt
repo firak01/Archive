@@ -60,6 +60,8 @@ LOCK STEERING TO X.           // Steer the vessel in the direction suggested by 
 LOCK WHEELSTEERING TO targMain.           // Steer the vessel in the direction suggested by direction X.
 LOCK WHEELSTEERING TO W.           // Steer the vessel in the direction suggested by direction X.
 
+set T to 0.0.
+LOCK THROTTLE TO T.
 
 
 //Los geht´s....
@@ -73,12 +75,18 @@ set bIsFastEnough to 0.
 set bIsLaunched to 0.
 set bContinue to 0.
 set iCountSoft to 0.
-until bContinue >= 1 {	
+until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
+
+	
+
 	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
 	set langCountGlobal to langCountGlobal+1.////Das ist der einzige Weg eine Zählvariable an eine Unterfunktion zu uebergeben. Die Variable ist in einem "ueberprogramm" deklariert und daher global
 	run subConsoleDataStart(args).
 	
-
+	set T to T + 0.01.
+	if T > 1 {
+		set T to 1.
+	}. 
 	
 	
 	if ROUND(SHIP:SURFACESPEED) < Min(MIN(launchSteeringSpeedAutoMax, launchSpeedAutoMax),launchSpeedMin) {
@@ -144,35 +152,35 @@ until bContinue >= 1 {
 	//+++ Steuern, falls noch nicht zu schnell				
 	//Unbedingt vor Tempo 100 versuchen hochzuziehen. Ggf. Antenne einziehen und Programm damit beenden.
 	set iSurfaceSpeed to SHIP:SURFACESPEED.
-	if Round(alt:radar) < 10 { //Nicht einen Start abbrechen, nur weil jetzt die Geschwindigkeit erreicht wurde, aber man schon in der Luft ist.
-	if abs(iSurfaceSpeed) >= abs(launchSpeedAutoMax) {
-	    LOCK THROTTLE TO 1.
-		UNLOCK WHEELSTEERING.
-		UNLOCK STEERING.
-		SAS OFF.
-		run STATUS_print1("AUTOMAX: STEERING aus. MANU HOCHZIEHEN."). 
-		run KOS_switchOff.
-	}.
-	
-	//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
-	if abs(iSurfaceSpeed) >= abs(launchSteeringSpeedAutoMax) {
-		LOCK THROTTLE TO 1.
-		UNLOCK WHEELSTEERING.
-		run STATUS_print1("AUTOMAX: WHEELSTEERING  abgestellt.").
-	}.
-	
-	if abs(iSurfaceSpeed)	>= max(launchSpeedAutoMax, launchSteeringSpeedAutoMax) {
-		UNLOCK WHEELSTEERING.
-		UNLOCK STEERING.
-		SAS OFF.
-		run STATUS_print("AUTOMAX: KOS aus. MANU HOCHZIEHEN."). //warte einige Zeit
-		run KOS_switchOff.
-	}. 
+	if Round(alt:radar) < 3 { //Nicht einen Start abbrechen, nur weil jetzt die Geschwindigkeit erreicht wurde, aber man schon in der Luft ist.
+		if abs(iSurfaceSpeed) >= abs(launchSpeedAutoMax) {
+			LOCK THROTTLE TO 1.
+			UNLOCK WHEELSTEERING.
+			UNLOCK STEERING.
+			SAS OFF.
+			run STATUS_print1("AUTOMAX: STEERING aus. MANU HOCHZIEHEN."). 
+			run KOS_switchOff.
+		}.
+		
+		//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
+		if abs(iSurfaceSpeed) >= abs(launchSteeringSpeedAutoMax) {
+			LOCK THROTTLE TO 1.
+			UNLOCK WHEELSTEERING.
+			run STATUS_print1("AUTOMAX: WHEELSTEERING  abgestellt.").
+		}.
+		
+		if abs(iSurfaceSpeed)	>= max(launchSpeedAutoMax, launchSteeringSpeedAutoMax) {
+			UNLOCK WHEELSTEERING.
+			UNLOCK STEERING.
+			SAS OFF.
+			run STATUS_print("AUTOMAX: KOS aus. MANU HOCHZIEHEN."). //warte einige Zeit
+			run KOS_switchOff.
+		}. 
 	}.
 	
 	if abs(iSurfaceSpeed) >= abs(launchSpeedMin) {
 		LOCK THROTTLE TO 1.
-		set bIsFastEnought to 1.
+		set bIsFastEnough to 1.
 		SAS OFF.
 		set horizonCurrent to 70.
 		set X to HEADING(horizonCurrent, targMain:HEADING).     

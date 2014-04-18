@@ -62,8 +62,11 @@ if prgPlaneStartStatus = "1" {
 	if prgPlaneStartStatus = "2" {
 		run DEBUG_print1("Erfolgreich hochgezogen. Nehme Kurs auf.").
 		
+		//Eingabearray leeren.
+		run LIST_clear(args).
+		
 		//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
-		set iHeightGoal to 12000. //Sets desired height of plane.
+		set iHeightGoal to 16000. //Sets desired height of plane.
 		set iDistTargGoal to 2000. //Set desired distance to Target in meter.
 
 		set args:add To iHeightGoal. 

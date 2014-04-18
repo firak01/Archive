@@ -26,7 +26,7 @@ set args TO LIST().
 run STATUS_print("Nehme Kurs auf"). 
 		
 //auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
-set iHeightGoal to 12000. //Sets desired height of plane.
+set iHeightGoal to 16000. //Sets desired height of plane.
 set iDistTargGoal to 2000. //Set desired distance to Target in meter.
 
 set args:add To iHeightGoal. 
