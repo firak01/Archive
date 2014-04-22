@@ -89,6 +89,11 @@ until bContinue >= 1 {
 	set iCount to iCount + 1.
 	set langCountGlobal to iCountStart + iCount.  //Mit der globalen Zählvariablen werden die Unterprogramme und andere Teilprogramme versorgt.
 	
+	set argsPitchShip to LIST().
+	set funPitchShip_Return to List().
+	run funPitchShip(argsPitchShip, funPitchShip_Return).
+	set horizonCurrent to funPitchShip_Return#0.
+	
 	set argsGradeShip to LIST().
 	set funGradeShip_Return to List().
 	run funGradeShip(argsGradeShip, funGradeShip_Return).

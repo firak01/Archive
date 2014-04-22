@@ -30,16 +30,22 @@ set constDegreeTxt to "G".
 print langCountGlobal + ".|- " + SHIP + " -" at (0,langConsoleRowFirst + langConsoleShipOffset).
 set height to ALT:RADAR.
 
+set argsPitchShip to LIST().
+set funPitchShip_Return to List().
+run funPitchShip(argsPitchShip, funPitchShip_Return).
+set horizonShip to funPitchShip_Return#0.
+
 set argsGradeShip to LIST().
 set funGradeShip_Return to List().
 run funGradeShip(argsGradeShip, funGradeShip_Return).
 set gradeShip to funGradeShip_Return#0.
 
 print "RadarHoehe= " + ROUND(height) + "      " at (0,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
-print "EnuGrade= " + Round(gradeShip,2)   at (25,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
+print "EnuPitch= " + Round(horizonShip,2)   at (0,langConsoleRowFirst + langConsoleShipOffset + 2). 
+print "EnuGrade= " + Round(gradeShip,2)   at (25,langConsoleRowFirst + langConsoleShipOffset + 2).
 
-print "VerticalSpeed: " + ROUND(VERTICALSPEED,2) + "       " at (0,langConsoleRowFirst + langConsoleShipOffset + 2).
-print "Heading: " + ROUND(HEADING,2) + "           " at(25,langConsoleRowFirst + langConsoleShipOffset + 2).
+print "VerticalSpeed: " + ROUND(VERTICALSPEED,2) + "       " at (0,langConsoleRowFirst + langConsoleShipOffset + 3).
+print "Heading: " + ROUND(HEADING,2) + "           " at(25,langConsoleRowFirst + langConsoleShipOffset + 3).
 
-print "HorizonCurrent: " + ROUND(horizoncurrent,2) + "        " at(0,langConsoleRowFirst + langConsoleShipOffset + 3).
-print "GradeCurrent: " + ROUND(gradecurrent, 2) + "        " at (25,langConsoleRowFirst + langConsoleShipOffset + 3).
+print "HorizonCurrent: " + ROUND(horizoncurrent,2) + "        " at(0,langConsoleRowFirst + langConsoleShipOffset + 4).
+print "GradeCurrent: " + ROUND(gradecurrent, 2) + "        " at (25,langConsoleRowFirst + langConsoleShipOffset + 4).

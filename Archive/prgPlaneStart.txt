@@ -52,6 +52,13 @@ set args to LIST().
 set args:ADD to targMain.  
 
 //################################
+//set horizonStart to 0.         //Horizont beim Start, TODO: Auslesen wie er wirklich ist.
+//set horizonCurrent to horizonStart.
+set argsPitchShip to LIST().
+set funPitchShip_Return to List().
+run funPitchShip(argsPitchShip, funPitchShip_Return).
+set horizonCurrent to funPitchShip_Return#0.
+	
 //set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
 set argsGradeShip to LIST().
 set funGradeShip_Return to List().
@@ -61,9 +68,6 @@ set gradeCurrent to funGradeShip_Return#0.
 //######################
 //Funktionen mit der Steuerung verknuepfen
 //LOCK STEERING TO targMain.
-set horizonStart to 0.         //Horizont beim Start, TODO: Auslesen wie er wirklich ist.
-set horizonCurrent to horizonStart.
-
 set X to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
 
@@ -93,6 +97,11 @@ set iCount to 0. //Messungszähler
 until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 
 	//################################
+    set argsPitchShip to LIST().
+	set funPitchShip_Return to List().
+	run funPitchShip(argsPitchShip, funPitchShip_Return).
+	set horizonCurrent to funPitchShip_Return#0.
+	
 	//set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
 	set argsGradeShip to LIST().
 	set funGradeShip_Return to List().
