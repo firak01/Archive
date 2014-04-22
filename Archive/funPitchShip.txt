@@ -12,7 +12,7 @@ set funPitchShip_Return:ADD TO STATUSx.
 //1. das Hauptziel aus der argsIn Liste holen.
 run DEBUG_print("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
 set iIndex To -1.
-for argIn IN argsGradeShipIn {
+for argIn IN argsPitchShipIn {
 	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {

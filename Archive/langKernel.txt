@@ -118,7 +118,7 @@ UNTIL XStart < XEnd {          //Gehe von unten nach oben, damit oben weiter gea
 
 //+++ Unterkonsolen
 set langConsoleShipOffset to 2. //lasse noch einen kleine Abstand zur Debug-Ausgabe
-set langConsoleTargetOffset to 8. //d.h. erst ab der Zeile 8 der Konsolenzeile werden die Zieldaten angegeben.
+set langConsoleTargetOffset to 9. //d.h. erst ab der Zeile 8 der Konsolenzeile werden die Zieldaten angegeben.
 
 //Ausprinten
 run PRINT_clearConsoleScreen. //Loesche den ganzen Screen und setze den Print Cursor auf die oberste Consolenzeile

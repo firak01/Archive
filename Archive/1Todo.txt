@@ -1,13 +1,4 @@
 #######################################
-TODO: Antenne Stabiler anbringen, sie fällt ab!!!
-TODO: AG9 mit der Antenne koppeln. Antenne im eingezogenen Status ans schiff anbringen.
-
-#######################################
-Wenn die kritische Bodengeschwindigkeit VOR abfallen der Antenne erreicht wird, diese Einfahren und alle Steuerung wieder zurück nach manuell.
-run KOS_switchOff.
-
-
-#######################################
 
 TODO: STATUS_Print
 Ausgabe in der Statuszeile, unterhalb der Konsole.

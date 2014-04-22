@@ -196,17 +196,22 @@ until bContinue >= 1 {
 			set horizonCurrent to constHorizonUpMax.
 		}.
 		set iCountSoftH to iCountSoftH + 1.	
-		set horizonCurrent To horizonCurrent - iCountSoftH.
+		set horizonCurrent To horizonCurrent + iCountSoftH.
 	    if horizonCurrent < -90 { set horizonCurrent to -90. }.
 	    if horizonCurrent > 90 { set horizonCurrent to 90. }.
 		
 		//Teste, fliege gleichmaessiger
-		if abs(horizonCurrent) < constHorizonUpNormal  {
+		if horizonCurrent < constHorizonUpNormal  {
+				//Vermeide ueberschreiten der erlaubten Belastung.
+				set horizonCurrent to constHorizonUpNormal.
+				//set iCountSoftH to 0.
+			}.		
+		if horizonCurrent > constHorizonUpMax  {
 				//Vermeide ueberschreiten der erlaubten Belastung.
 				set horizonCurrent to constHorizonUpMax.
 				set iCountSoftH to 0.
 			}.				
-			set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+		set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
 	}.
 	 //#########Ziel Hoehenkorridor halten
 	if Round(height) >= ROUND(iHeightGoal* 0.20) { 
@@ -226,11 +231,16 @@ until bContinue >= 1 {
 			if horizonCurrent > 90 { set horizonCurrent to 90. }.
 
 			//Teste, fliege gleichmaessiger
-			if abs(horizonCurrent) > constHorizonUpMax  {
+			if horizonCurrent > constHorizonUpNormal  {
 				//Vermeide ueberschreiten der erlaubten Belastung.
 				set horizonCurrent to constHorizonUpNormal.
 				set iCountSoftH to 0.
-			}.				
+			}.			
+			if horizonCurrent < 0  {
+				//Vermeide ueberschreiten der erlaubten Belastung.
+				set horizonCurrent to 0.
+				set iCountSoftH to 0.
+			}.		
 			set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
 		}.
 		
@@ -249,11 +259,16 @@ until bContinue >= 1 {
 			if horizonCurrent > 90 { set horizonCurrent to 90. }.
 			
 			//Teste, fliege gleichmaessiger
-			if abs(horizonCurrent) < constHorizonDownMax  {
+			if horizonCurrent < constHorizonDownNormal  {
 				//Vermeide ueberschreiten der erlaubten Belastung.
 				set horizonCurrent to constHorizonDownNormal.
 				set iCountSoftH to 0.
 			}.				
+			if horizonCurrent > 0  {
+				//Vermeide ueberschreiten der erlaubten Belastung.
+				set horizonCurrent to 0.
+				//set iCountSoftH to 0.
+			}.		
 			set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
 		}.
 	}.
