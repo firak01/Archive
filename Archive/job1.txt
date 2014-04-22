@@ -1,22 +1,13 @@
 clearscreen.
 run langKernel. //Deklariere die "Language Konstanten."
-set langCallerName to "job1".
+set langCallerName to "job2".
 run DEBUG_Caller(langCallerName).
 
 //##################################
-//### Starte von der Startbahn 
+//### Nehme im Flug Kurs auf.... 
 //##################################
 run libKerbal. //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08.   //Deklariere die "Flugzeug Konstanten"
-
-//### UNIT - TESTS --- NICHT löschen
-//run testLIST_count.
-//run testLIST_intersection.
-//run testLIST_contains.
-//run testOBJECT_isList.
-//wait 10.
-//run testPrg.
-//wait 30.
 
 //TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der Terminalgröße ausgehen.
 //run subConsoleFooter.
@@ -26,7 +17,7 @@ set args TO LIST().
 run STATUS_print("Nehme Kurs auf"). 
 		
 //auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
-set iHeightGoal to 16000. //Sets desired height of plane.
+set iHeightGoal to 15000. //Sets desired height of plane.
 set iDistTargGoal to 2000. //Set desired distance to Target in meter.
 
 set args:add To iHeightGoal. 

@@ -1,0 +1,45 @@
+//Merke: Man kann nur sinnvoll 1 Parameter (auch als Liste) uebergeben.  DECLARE PARAMETER iCount,targMain,listTarg To list().
+DECLARE PARAMETER argsIn.
+run DEBUG_Caller1("subConsoleDataShip").
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. das Hauptziel aus der argsIn Liste holen.
+run DEBUG_print0("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
+set iIndex To -1.
+for argIn IN argsIn {
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		set headingcurrent to argIn.
+		//run DEBUG_print0("in = " + targMain).
+		}.	
+	if iIndex >= 1 {
+		set horizoncurrent to argIn.  //Fuelle die liste der sonstigen ziele
+		//run DEBUG_print0("Weiteres Ziel = " + argIn).
+		}.
+	if iIndex = 2 {
+		}.
+	}.
+	
+
+//### Konstanten
+set constDegreeTxt to "G".
+
+//1. Schiffsname
+print langCountGlobal + ".|- " + SHIP + " -" at (0,langConsoleRowFirst + langConsoleShipOffset).
+set height to ALT:RADAR.
+
+set argsGradeShip to LIST().
+set funGradeShip_Return to List().
+run funGradeShip(argsGradeShip, funGradeShip_Return).
+set gradeShip to funGradeShip_Return#0.
+
+print "RadarHoehe= " + ROUND(height) + "      " at (0,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
+print "EnuGrade= " + Round(gradeShip,2)   at (25,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
+
+print "VerticalSpeed: " + ROUND(VERTICALSPEED,2) + "       " at (0,langConsoleRowFirst + langConsoleShipOffset + 2).
+print "Heading: " + ROUND(HEADING,2) + "           " at(25,langConsoleRowFirst + langConsoleShipOffset + 2).
+
+print "HorizonCurrent: " + ROUND(horizoncurrent,2) + "        " at(0,langConsoleRowFirst + langConsoleShipOffset + 3).
+print "GradeCurrent: " + ROUND(gradecurrent, 2) + "        " at (25,langConsoleRowFirst + langConsoleShipOffset + 3).

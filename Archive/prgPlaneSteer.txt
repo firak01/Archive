@@ -1,0 +1,118 @@
+//Program "Plane 'Steer"
+//Steuere ein Flugzeug gemaess Eingabewerte, die in einer Datei veraendert werden koennen.
+DECLARE PARAMETER argsIn, prgPlaneSteer_Return.
+
+//erwarte als erstes Argument: Das Ziel 
+run DEBUG_Caller1("prgPlaneSteer").
+set STATUSx to "-99".
+set prgPlaneSteer_Return:ADD TO STATUSx.
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. Die Startgeschwindigkeit aus der argsIn Liste holen.
+//2. Die erlaubte Steuergeschwindigkeit am Boden.
+run DEBUG_print1("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+set iIndex to -1.
+for argIn IN argsIn {
+	run DEBUG_print1("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		//set iHeightGoal to argIn.
+		//run DEBUG_Caller("Height Goal = " + iHeightGoal).
+		}.
+	if iIndex = 1 {
+		//set iDistTargGoal to argIn.
+		//run DEBUG_Caller("DistTarg Goal = " + iDistTargGoal).
+		}.
+	if iIndex = 2 {
+		//run printDebug("param@2 = " + argIn).
+		//set targMain to argIn.
+		}.
+	}.
+	
+//######################
+//Funktionen mit der Steuerung verknuepfen
+set gradeStart to SHIP:HEADING. //targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
+set gradeCurrent to gradeStart.
+
+set T to 0.0.
+LOCK THROTTLE to T.
+//SET X TO PROGRADE + R(0,0,0).
+//Fehler: Vector wird nicht mehr gefunden .... SET X TO R(0,0,0) * vector:surface.  //Ziel erst einmal geradeaus fliegen.
+//Set X to PROGRADE + V(0,0,0).
+//Set X to PROGRADE + R(0,0,0).  //fligt tatsächlich nach vorne gerade aus)
+//Set X to PROGRADE + R(0,40,0).  //Keine Verändrungen feststellbar
+//set X TO HEADING(gradeCurrent, 0).
+//set X TO gradeCurrent by 0.
+//LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+//LOCK Steering to gradeCurrent by 0.
+//Fliegt prograde ...... lock steering to R(0,0,0) * vector:surface.
+
+//set horizoncurrent to horizongoalup.
+//set X to HEADING(90, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+//lock steering to X.
+
+
+Set horizon to 0.
+lock steering to heading heading by horizon.
+SAS OFF.
+
+//######################################
+//Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
+Set listListReadEntryLast_Return TO LIST().
+run LIST_readEntryLast(argsIn,listListReadEntryLast_Return).
+set targMain to listListReadEntryLast_Return#0.
+run DEBUG_print0("Hauptziel ermittelt!"). 
+
+//Gesamtliste aller (anderen) Ziele
+//TODO: Entferne aus der Liste das als Parameter uebergebene Haupt-Ziel.
+//           Das als Funktion machen.
+SET listTarg TO LIST().   // Creates a new list in FOO variable
+SET listTarg:ADD TO targMain.
+SET listTarg:ADD TO libTargKscRunEnd.    // Adds a new element to the end of the list
+SET listTarg:ADD TO libTargPolNor.
+
+//########################################
+set iCount to 0. //Messungszähler
+set sMissionStepTxt to "ONSTERR ".
+	
+//Bis auf Zielnähe fliegen.
+set bContinue to 0.
+//until Round(targMain:DISTANCE)<=Round(iDistTargGoal) {
+until bContinue >= 1 {
+	set iCount to iCount + 1.
+	
+	set argsShip to LIST().
+	set argsShip:ADD To gradecurrent.
+	set argsShip:ADD To horizoncurrent.
+	run subConsoleDataShip(argsShip).
+	run subConsoleDataTarget (listTarg).
+	run DEBUG_Caller1("subConsoleDataTarget fertig").
+	
+	//+++ Hoehenangabe	
+	//Ziel: Bei niedriger Hoehe ggf. alt:radar verwenden, um Bergspitzen auszuweichen!
+	//These lines determine if the object is flying over water. If it is, the object determins its height based on altitude, not radalt.
+	run STATUS_print("Hoehe: " + ALTITUDE).
+	if ROUND(ALTITUDE) <= 4000 {
+		
+		set height to alt:radar.
+		if alt:radar < 0 {set height to ALTITUDE.}.
+	
+		if alt:radar > altitude {set height to ALTITUDE.}.
+	}.
+	
+	if ROUND(ALTITUDE) > 4000 {
+		set height to ALTITUDE.
+	}.
+	run DEBUG_print("Hoehenermittlung fertig!"). 
+	run STATUS_print1("HEADING: " + gradeCurrent).
+	
+	set X to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+		
+	}. //until bContinue >= 1.
+}.
+
+Set STATUSx to "1".
+set prgPlaneFlight_Return:REMOVE to 0.
+set prgPlaneFlight_Return:ADD TO STATUSx.
+	

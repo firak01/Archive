@@ -1,0 +1,73 @@
+//Merke: Man kann nur sinnvoll 1 Parameter (auch als Liste) uebergeben.  DECLARE PARAMETER iCount,targMain,listTarg To list().
+DECLARE PARAMETER argsIn.
+run DEBUG_Caller1("subConsoleDataTarget").
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. das Hauptziel aus der argsIn Liste holen.
+run DEBUG_print0("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
+set iIndex To -1.
+set listTarg to LIST().
+for argIn IN argsIn {
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	//if iIndex = 0 {
+		//set targMain to argIn.
+		//run DEBUG_print0("TargMain = " + targMain).
+	//	}.	
+	if iIndex >= 0 {
+		set listTarg:ADD to argIn.  //Fuelle die liste der sonstigen ziele
+		run DEBUG_print0("Weiteres Ziel = " + argIn).
+		}.
+	if iIndex = 2 {
+		}.
+	}.
+
+	//Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
+Set listListReadEntryLast_Return TO LIST().
+run LIST_readEntryLast(argsIn,listListReadEntryLast_Return).
+set targMain to listListReadEntryLast_Return#0.
+run DEBUG_print0("Hauptziel ermittelt!"). 
+	
+//### Konstanten
+set constDegreeTxt to "G".
+
+//Ausgabe des Hauptziels
+//Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
+//            Um die Variable entgegenzunehmen, muss der Returnwert dann dem Programmnamen entsprechen.
+run funDistTargTxt (targMain).
+run DEBUG_Caller1("funDistTargTxt fertig.").
+set distTargTxt to funDistTargTxt.
+
+set iColumn to 0. //Die Tabellenzeile.
+set lineOffSet to (iColumn*5).
+Print (iColumn+1) + ". Hauptziel: " at (0, langConsoleRowFirst+ langConsoleTargetOffset + lineOffset).
+Print "Distance: " + distTargTxt + "                " at (0,langConsoleRowFirst+ langConsoleTargetOffset +1 +lineOffset).
+Print "Heading:  " + ROUND(targMain:HEADING,2) + "                                   " + constDegreeTxt at (0,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+Print "Bearing: " + ROUND(targMain:BEARING,2) + "                                     " + constDegreeTxt + "                         " at (25,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+run PRINT_delimitRowAt(langConsoleRowFirst+ langConsoleTargetOffset + 3 +lineOffset).
+
+set listListCount_Return To LIST().
+run LIST_count(listTarg, listListCount_Return).
+set iIndexMax to listListCount_Return#0.   //Rueckgabewert ist immer an Stelle 0.
+
+set iIndex to -1.
+FOR targ IN listTarg {		
+	set iIndex to iIndex + 1. //Mitfuehren der Indexposition der Liste.
+	if iIndex >= iIndexMax - 2 { break . }. //-1 weil, der letzte Eintrag der liste das Hauptziel ist, -1 noch einmal, weil Indexposition mit Anzahl der Elemente verglichen wird.
+	
+	set iColumn to iColumn + 1.
+	set lineOffSet to (iColumn*5).
+	
+	//Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
+	//            Um die Variable entgegenzunehmen, muss der Returnwert dann dem Programmnamen entsprechen.	
+	run funDistTargTxt (targ).
+	run DEBUG_Caller1("funDistTargTxt in schleife fertig.").
+	set distTargTxt to funDistTargTxt.
+		
+	Print (iColumn+1) + ". Ziel: " at (0, langConsoleRowFirst+langConsoleTargetOffset + lineOffset).
+	Print "Distance: " + distTargTxt at (0,langConsoleRowFirst+ langConsoleTargetOffset + 1 +lineOffset).
+	Print "Heading:  " + ROUND(targ:HEADING,2) + "                                               " + constDegreeTxt at (0,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+	Print "Bearing: " + ROUND(targ:BEARING,2) + "                                                 " + constDegreeTxt at (25,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+	run PRINT_delimitRowAt(langConsoleRowFirst+ langConsoleTargetOffset + 3 +lineOffset).
+}.

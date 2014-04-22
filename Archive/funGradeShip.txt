@@ -1,0 +1,51 @@
+ //Zählt die Anzahl der Elemente einer Liste.
+//Der Befehl der Befehle set anzahl to argsIn:LENGTH gibt zwar die Anzahl der Elemente zurück.
+//aber der Wert ist keine mathematische Zahl und kann z.B. mit einer echten Zahl nicht verglichen werden. 
+//Der returnwert dieser Funktion funktioniert anschliessend!
+DECLARE PARAMETER argsGradeShipIn, funGradeShip_Return.
+run DEBUG_Caller1("funGradeShip").
+set STATUSx to 0.
+set funGradeShip_Return:ADD TO STATUSx.
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. das Hauptziel aus der argsIn Liste holen.
+run DEBUG_print("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
+set iIndex To -1.
+for argIn IN argsGradeShipIn {
+	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		//set headingcurrent to argIn.
+		//run DEBUG_print0("in = " + targMain).
+		}.	
+	if iIndex >= 1 {
+		//set horizoncurrent to argIn.  //Fuelle die liste der sonstigen ziele
+		//run DEBUG_print0("Weiteres Ziel = " + argIn).
+		}.
+	if iIndex = 2 {
+		}.
+	}.
+
+//+++ In den hier verwendeten Funktionen werden globale Variablen verwendet
+//Nicht löschen, beispiel für weitere Methode, wird ggf. für STEERINg-Programm wichtig.	
+//set tfUnit To V(0,0,0).
+//run tfDirToUnitV(NORTH).
+//x/y/z= " + ROUND(tfUnit:x,2) + "/" +ROUND(tfUnit:y,2) + "/" + ROUND(tfUnit:z,2) 
+ //set tfx to tfUnit:x.
+ //set tfy to tfUnit:y.
+ //set tfz to tfUnit:z.
+ 
+ //MERKE: set tfUnit to PROGRADE. Hat als Struktur keine XYZ  Werte
+ set tfA to latitude.
+ set tfUnit to VELOCITY:SURFACE.
+ set tfx to tfUnit:x.
+ set tfy to tfUnit:y.
+ set tfz to tfUnit:z.
+run tfXYZtoEnu(tfUnit:x, tfUnit:y, tfUnit:z).
+//MERKE: Die inter verwendeten globalen Variablen   + "  | u/w/n/e= " + ROUND(tfU,2) + "/" + ROUND(tfW,2) + "/" +ROUND(tfN,2) + "/" + ROUND(tfE,2)
+
+set grade to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+
+set funGradeShip_Return:REMOVE to 0.
+set funGradeShip_Return:ADD TO grade.

@@ -1,7 +1,7 @@
-DECLARE PARAMETER targ.
+DECLARE PARAMETER funDistTarg.
 run DEBUG_Caller1("funDistTargTxt").
-set distTargTxt to ROUND(ROUND(targ:DISTANCE)/1000,2) + " Km".
-if Round(targ:DISTANCE)<Round(10000.0) {  //unter 10 KM in Metern angeben
-	set distTargTxt to ROUND(targ:DISTANCE) + " m".
+set distTargTxt to ROUND(ROUND(funDistTarg:DISTANCE)/1000,2) + " Km".
+if Round(funDistTarg:DISTANCE)<Round(10000.0) {  //unter 10 KM in Metern angeben
+	set distTargTxt to ROUND(funDistTarg:DISTANCE) + " m".
 }.
 set funDistTargTxt to distTargTxt.

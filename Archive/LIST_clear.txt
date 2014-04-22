@@ -4,12 +4,12 @@ DECLARE PARAMETER argsIn.
 //                 Wie bei LIST_copy vorzugehen ist unsinnig, weil man statt des umständlichen 2. Parameters eher eine neue Liste deklarieren kann, die man nicht erst leeren muss.
 
 run DEBUG_Caller1("List_clear").
-run DEBUG_print("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+run DEBUG_print1("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
 
 set listListCount_Return To LIST().
 run LIST_count(argsIn,listListCount_Return).
 set iMax to listListCount_Return#0.
-run DEBUG_print("gezaehlte Elemente in argsIn= " + iMax).
+run DEBUG_print1("gezaehlte Elemente in argsIn= " + iMax).
 
 //!!! Wichtig in der Reihenfolge von hinten nach vorne entfernen.
 set iIndex to iMax-1.

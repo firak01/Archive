@@ -12,13 +12,16 @@ run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 //TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der Terminalgröße ausgehen.
 //run subConsoleFooter.
 
-//Merke: Paramter sind 
+//Merke: Parameter sind 
 set args TO LIST().
 set args:ADD to libLaunchSpeedMin.
 set args:ADD to libLaunchSpeedAutoMax.
 set args:ADD to libLaunchGroundSteeringSpeedAutoMax.
-set args:ADD to libTargKscRunEnd.
+
+//Merke: Der letzte Eintrag in der Liste ist das Hauptziel
 set args:ADD to libTargPolNor.
+set args:ADD to libTargKscRunEnd. 
+
 
 set prgPlaneStart_Return to LIST(). //Rückgabewert, muss hier schon deklariert werden.
 run prgPlaneStart (args,prgPlaneStart_Return).
@@ -45,15 +48,11 @@ for argReturn IN prgPlaneStart_Return {
 if prgPlaneStartStatus = "1" {
 	run DEBUG_print1("Startgeschwindigkeit zu spät erreicht. Bremse ab.").
 	
-	//Eingabearray leeren.
-	set iCount to args:LENGTH.
-	for argIn In args {
-		set iCount to iCount -1.
-		set args:Remove to iCount.
-	}
+		//Eingabearray leeren.
+		run LIST_clear(args).
 	
-	LOCK THROTTLE TO 0.
-	BRAKE On.
+		LOCK THROTTLE TO 0.
+		BRAKE On.
 	
 	}. //END START ERFOLGREICH
 	
@@ -66,15 +65,17 @@ if prgPlaneStartStatus = "1" {
 		run LIST_clear(args).
 		
 		//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
-		set iHeightGoal to 16000. //Sets desired height of plane.
+		//TODO: Das alte Ziel, bzw. die aktuelle Richtung uebergeben, wenn man den Kurs nicht errechnen kann.
+		set iHeightGoal to 15000. //Sets desired height of plane.
 		set iDistTargGoal to 2000. //Set desired distance to Target in meter.
-
 		set args:add To iHeightGoal. 
 		set args:add TO iDistTargGoal.
 		set args:add TO libTargPolNor. //Nordpol als Ziel
 		
 		//Nun auf Höhe gehen und das Ziel ansteuern.
 		set prgPlaneFlight_Return to LIST(). //Rückgabewert
+		
+		//TODO: solange der Start noch nicht klappt nicht automatisch weiter machen...
 		run prgPlaneFlight(args,prgPlaneFlight_Return).
 		
 		//Prüfe den Status des Programms

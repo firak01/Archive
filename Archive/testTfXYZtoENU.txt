@@ -1,0 +1,37 @@
+set mySteer to UP.
+lock steering to mySteer.
+
+until 0 {
+
+	set tfA to latitude.
+	set tfe to 0.
+	
+
+   set surPro to velocity:surface.
+   set tfx to surPro:x.
+   set tfy to surPro:y.
+   set tfz to surPro:z.
+   set xyzLen to ( surPro:x ^2 + surPro:y ^2 + surPro:z ^2 ) ^ 0.5 .
+   run tfXYZtoENU( surPro:x, surPro:y, surPro:z ).
+   set surProE to tfE.
+   set surProN to tfN.
+   set surProU to tfU.
+   set enuLen to ( surProE^2 + surProN^2 + surProU^2 ) ^ 0.5 .
+
+   clearscreen.
+   print "dumb test example:  Pres CTRL-C to end it.".
+   print "Original velocity:surface vector: ".
+   print "lat= " + latitude + "up:yaw= " +up:yaw.
+   print "      X : " + surPro:x .
+   print "      Y : " + surPro:y .
+   print "      Z : " + surPro:z .
+   print " LENGTH : " + xyzLen.
+   print "Transformed into North/East/Up refrence frame: ".
+   print "  NORTH : " + surProE.
+   print "   EAST : " + surProN.
+   print "     UP : " + surProU.
+   print " LENGTH : " + enuLen.
+   
+   set mySteer to UP * V(0-tfE,tfN,tfU).
+   wait 1.
+}

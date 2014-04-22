@@ -1,0 +1,58 @@
+clearscreen.
+run langKernel. //Deklariere die "Language Konstanten."
+set langCallerName to "job1".
+run DEBUG_Caller(langCallerName).
+
+//##################################
+//### Steuere per Werte aus Datei, die während des Flugs verändert werden können.
+//##################################
+run libKerbal. //Soll die globalen Variablen für den Planeten deklarieren.
+run lib7p08.   //Deklariere die "Flugzeug Konstanten"
+
+//Merke: Paramter sind 
+set args TO LIST().
+run STATUS_print("Steuere per Eingabewerte."). 
+set args:ADD to libTargKscRunEnd.
+set args:add TO libTargPolNor. //Nordpol als Ziel
+
+//Nun auf Höhe gehen und das Ziel ansteuern.
+set prgPlaneSteer_Return to LIST(). //Rückgabewert
+run prgPlaneSteer(args,prgPlaneSteer_Return).
+
+//Prüfe den Status des Programms
+//a) Rückgabwerte entgegennehmen.
+set iIndex to -1.
+set prgPlaneSteerStatus to "0".
+for argReturn IN prgPlaneSteer_Return {
+	set sReturn to argReturn.
+	run DEBUG_print("ReturnWert: " + sReturn). //argReturn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		set prgPlaneSteerStatus to sReturn.		
+		}.
+	if iIndex = 1 {		
+		}.
+	if iIndex = 2 {
+		}.
+	}.		
+		
+if prgPlaneSteerStatus = "1" {
+	run DEBUG_print("... Steuern fertig ...").
+	UNLOCK STEERING.
+	}.	
+if prgPlaneSteerStatus = "0" {
+	run DEBUG_print("... Steuern NICHT fertig ...").
+	UNLOCK STEERING.
+	}.
+if prgPlaneSteertStatus = "-99" {
+	run DEBUG_print( "ERROR beim Steuern.").
+	UNLOCK STEERING.
+}.
+
+
+
+
+
+
+
+
