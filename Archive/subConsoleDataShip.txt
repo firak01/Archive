@@ -11,11 +11,11 @@ for argIn IN argsIn {
 	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
-		set headingplanned to argIn.
+		set headingplaned to argIn.
 		//run DEBUG_print0("in = " + targMain).
 		}.	
 	if iIndex >= 1 {
-		set horizonplanned to argIn.  //Fuelle die liste der sonstigen ziele
+		set horizonplaned to argIn.  //Fuelle die liste der sonstigen ziele
 		//run DEBUG_print0("Weiteres Ziel = " + argIn).
 		}.
 	if iIndex = 2 {
@@ -37,11 +37,11 @@ set height to ALT:RADAR.
 //2. Aktuelle Werte
 print "RadarHoehe= " + ROUND(height) + "      " at (0,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
 print "EnuPitch= " + Round(horizonship,2)   at (0,langConsoleRowFirst + langConsoleShipOffset + 2). 
-print "EnuGrade= " + Round(gradeship,2)   at (25,langConsoleRowFirst + langConsoleShipOffset + 2).
+print "EnuGrade= " + Round(headingship,2)   at (25,langConsoleRowFirst + langConsoleShipOffset + 2).
 
 print "VerticalSpeed: " + ROUND(VERTICALSPEED,2) + "       " at (0,langConsoleRowFirst + langConsoleShipOffset + 3).
 print "Heading: " + ROUND(HEADING,2) + "           " at(25,langConsoleRowFirst + langConsoleShipOffset + 3).  //??? ist Heading != gradeShip ???
 
 //3. Geplante Werte
-print "HorizonGoal: " + ROUND(horizoncurrent,2) + "        " at(0,langConsoleRowFirst + langConsoleShipOffset + 4).
-print "GradeGoal: " + ROUND(gradecurrent, 2) + "        " at (25,langConsoleRowFirst + langConsoleShipOffset + 4).
+print "HorizonGoal: " + ROUND(horizonplaned,2) + "        " at(0,langConsoleRowFirst + langConsoleShipOffset + 4).
+print "GradeGoal: " + ROUND(headingplaned, 2) + "        " at (25,langConsoleRowFirst + langConsoleShipOffset + 4).

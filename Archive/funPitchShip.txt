@@ -47,12 +47,12 @@ run tfXYZtoEnu(tfUnit:x, tfUnit:y, tfUnit:z).
 
 
 //Errechne den aktuellen Pitch-Wert:
-set grade to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+set horizon to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
 
 //ABER: Gelandet/vor dem Start stimmt der Wert nicht
 //STATUS              // Current situation: LANDED, SPLASHED, PRELAUNCH, FLYING, SUB_ORBITAL, ORBITING, ESCAPING, or DOCKED
-if STATUS = LANDED { if grade < -90 { set grade to 180 - grade.}. }.
-if STATUS = PRELAUNCH { if grade < -90 { set grade to 180 - grade.}. }.
+if STATUS = "LANDED" { set horizon to 0. }.
+if STATUS = "PRELAUNCH" { set horizon to 0. }.
 
 set funPitchShip_Return:REMOVE to 0.
-set funPitchShip_Return:ADD TO grade.
+set funPitchShip_Return:ADD TO horizon.

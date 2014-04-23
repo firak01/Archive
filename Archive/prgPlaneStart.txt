@@ -39,6 +39,8 @@ for argIn IN argsIn {
 	
 	
 //######################################
+run STATUS_print1("STATUS=" + STATUS).
+
 //Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
 Set listListReadEntryLast_Return TO LIST().
 run LIST_readEntryLast(argsIn,listListReadEntryLast_Return).
@@ -81,6 +83,7 @@ LOCK THROTTLE TO T.
 //######################
 //Los geht´s....
 stage. //Spare das Druecken der "Spacebar"-Taste 
+run STATUS_print1("STATUS=" + STATUS).
 BRAKES On.
 BRAKES OFF. //Funktioniert alleine nicht.
 
@@ -104,17 +107,19 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	set argsGradeShip to LIST().
 	set funGradeShip_Return to List().
 	run funGradeShip(argsGradeShip, funGradeShip_Return).
-	set gradeCurrent to funGradeShip_Return#0.     
-	set argsShip:ADD To gradecurrent.
+	set gradeCurrentENU to funGradeShip_Return#0.     
+	set argsShip:ADD To gradecurrentENU.
 	
 	 set argsPitchShip to LIST().
 	set funPitchShip_Return to List().
 	run funPitchShip(argsPitchShip, funPitchShip_Return).
-	set horizonCurrent to funPitchShip_Return#0.
-	set argsShip:ADD To horizoncurrent.
+	set horizonCurrentENU to funPitchShip_Return#0.
+	set argsShip:ADD To horizoncurrentENU.
 	
 	run subConsoleDataShip(argsShip).  //Wichtig: Erst nach den Korrektursteurn die Konsolenausgabe machne, sonst ist der aktuelle wert und der geplante Wert immer gleich.
 	run subConsoleDataTarget(args). 
+	set horizoncurrent to ROUND(horizonCurrentENU).
+	set gradecurrent to ROUND(gradeCurrentENU).
 
 		//### Neue Werte ausrechnen
 	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
@@ -136,7 +141,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	}
 	
 	if ROUND(SHIP:SURFACESPEED) < Min(MIN(launchSteeringSpeedAutoMax, launchSpeedAutoMax),launchSpeedMin) {
-	
+	run STATUS_print1("STATUS=" + STATUS).
 	    //dynamisch, laaaangsam beschleunigen. Ziel: keine konstante Geschwindigkeit behalten.
 	if ROUND(SHIP:SURFACESPEED) <= iSurfaceSpeedOld {	
 			set iSurfaceSpeedOldDelay to iSurfaceSpeedOldDelay + 1.
@@ -159,30 +164,32 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		if ROUND(iBearing) > 0 {          //als String?, ist keine Zahl
 			SAS OFF. //sonst ist Steuern nicht möglich
 			run STATUS_print1("... Korrektursteuern nach rechts...").			
-			set gradeCurrent to gradeCurrent+iCountSoft+iBearing.   //rechts herum   //???? tatsächlich + iBearing ?????
+			set gradeCurrentTemp to gradeCurrent+iCountSoft. //+iBearing.   //rechts herum   //???? tatsächlich + iBearing ?????
 			run DEBUG_print1("Grad nach rechts: " + gradeCurrent).
-			if gradeCurrent < 0 { set gradeCurrent to 360-gradeCurrent. }.
-			if gradeCurrent > 360 { set gradeCurrent to gradeCurrent-360. }.
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
+			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
 			
 			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
+			set gradeCurrent to gradeCurrentTemp.
 			set X to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 			set W to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 		}.
 		if ROUND(iBearing) < 0 {		
 			SAS OFF. //sonst ist Steuern nicht möglich
 			run STATUS_print1( "... Korrektursteuern nach links...").
-			set gradeCurrent to gradeCurrent-iCountSoft-iBearing.   //links herum    //???? tatsächlich - iBearing ?????
+			set gradeCurrentTemp to gradeCurrent-iCountSoft. //-iBearing.   //links herum    //???? tatsächlich - iBearing ?????
 			run DEBUG_print1("Grad nach links: " + gradeCurrent).
-			if gradeCurrent < 0 { set gradeCurrent to 360-gradeCurrent. }.
-			if gradeCurrent > 360 { set gradeCurrent to gradeCurrent-360. }.
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
+			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
 			
 			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
+			set gradeCurrent to gradeCurrentTemp.
 			set X to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 			set W to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
 		}.
 		if ROUND(iBearing) = 0 {			
 			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
-			run STATUS_print1( "").		
+			run STATUS_print1("STATUS=" + STATUS).		
 			run DEBUG_print1("").
 			set iCountSoft to 0.
 			

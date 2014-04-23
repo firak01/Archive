@@ -4,7 +4,7 @@
 //Der returnwert dieser Funktion funktioniert anschliessend!
 DECLARE PARAMETER argsGradeShipIn, funGradeShip_Return.
 run DEBUG_Caller1("funGradeShip").
-set STATUSx to 0.
+set STATUSx to -999.
 set funGradeShip_Return:ADD TO STATUSx.
 
 //##########################

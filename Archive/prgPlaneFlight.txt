@@ -31,6 +31,8 @@ for argIn IN argsIn {
 	}.
 	
 //######################
+run STATUS_print1("STATUS=" + STATUS).
+
 //TODO: Diese Werte in die lib der Maschine aufnehmen (lib7p08.txt)
 set constHorizonUpMax to 40. //Die Maximalwerte fuer das Flugverhalten der Maschine.
 set constHorizonUpNormal to 15.
@@ -40,10 +42,10 @@ set constHorizonDownNormal to -5.
 //Funktionen mit der Steuerung verknuepfen
 LOCK THROTTLE to 1.
 
-set horizonCurrent to constHorizonUpNormal
-Set X to PROGRADE + V(0,0,0).    //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
-LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
-SAS ON.
+//set horizonCurrent to constHorizonUpNormal
+//Set X to PROGRADE + V(0,0,0).    //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+//LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+//SAS ON.
 run DEBUG_Caller1("Locked Throttel to 1").
 
 //SET X TO PROGRADE + R(0,0,0).
@@ -59,7 +61,23 @@ run DEBUG_Caller1("Locked Throttel to 1").
 
 //set horizoncurrent to horizongoalup.
 //set X to HEADING(90, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
-//lock steering to X.
+set argsPitchShip to LIST().
+run funPitchShip(argsPitchShip, funPitchShip_Return).
+set horizonCurrent to funPitchShip_Return#0.
+	
+set argsGradeShip to LIST().
+set funGradeShip_Return to List().
+run funGradeShip(argsGradeShip, funGradeShip_Return).
+set gradeCurrent to funGradeShip_Return#0.	
+//Set X to HEADING(gradecurrent, horizoncurrent).
+//set X to HEADING(ROUND(horizoncurrent),ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont		
+//Set X to HEADING(40,gradecurrent).
+//Set X to HEADING(ROUND(gradecurrent), 40).
+//Set X to HEADING(60, 40).
+Set XA to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+//Set XA to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+UNLOCK STEERING.
+LOCK STEERING TO XA.
 
 //######################################
 //Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
@@ -86,6 +104,8 @@ set bDistanceGoal to 0.
 //Bis auf Zielnähe fliegen.
 set bContinue to 0.
 //until Round(targMain:DISTANCE)<=Round(iDistTargGoal) {
+
+
 until bContinue >= 1 {
 	
 	//### Konsolenausgabe vorbereiten....
@@ -97,16 +117,18 @@ until bContinue >= 1 {
 	set argsPitchShip to LIST().
 	set funPitchShip_Return to List().
 	run funPitchShip(argsPitchShip, funPitchShip_Return).
-	set horizonCurrent to funPitchShip_Return#0.
-	et argsShip:ADD To horizoncurrent.	 //Das ist dann der aktuelle Wert
+	set horizonCurrentENU to funPitchShip_Return#0.
+	set argsShip:ADD To horizoncurrentENU.	 //Das ist dann der aktuelle Wert
 	
 	set argsGradeShip to LIST().
 	set funGradeShip_Return to List().
 	run funGradeShip(argsGradeShip, funGradeShip_Return).
-	set gradeCurrent to funGradeShip_Return#0.	
-	set argsShip:ADD To gradecurrent.  //Das ist dann der aktuelle Wert
+	set gradeCurrentENU to funGradeShip_Return#0.	
+	set argsShip:ADD To gradecurrentENU.  //Das ist dann der aktuelle Wert
 	
 	run subConsoleDataShip(argsShip).  
+	set horizoncurrent to ROUND(horizonCurrentENU).
+	set gradecurrent to ROUND(gradeCurrentENU).
 	
 	//### Neue Werte ausrechnen
 	set iCount to iCount + 1.
@@ -150,7 +172,16 @@ until bContinue >= 1 {
 			if gradeCurrent > 360 { set gradeCurrent to gradeCurrent-360. }.
 			
 			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
-			set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			//set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			//set X to HEADING(ROUND(horizoncurrent),ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont		
+			//Set X to HEADING(gradecurrent, 40).
+			//Set X to HEADING(40,gradecurrent).
+			//Set X to HEADING(ROUND(gradecurrent), 40).
+			//Set X to HEADING(60, 40).
+			Set XB to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+			//Set XB to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+			UNLOCK STEERING.
+			LOCK STEERING TO XB.
 			//set X to SHIP:HEADING by 60.
 		}.
 		if ROUND(iBearing) <= 0 {		
@@ -162,7 +193,16 @@ until bContinue >= 1 {
 			if gradeCurrent > 360 { set gradeCurrent to gradeCurrent-360. }.
 			
 			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
-			set X to HEADING(gradeCurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			//set X to HEADING(gradeCurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			//set X to HEADING(ROUND(horizoncurrent),ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+			//Set X to HEADING(gradecurrent, 40).
+			//Set X to HEADING(40,gradecurrent).
+			//Set X to HEADING(ROUND(gradecurrent), 40).
+			//Set X to HEADING(60, 40).
+			Set XC to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+			//Set XC to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+			UNLOCK STEERING.
+			LOCK STEERING TO XC.
 		}.
 		if ROUND(iBearing) = 0 {			
 			SAS OFF.//Merke: bei = 0 ist Steuern nicht notwendig.
@@ -172,7 +212,16 @@ until bContinue >= 1 {
 			set iCountSoft to 0.
 			
 			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
-			set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			//set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			//set X to HEADING(ROUND(horizoncurrent),ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont		
+			//Set X to HEADING(gradecurrent, 40).
+			//Set X to HEADING(40,gradecurrent).
+			//Set X to HEADING(ROUND(gradecurrent), 40).
+			//Set X to HEADING(60, 40).
+			Set XD to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+			//Set XD to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+			UNLOCK STEERING.
+			LOCK STEERING TO XD.
 		}.
 	}. //if bHeightGoal=1.	
 	//###########################
@@ -200,26 +249,41 @@ until bContinue >= 1 {
 		set sAltitudeControl to sMissionStepTxt + ": Schneller Aufstieg.".
 		set bHeightGoal to 0.		
 			
-		if iCountSoftH = 0 {
-			set horizonCurrent to constHorizonUpMax.
-		}.
 		set iCountSoftH to iCountSoftH + 1.	
-		set horizonCurrent To horizonCurrent + iCountSoftH.
-	    if horizonCurrent < -90 { set horizonCurrent to -90. }.
-	    if horizonCurrent > 90 { set horizonCurrent to 90. }.
+		set horizonCurrentTemp To horizonCurrent + iCountSoftH.
+	    if horizonCurrentTemp < -90 { set horizonCurrentTemp to -90. }.
+	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 90. }.
 		
 		//Teste, fliege gleichmaessiger
-		if horizonCurrent < constHorizonUpNormal  {
+		if horizonCurrentTemp < 0  {
 				//Vermeide ueberschreiten der erlaubten Belastung.
-				set horizonCurrent to constHorizonUpNormal.
-				//set iCountSoftH to 0.
-			}.		
-		if horizonCurrent > constHorizonUpMax  {
-				//Vermeide ueberschreiten der erlaubten Belastung.
-				set horizonCurrent to constHorizonUpMax.
+				set horizonCurrentTemp to 0.
 				set iCountSoftH to 0.
-			}.				
-		set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+			}.		
+		if horizonCurrentTemp > 0 {
+			if horizonCurrentTemp < constHorizonUpNormal  {
+				//Vermeide ueberschreiten der erlaubten Belastung.
+				set horizonCurrentTemp to constHorizonUpNormal.
+				set iCountSoftH to 0.
+			}.		
+		if horizonCurrentTemp > constHorizonUpMax  {
+				//Vermeide ueberschreiten der erlaubten Belastung.
+				set horizonCurrentTemp to constHorizonUpMax.
+				set iCountSoftH to 0.
+			}.			
+		}.
+		set horizoncurrent to ROUND(horizonCurrentTemp).	
+		//set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+		//Set X to HEADING(gradecurrent, 40).
+		//set X to HEADING(horizoncurrent,ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+		//Set X to HEADING(gradecurrent, 40).
+		//Set X to HEADING(40,gradecurrent).
+		//Set X to HEADING(ROUND(gradecurrent), 40).
+		//Set X to HEADING(60, 40).
+		Set XE to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+		//Set XE to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+		UNLOCK STEERING.
+		LOCK STEERING TO XE.
 	}.
 	 //#########Ziel Hoehenkorridor halten
 	if Round(height) >= ROUND(iHeightGoal* 0.20) { 
@@ -230,23 +294,34 @@ until bContinue >= 1 {
 			set bHeightGoal to 0.
 			
 			set iCountSoftH to iCountSoftH + 1.	
-			set horizonCurrent To horizonCurrent + iCountSoftH.
+			set horizonCurrentTemp To horizonCurrent + iCountSoftH.
+			if horizonCurrentTemp < -90 { set horizonCurrentTemp to -90. }.
+			if horizonCurrentTemp > 90 { set horizonCurrentTemp to 90. }.
 			
 			//Teste, fliege gleichmaessiger
-			if horizonCurrent > constHorizonUpNormal  {
+			if horizonCurrentTemp < 0  {
 				//Vermeide ueberschreiten der erlaubten Belastung.
-				set horizonCurrent to constHorizonUpNormal.
+				set horizonCurrentTemp to 0.
 				set iCountSoftH to 0.
+			}.			
+			if horizonCurrentTemp > 0 {
+				if horizonCurrentTemp  > constHorizonUpNormal  {
+					//Vermeide ueberschreiten der erlaubten Belastung.
+					set horizonCurrentTemp to constHorizonUpNormal.
+					set iCountSoftH to 0.
+				}.
 			}.
-			if horizonCurrent < 0  {
-				//Vermeide ueberschreiten der erlaubten Belastung.
-				set horizonCurrent to 0.
-				set iCountSoftH to 0.
-			}.					
-			if horizonCurrent < -90 { set horizonCurrent to -90. }.
-			if horizonCurrent > 90 { set horizonCurrent to 90. }.
-			
-			set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+			set horizoncurrent to ROUND(horizonCurrentTemp).
+			//set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont		
+			//set X to HEADING(horizoncurrent,ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont					
+			//Set X to HEADING(gradecurrent, 40).
+			//Set X to HEADING(40,gradecurrent).
+			//Set X to HEADING(ROUND(gradecurrent), 40).
+			//Set X to HEADING(60, 40).
+			Set XF to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+			//Set XF to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+			UNLOCK STEERING.
+			LOCK STEERING TO XF.
 		}.
 		
 		if ROUND(height) > ROUND(iHeightGoal + (iHeightGoal/10)) { 
@@ -255,23 +330,34 @@ until bContinue >= 1 {
 			set bHeightGoal to 0.
 					
 			set iCountSoftH to iCountSoftH + 1.	
-			set horizonCurrent To horizonCurrent - iCountSoftH.
+			set horizonCurrentTemp To horizonCurrent - iCountSoftH.
+			if horizonCurrentTemp < -90 { set horizonCurrentTemp to -90. }.
+			if horizonCurrentTemp > 90 { set horizonCurrentTemp to 90. }.
 			
 			//Teste, fliege gleichmaessiger
-			if horizonCurrent < constHorizonDownNormal  {
+			if horizonCurrentTemp > 0  {
 				//Vermeide ueberschreiten der erlaubten Belastung.
-				set horizonCurrent to constHorizonDownNormal.
-				set iCountSoftH to 0.
-			}.				
-			if horizonCurrent > 0  {
-				//Vermeide ueberschreiten der erlaubten Belastung.
-				set horizonCurrent to 0.
+				set horizonCurrentTemp to 0.
 				set iCountSoftH to 0.
 			}.		
-			if horizonCurrent < -90 { set horizonCurrent to -90. }.
-			if horizonCurrent > 90 { set horizonCurrent to 90. }.
-		
-			set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
+			if horizonCurrentTemp < 0 {
+				if horizonCurrentTemp < constHorizonDownNormal  {
+					//Vermeide ueberschreiten der erlaubten Belastung.
+					set horizonCurrentTemp to constHorizonDownNormal.
+					set iCountSoftH to 0.
+				}.		
+			}.
+			set horizoncurrent to ROUND(horizonCurrentTemp).
+			//set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+			//set X to HEADING(horizoncurrent,ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont					
+			//Set X to HEADING(gradecurrent, 40).
+			//Set X to HEADING(40,gradecurrent).
+			//Set X to HEADING(ROUND(gradecurrent), 40).
+			//Set X to HEADING(60, 40).
+			Set XG to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+			//Set XG to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+			UNLOCK STEERING.
+			LOCK STEERING TO XG.
 		}.
 	}.
 	if bHeightGoal = 1 {	
@@ -282,7 +368,16 @@ until bContinue >= 1 {
 		SAS OFF.
 		set iCountSoftH to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
 		set horizonCurrent to 10.
-		set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		//set X to HEADING(gradecurrent, horizoncurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		//set X to HEADING(ROUND(horizoncurrent),ROUND(gradecurrent)).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont		
+		//Set X to HEADING(gradecurrent, 40).
+		//Set X to HEADING(40,gradecurrent).
+		//Set X to HEADING(ROUND(gradecurrent), 40).
+		//Set X to HEADING(60, 40).
+		Set XH to HEADING(ROUND(horizoncurrent), ROUND(gradecurrent)).
+		//Set XH to HEADING(ROUND(gradecurrent),ROUND(horizoncurrent)).
+		UNLOCK STEERING.
+		LOCK STEERING TO XH.
 	}.
 	run DEBUG_Caller1("Hoehensteuerung fertig").
 	run STATUS_print1(sAltitudeControl). 
