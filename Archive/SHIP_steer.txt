@@ -1,0 +1,74 @@
+//Steuert das aktuelle Fahrzeug (SHIP).
+//Damit kann an zentraler Stelle auf unterschiedliche Aktionen / Situationen eingegangen werden, ohne dass in den einzelnen Programmen die Steuerung geändert werden muss.
+DECLARE PARAMETER shipsteer, shipsteer_Return.
+run DEBUG_Caller1("SHIP_steer").
+set STATUSx to -99.
+set shipsteer_Return:ADD TO STATUSx.
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. das Hauptziel aus der argsIn Liste holen.
+run DEBUG_print("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
+set iIndex To -1.
+for argIn IN shipsteer {
+	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		set heading to argIn.
+		}.	
+	if iIndex >= 1 {
+		set horizon to argIn.  
+		}.
+	}.
+		
+//#########################
+set gradeCurrentTemp to ROUND(heading).
+if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
+if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
+
+set horizonCurrentTemp to ROUND(horizon).
+if horizonCurrentTemp < -90 { set horizonCurrentTemp to -90. }.
+if horizonCurrentTemp > 90 { set horizonCurrentTemp to 90. }.
+
+set gradecurrent to gradeCurrentTemp.
+set horizoncurrent to horizonCurrentTemp.
+
+run DEBUG_print1("SHIP_STEER: Heading: " + gradeCurrent + " | Horizon: " + horizonCurrent).	
+
+//#########################
+//funtioniert nicht LOCK STEERING TO gradecurrent by horizoncurrent.
+//Set X to PROGRADE + V(0,0,0).    //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+//SET X TO PROGRADE + R(0,0,0).
+//Fehler: Vector wird nicht mehr gefunden .... SET X TO R(0,0,0) * vector:surface.  //Ziel erst einmal geradeaus fliegen.
+//Set X to PROGRADE + V(0,0,0).
+//Set X to PROGRADE + R(0,0,0).  //fligt tatsächlich nach vorne gerade aus)
+//Set X to PROGRADE + R(0,40,0).  //Keine Verändrungen feststellbar
+//set X TO HEADING(gradeCurrent, 0).
+//set X TO gradeCurrent by 0.
+//LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
+//LOCK Steering to gradeCurrent by 0.
+//Fliegt prograde ...... lock steering to R(0,0,0) * vector:surface.
+
+//set horizoncurrent to horizongoalup.
+//set X to HEADING(90, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+
+SAS OFF. //sonst ist Steuern nicht möglich, MERKE: SAS ON sollte in der aufrufenden Funktion gemacht werden, anschliessend...., damit das Schiff zeit hat einen neuen Kurs auch zu erreichen.
+if STATUS = "PRELAUNCH" {
+	UNLOCK STEERING.
+	set X to Heading(gradecurrent, horizoncurrent).
+	LOCK STEERING TO X.
+	
+	UNLOCK WHEELSTEERING.
+	set W to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+	LOCK WHEELSTEERING TO W.
+}.
+
+if STATUS = "FLYING" {
+	UNLOCK STEERING.
+	set X to Heading(horizoncurrent, gradecurrent).	
+	LOCK STEERING TO X.
+}.
+
+//#########################	
+set shipsteer_Return:REMOVE to 0.
+set shipsteer_Return:ADD TO 1.

@@ -162,40 +162,41 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		if iCountSoft >= 10 { set iCountSoft to 10. }.
 		set iBearing to targMain:BEARING.
 		if ROUND(iBearing) > 0 {          //als String?, ist keine Zahl
-			SAS OFF. //sonst ist Steuern nicht möglich
 			run STATUS_print1("... Korrektursteuern nach rechts...").			
 			set gradeCurrentTemp to gradeCurrent+iCountSoft. //+iBearing.   //rechts herum   //???? tatsächlich + iBearing ?????
-			run DEBUG_print1("Grad nach rechts: " + gradeCurrent).
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
 			
-			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
-			set gradeCurrent to gradeCurrentTemp.
-			set X to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
-			set W to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			set shipSteer to LIST().
+			shipSteer:ADD to gradeCurrentTemp.
+			shipSteer:ADD to horizonCurrent.
+			set shipSteer_return to List().
+			run SHIP_steer(shipSteer, shipSteer_return).
 		}.
 		if ROUND(iBearing) < 0 {		
-			SAS OFF. //sonst ist Steuern nicht möglich
 			run STATUS_print1( "... Korrektursteuern nach links...").
 			set gradeCurrentTemp to gradeCurrent-iCountSoft. //-iBearing.   //links herum    //???? tatsächlich - iBearing ?????
-			run DEBUG_print1("Grad nach links: " + gradeCurrent).
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
 			
-			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
-			set gradeCurrent to gradeCurrentTemp.
-			set X to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
-			set W to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			set shipSteer to LIST().
+			shipSteer:ADD to gradeCurrentTemp.
+			shipSteer:ADD to horizonCurrent.
+			set shipSteer_return to List().
+			run SHIP_steer(shipSteer, shipSteer_return).
 		}.
-		if ROUND(iBearing) = 0 {			
-			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
+		if ROUND(iBearing) = 0 {						
 			run STATUS_print1("STATUS=" + STATUS).		
 			run DEBUG_print1("").
-			set iCountSoft to 0.
 			
-			//doppelt programmiert, aber aus performancegruenden hier sofort hinter der Berechnung
-			set X to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
-			set W to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			set shipSteer to LIST().
+			shipSteer:ADD to gradeCurrent.
+			shipSteer:ADD to horizonCurrent.
+			set shipSteer_return to List().
+			run SHIP_steer(shipSteer, shipSteer_return).
+			
+			set iCountSoft to 0.
+			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
 		}.	
 	}. 
 	
@@ -231,32 +232,29 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	if abs(iSurfaceSpeed) >= abs(launchSpeedMin) {
 		LOCK THROTTLE TO 1.
 		set bIsFastEnough to 1.
-		SAS OFF. //Abstellen und bis zum Abheben abgestellt lassen.
 		set horizonCurrent to 60.
-		//set X to HEADING(targMain:HEADING, horizonCurrent).     
-		//fehler set X to targMain:Heading by horizonCurrent.
-		//klappt nicht LOCK STEERING TO targMain:Heading by horizonCurrent.
-		//set X to HEADING(gradecurrent, horizonCurrent).  
-		//set X to UP + R(60, 0, 0).		
-		//set X to V(1,1,3) *surface		
-		//set gradecurrent to SHIP:HEADING.
-		set X to Heading(gradecurrent, horizoncurrent).
-		LOCK STEERING TO X.
-		//funktioniert nicht LOCK STEERING TO gradecurrent by horizoncurrent.
+		
+		set shipSteer to LIST().
+		shipSteer:ADD to gradeCurrent.
+		shipSteer:ADD to horizonCurrent.
+		set shipSteer_return to List().
+		run SHIP_steer(shipSteer, shipSteer_return).
+		
 		run STATUS_print("AUTO HOCHZIEHEN."). //warte einige Zeit
 		Set STATUSx to "1".     //Automatisiert hochziehen
 	}
 	
-	//abs(SHIP:surfacespeed) >= abs(launchSpeedMin)
 	if Round(alt:radar) >= 10 {
 		LOCK THROTTLE TO 1.
 		set bIsLaunched to 1.
-		set horizonCurrent to 0.
-		set X to Heading(gradecurrent, horizoncurrent).
-		//set X to UP + R(10, 0,0).	
-		//set X to V(1,1,1) *surface				
-		LOCK STEERING TO X.
-		//funtioniert nicht LOCK STEERING TO gradecurrent by horizoncurrent.
+		set horizonCurrent to 30.
+	
+		set shipSteer to LIST().
+		shipSteer:ADD to gradeCurrent.
+		shipSteer:ADD to horizonCurrent.
+		set shipSteer_return to List().
+		run SHIP_steer(shipSteer, shipSteer_return).
+
 		run STATUS_print("AUTO Weiterfliegen."). //warte einige Zeit
 		GEAR OFF.   //Fahrwerk einziehen.
 		SAS ON.
@@ -265,5 +263,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	
 	set bContinue to bIsLaunched + bIsFastEnough.
 }.
+UNLOCK WHEELSTEERING.
+UNLOCK STEERING.
 set prgPlaneStart_Return:REMOVE to 0.
 set prgPlaneStart_Return:ADD TO STATUSx.

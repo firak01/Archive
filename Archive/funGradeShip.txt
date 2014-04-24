@@ -1,7 +1,4 @@
- //Zählt die Anzahl der Elemente einer Liste.
-//Der Befehl der Befehle set anzahl to argsIn:LENGTH gibt zwar die Anzahl der Elemente zurück.
-//aber der Wert ist keine mathematische Zahl und kann z.B. mit einer echten Zahl nicht verglichen werden. 
-//Der returnwert dieser Funktion funktioniert anschliessend!
+//Gibt den echten GRAD an, wie er im NavBall abzulesen ist.
 DECLARE PARAMETER argsGradeShipIn, funGradeShip_Return.
 run DEBUG_Caller1("funGradeShip").
 set STATUSx to -999.
