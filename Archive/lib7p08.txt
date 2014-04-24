@@ -4,6 +4,8 @@ set libGroundSteeringSpeedMax to 30.
 set libLaunchGroundSteeringSpeedMax to 30. 
 set libLaunchSpeedMin to 40. //Was das Flugzeug benötigt.... Erfahrungswert
 
+set libTmaxGround to 0.05. //Schub am Boden, ohne Startabsicht.
+
 //Automatisierte Steuerung ggf. abschalten... bei...
 set libLaunchSpeedAutoMax to Max(85,libLaunchSpeedMin). //Ab wann KOS deaktivert werden soll und manuelle Steuerung notwendig ist
 set libLaunchGroundSteeringSpeedAutoMax to Max(20,libLaunchGroundSteeringSpeedMax). //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.

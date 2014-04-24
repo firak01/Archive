@@ -7,10 +7,10 @@ set funGradeShip_Return:ADD TO STATUSx.
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
 //1. das Hauptziel aus der argsIn Liste holen.
-run DEBUG_print("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
+run DEBUG_print0("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
 set iIndex To -1.
 for argIn IN argsGradeShipIn {
-	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
 		//set headingcurrent to argIn.
@@ -42,7 +42,13 @@ for argIn IN argsGradeShipIn {
 run tfXYZtoEnu(tfUnit:x, tfUnit:y, tfUnit:z).
 //MERKE: Die inter verwendeten globalen Variablen   + "  | u/w/n/e= " + ROUND(tfU,2) + "/" + ROUND(tfW,2) + "/" +ROUND(tfN,2) + "/" + ROUND(tfE,2)
 
-set grade to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+if STATUS = "FLYING" {
+	set grade to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+}.
+if STATUS = "PRELAUNCH" {
+	set grade to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+}
+
 
 set funGradeShip_Return:REMOVE to 0.
 set funGradeShip_Return:ADD TO grade.

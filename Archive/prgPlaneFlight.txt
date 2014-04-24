@@ -38,23 +38,21 @@ set constHorizonDownMax to -20.
 set constHorizonDownNormal to -5.
 
 //Funktionen mit der Steuerung verknuepfen
-LOCK THROTTLE to 1.
-run STATUS_print1("STATUS=" + STATUS + " | Locked Throttel to 1").
+set langT to 1.
+LOCK THROTTLE to langT.
+LOCK STEERING TO langS.
+LOCK WHEELSTEERING TO langW.
+run STATUS_print1("STATUS=" + STATUS + " | Locked Throttel to " + langT).
 
 set argsPitchShip to LIST().
 run funPitchShip(argsPitchShip, funPitchShip_Return).
-set horizonCurrent to funPitchShip_Return#0.
+set langSteerHorizon to funPitchShip_Return#0.
 	
 set argsGradeShip to LIST().
 set funGradeShip_Return to List().
 run funGradeShip(argsGradeShip, funGradeShip_Return).
-set gradeCurrent to funGradeShip_Return#0.	
+set langSteerHeading to funGradeShip_Return#0.	
 
-set shipSteer to LIST().
-shipSteer:ADD to gradeCurrent.
-shipSteer:ADD to horizonCurrent.
-set shipSteer_return to List().
-run SHIP_steer(shipSteer, shipSteer_return).
 
 
 //######################################
@@ -99,20 +97,21 @@ until bContinue >= 1 {
 	set gradeCurrentENU to funGradeShip_Return#0.	
 	
 	set argsShip to LIST().
-	set argsShip:ADD To gradecurrent.  //Ausser beim 1. Lauf werden hier die geplanten/alten Werte übergeben...
-	set argsShip:ADD To horizoncurrent.
+	set argsShip:ADD To langSteerHeading.
+	set argsShip:ADD To langSteerHorizon.
 	set argsShip:ADD To horizoncurrentENU.	 //Das ist dann der aktuelle Wert	
 	set argsShip:ADD To gradecurrentENU.  //Das ist dann der aktuelle Wert	
 	run subConsoleDataShip(argsShip).  
 	
 	//### Neue Plan-Werte ausrechnen, ausgehend von den aktuellen Werten
-	set horizoncurrent to ROUND(horizonCurrentENU).
-	set gradecurrent to ROUND(gradeCurrentENU).
+	set langSteerHorizon to ROUND(horizonCurrentENU).
+	set langSteerHeading to ROUND(gradeCurrentENU).
+	
 	set iCount to iCount + 1.
 	set langCountGlobal to iCountStart + iCount.  //Mit der globalen Zählvariablen werden die Unterprogramme und andere Teilprogramme versorgt.
 	
 	//+++ Entfernung zum Ziel
-	//TODO GOON
+	//TODO 
 	set bDistanceGoal to 0.
 	
 	//+++ Hoehenangabe	
@@ -138,35 +137,32 @@ until bContinue >= 1 {
 		set iBearing to targMain:BEARING.
 		if ROUND(iBearing) > 0 {          //als String?, ist keine Zahl
 			run STATUS_print1("... Korrektursteuern nach rechts...").			
-			set gradeCurrent to gradeCurrent+iCountSoft. //+iBearing.   //rechts herum    //Doch tatsächlich +iBearing ??????
-			
-			set shipSteer to LIST().
-			shipSteer:ADD to gradeCurrent.
-			shipSteer:ADD to horizonCurrent.
-			set shipSteer_return to List().
-			run SHIP_steer(shipSteer, shipSteer_return).
+			set gradeCurrentTemp to langSteerHeading+iCountSoft+iBearing.   //rechts herum   //???? tatsächlich + iBearing ????? JA.
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
+			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
+			set langSteerHeading to gradeCurrentTemp.
+			SAS OFF.
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			//set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
 		}.
 		if ROUND(iBearing) <= 0 {		
 			run STATUS_print1( "... Korrektursteuern nach links...").
-			set gradeCurrent to gradeCurrent-iCountSoft. //-iBearing.   //links herum   //Doch tatsächlich + iBearing ??????
-			
-			set shipSteer to LIST().
-			shipSteer:ADD to gradeCurrent.
-			shipSteer:ADD to horizonCurrent.
-			set shipSteer_return to List().
-			run SHIP_steer(shipSteer, shipSteer_return).
+			set gradeCurrentTemp to langSteerHeading-iCountSoft-iBearing.   //links herum    //???? tatsächlich - iBearing ????? JA
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
+			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
+			set langSteerHeading to gradeCurrentTemp.
+			SAS OFF.
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
+			//set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
 		}.
 		if ROUND(iBearing) = 0 {			
 			run STATUS_print1("STATUS=" + STATUS).		
 			run DEBUG_print1("").
 			set bGradeGoal to 1.
 			set iCountSoft to 0.
-			
-			set shipSteer to LIST().
-			shipSteer:ADD to gradeCurrent.
-			shipSteer:ADD to horizonCurrent.
-			set shipSteer_return to List().
-			run SHIP_steer(shipSteer, shipSteer_return).
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			//set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
 		}.
 	}. //if bHeightGoal=1.	
 	//###########################
@@ -194,13 +190,13 @@ until bContinue >= 1 {
 		set bHeightGoal to 0.		
 			
 		set iCountSoftH to iCountSoftH + 1.	
-		set horizonCurrentTemp To horizonCurrent + iCountSoftH.
+		set horizonCurrentTemp To langSteerHorizon + iCountSoftH.
 	    if horizonCurrentTemp < -90 { set horizonCurrentTemp to -90. }.
 	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 90. }.
 		
 		//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
 		if horizonCurrentTemp < 0  {				
-				set horizonCurrentTemp to 0.
+				set horizonCurrentTemp to 5.
 				set iCountSoftH to 0.
 			}.		
 		if horizonCurrentTemp > 0 {
@@ -213,12 +209,10 @@ until bContinue >= 1 {
 				set iCountSoftH to 0.
 			}.			
 		}.
-
-		set shipSteer to LIST().
-		shipSteer:ADD to gradeCurrent.
-		shipSteer:ADD to horizonCurrentTemp.
-		set shipSteer_return to List().
-		run SHIP_steer(shipSteer, shipSteer_return).
+		set langSteerHorizon to horizonCurrentTemp.
+		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		//set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		SAS off.
 	}.
 	 //#########Ziel Hoehenkorridor halten
 	if Round(height) >= ROUND(iHeightGoal* 0.20) { 
@@ -228,13 +222,13 @@ until bContinue >= 1 {
 			set bHeightGoal to 0.
 			
 			set iCountSoftH to iCountSoftH + 1.	
-			set horizonCurrentTemp To horizonCurrent + iCountSoftH.
+			set horizonCurrentTemp To langSteerHorizon + iCountSoftH.
 			if horizonCurrentTemp < -90 { set horizonCurrentTemp to -90. }.
 			if horizonCurrentTemp > 90 { set horizonCurrentTemp to 90. }.
 			
 			//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
 			if horizonCurrentTemp < 0  {
-				set horizonCurrentTemp to 0.
+				set horizonCurrentTemp to 5.
 				set iCountSoftH to 0.
 			}.			
 			if horizonCurrentTemp > 0 {
@@ -243,11 +237,10 @@ until bContinue >= 1 {
 					set iCountSoftH to 0.
 				}.
 			}.
-			set shipSteer to LIST().
-			shipSteer:ADD to gradeCurrent.
-			shipSteer:ADD to horizonCurrentTemp.
-			set shipSteer_return to List().
-			run SHIP_steer(shipSteer, shipSteer_return).
+			set langSteerHorizon to horizonCurrentTemp.
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			//set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			SAS off.
 		}.
 		
 		if ROUND(height) > ROUND(iHeightGoal + (iHeightGoal/10)) { 
@@ -255,7 +248,7 @@ until bContinue >= 1 {
 			set bHeightGoal to 0.
 					
 			set iCountSoftH to iCountSoftH + 1.	
-			set horizonCurrentTemp To horizonCurrent - iCountSoftH.
+			set horizonCurrentTemp To langSteerHorizon - iCountSoftH.
 			if horizonCurrentTemp < -90 { set horizonCurrentTemp to -90. }.
 			if horizonCurrentTemp > 90 { set horizonCurrentTemp to 90. }.
 			
@@ -270,11 +263,10 @@ until bContinue >= 1 {
 					set iCountSoftH to 0.
 				}.		
 			}.
-			set shipSteer to LIST().
-			shipSteer:ADD to gradeCurrent.
-			shipSteer:ADD to horizonCurrentTemp.
-			set shipSteer_return to List().
-			run SHIP_steer(shipSteer, shipSteer_return).
+			set langSteerHorizon to horizonCurrentTemp.
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			//set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			SAS off.
 		}.
 	}.
 	if bHeightGoal = 1 {	
@@ -282,17 +274,16 @@ until bContinue >= 1 {
 		//            Ansonsten kann eine Kurskorrektur bewriken, dass der Vogel abstürzt.
 	
 		set iCountSoftH to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
-		set horizonCurrentTemp to 10.
-		
-		set shipSteer to LIST().
-		shipSteer:ADD to gradeCurrent.
-		shipSteer:ADD to horizonCurrentTemp.
-		set shipSteer_return to List().
-		run SHIP_steer(shipSteer, shipSteer_return).
+		set langSteerHorizon to 10.
+		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		//set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		SAS ON.
 	}.
 	run DEBUG_Caller1("Hoehensteuerung fertig").
 	run STATUS_print1(sAltitudeControl). 
-	SAS ON.
+	//SAS ON.
+	
+	//TODO: IRGENDWIE MUSS MAN DIE PITCH MIT DEM GEWÜNSCHTEN GRADE VERGLEICHEN. WENNS PASS SAS ON.
 		
 	//Zielparameter erreicht?
 	set bContinue to 1.
