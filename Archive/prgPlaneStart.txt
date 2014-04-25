@@ -126,8 +126,8 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	run subConsoleDataShip(argsShip).  //Wichtig: Erst nach den Korrektursteurn die Konsolenausgabe machne, sonst ist der aktuelle wert und der geplante Wert immer gleich.
 	run subConsoleDataTarget(args). 
 	
-	set langSteerHorizon to ROUND(horizonCurrentENU).
-	set langSteerHeading to ROUND(gradeCurrentENU).
+	//set langSteerHorizon to ROUND(horizonCurrentENU).
+	//set langSteerHeading to ROUND(gradeCurrentENU).
 
 		//### Neue Werte ausrechnen
 	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
@@ -174,7 +174,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		set iBearing to targMain:BEARING.
 		if ROUND(iBearing) > 0 {          //als String?, ist keine Zahl
 			run STATUS_print1("... Korrektursteuern nach rechts...").			
-			set gradeCurrentTemp to langSteerHeading+iCountSoft+iBearing.   //rechts herum   //???? tatsächlich + iBearing ????? JA
+			set gradeCurrentTemp to gradeCurrentENU+iCountSoft+iBearing.   //rechts herum   //???? tatsächlich + iBearing ????? JA
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
 			set langSteerHeading to gradeCurrentTemp.
@@ -183,7 +183,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		}.
 		if ROUND(iBearing) < 0 {		
 			run STATUS_print1( "... Korrektursteuern nach links...").
-			set gradeCurrentTemp to langSteerHeading-iCountSoft-iBearing.   //links herum    //???? tatsächlich - iBearing ????? JA
+			set gradeCurrentTemp to gradeCurrentENU-iCountSoft-iBearing.   //links herum    //???? tatsächlich - iBearing ????? JA
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
 			set langSteerHeading to gradeCurrentTemp.
@@ -193,6 +193,8 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		if ROUND(iBearing) = 0 {						
 			run STATUS_print1("STATUS=" + STATUS).		
 			run DEBUG_print1("").
+			set langSteerHorizon to horizonCurrentENU.
+			set langSteerHeading to gradeCurrentENU.
 			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
 			set iCountSoft to 0.
 			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
@@ -233,6 +235,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		set bIsFastEnough to 1.
 		SAS OFF.
 		set langSteerHorizon to 60.
+		set langSteerHeading to gradeCurrentENU.
 		set langS to Heading(langSteerHeading, langSteerHorizon).
 		LOCK STEERING to langS.
 		run STATUS_print("AUTO HOCHZIEHEN."). //warte einige Zeit
@@ -244,6 +247,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		set bIsLaunched to 1.
 		SAS OFF.
 		set langSteerHorizon to 30.
+		set langSteerHeading to gradeCurrentENU.
 		set langS to Heading(langSteerHeading, langSteerHorizon).
 		LOCK STEERING to langS.
 		run STATUS_print("AUTO Weiterfliegen."). //warte einige Zeit
