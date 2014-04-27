@@ -47,15 +47,18 @@ run LIST_readEntryLast(argsIn,listListReadEntryLast_Return).
 set targMain to listListReadEntryLast_Return#0.
 run DEBUG_print0("Hauptziel ermittelt!"). 
 
-//Liste mit den Argumenten an die ConsolenData-Ausgabe uebergeben!
+//Gesamtliste aller (anderen) Ziele
 //TODO: Entferne aus der Liste das als Parameter uebergebene Haupt-Ziel.
 //           Das als Funktion machen.
 set args to LIST().
 set args:ADD to targMain.  
 
+//########################################
+set iCount to 0. //Messungszähler intern
+set iCountStart to langCountGlobal.
+set sMissionStepTxt to "ONSTEER ".
+
 //################################
-//set horizonStart to 0.         //Horizont beim Start, TODO: Auslesen wie er wirklich ist.
-//set horizonCurrent to horizonStart.
 set argsPitchShip to LIST().
 set funPitchShip_Return to List().
 run funPitchShip(argsPitchShip, funPitchShip_Return).
@@ -67,18 +70,6 @@ set funGradeShip_Return to List().
 run funGradeShip(argsGradeShip, funGradeShip_Return).
 set langSteerHeading to funGradeShip_Return#0.
 
-//######################
-//Funktionen mit der Steuerung verknuepfen
-//LOCK STEERING TO targMain.
-//set X to HEADING(gradeCurrent,horizonCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
-//LOCK STEERING TO X.           // Steer the vessel in the direction suggested by direction X.
-
-//set W to HEADING(horizonCurrent, gradeCurrent).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont
-//LOCK WHEELSTEERING TO targMain.           // Steer the vessel in the direction suggested by direction X.
-//LOCK WHEELSTEERING TO W.           // Steer the vessel in the direction suggested by direction X.
-
-//set T to 0.0.
-//LOCK THROTTLE TO T.
 
 set langW to targMain. //fuer das Wheelsteering
 set Ttemp to 0.0.
@@ -89,9 +80,8 @@ LOCK WHEELSTEERING TO langW.
 //######################
 //Los geht´s....
 stage. //Spare das Druecken der "Spacebar"-Taste 
-run STATUS_print1("STATUS=" + STATUS).
 BRAKES On.
-BRAKES OFF. //Funktioniert alleine nicht.
+BRAKES OFF. //Funktioniert alleine nicht, braucht vorher BRAKES ON.
 
 set iSurfaceSpeedOld to 0.
 set iSurfaceSpeedOldDelay to 0.
@@ -101,29 +91,32 @@ set bContinue to 0.
 set iCountSoft to 0.
 set bIsInStartPosition to 1.
 
-
-
-set iCount to 0. //Messungszähler
+set argsShip to LIST().
+set argsGradeShip to LIST().
+set funGradeShip_Return to List().
+ set argsPitchShip to LIST().
+set funPitchShip_Return to List().
 until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 
 	//### Konsolenausgabe vorbereiten....
-	set argsShip to LIST().
-	set argsShip:ADD To langSteerHeading.
-	set argsShip:ADD To langSteerHorizon.
-	
-	set argsGradeShip to LIST().
-	set funGradeShip_Return to List().
 	run funGradeShip(argsGradeShip, funGradeShip_Return).
 	set gradeCurrentENU to funGradeShip_Return#0.     
-	set argsShip:ADD To gradecurrentENU.
+	set funGradeShip_Return:REMOVE to 0.
 	
-	 set argsPitchShip to LIST().
-	set funPitchShip_Return to List().
 	run funPitchShip(argsPitchShip, funPitchShip_Return).
 	set horizonCurrentENU to funPitchShip_Return#0.
-	set argsShip:ADD To horizoncurrentENU.
+	set funPitchShip_Return:REMOVE to 0.
 	
+	set argsShip:ADD To langSteerHeading.
+	set argsShip:ADD To langSteerHorizon.
+	set argsShip:ADD To gradecurrentENU.
+	set argsShip:ADD To horizoncurrentENU.
 	run subConsoleDataShip(argsShip).  //Wichtig: Erst nach den Korrektursteurn die Konsolenausgabe machne, sonst ist der aktuelle wert und der geplante Wert immer gleich.
+	set argsShip:REMOVE to 3.
+	set argsShip:REMOVE to 2.
+	set argsShip:REMOVE to 1.
+	set argsShip:REMOVE to 0.
+	
 	run subConsoleDataTarget(args). 
 	
 	//set langSteerHorizon to ROUND(horizonCurrentENU).
@@ -174,29 +167,32 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		set iBearing to targMain:BEARING.
 		if ROUND(iBearing) > 0 {          //als String?, ist keine Zahl
 			run STATUS_print1("... Korrektursteuern nach rechts...").			
-			set gradeCurrentTemp to gradeCurrentENU+iCountSoft+iBearing.   //rechts herum   //???? tatsächlich + iBearing ????? JA
-			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
+			set gradeCurrentTemp to gradeCurrentENU+iCountSoft.   //rechts herum   //???? tatsächlich + iBearing ????? JA
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360+gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
-			set langSteerHeading to gradeCurrentTemp.
-			SAS OFF.
+			set langSteerHeading to gradeCurrentTemp.		
 			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
+			SAS OFF.
 		}.
 		if ROUND(iBearing) < 0 {		
 			run STATUS_print1( "... Korrektursteuern nach links...").
-			set gradeCurrentTemp to gradeCurrentENU-iCountSoft-iBearing.   //links herum    //???? tatsächlich - iBearing ????? JA
-			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360-gradeCurrentTemp. }.
+			set gradeCurrentTemp to gradeCurrentENU-iCountSoft.   //links herum    //???? tatsächlich - iBearing ????? JA, und immer PLUS, weil bearing auch negativ wird.
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360+gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp-360. }.
-			set langSteerHeading to gradeCurrentTemp.
-			SAS OFF.
+			set langSteerHeading to gradeCurrentTemp.			
 			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
+			SAS OFF.
 		}.
 		if ROUND(iBearing) = 0 {						
 			run STATUS_print1("STATUS=" + STATUS).		
 			run DEBUG_print1("").
+			set iCountSoft to 0.
 			set langSteerHorizon to horizonCurrentENU.
 			set langSteerHeading to gradeCurrentENU.
-			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			set iCountSoft to 0.
+			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont							
 			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
 		}.	
 	}. 

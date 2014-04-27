@@ -1,6 +1,6 @@
 clearscreen.
 run langKernel. //Deklariere die "Language Konstanten."
-set langCallerName to "job2".
+set langCallerName to "job1".
 run DEBUG_Caller(langCallerName).
 
 //##################################
@@ -13,13 +13,13 @@ run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 //run subConsoleFooter.
 
 //Merke: Paramter sind 
-set args TO LIST().
 run STATUS_print("Nehme Kurs auf"). 
 		
 //auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
-set iHeightGoal to 15000. //Sets desired height of plane.
+set iHeightGoal to 13000. //Sets desired height of plane.
 set iDistTargGoal to 2000. //Set desired distance to Target in meter.
 
+set args TO LIST().
 set args:add To iHeightGoal. 
 set args:add TO iDistTargGoal.
 set args:ADD to libTargKscRunEnd.

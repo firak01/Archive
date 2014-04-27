@@ -1,0 +1,60 @@
+ //Zählt die Anzahl der Elemente einer Liste.
+//Der Befehl der Befehle set anzahl to argsIn:LENGTH gibt zwar die Anzahl der Elemente zurück.
+//aber der Wert ist keine mathematische Zahl und kann z.B. mit einer echten Zahl nicht verglichen werden. 
+//Der returnwert dieser Funktion funktioniert anschliessend!
+DECLARE PARAMETER argsManuelSteerShipIn, listFunManuelSteer_Return.
+run DEBUG_Caller1("funManuelSteerShip").
+set push to 0.
+set grade to 0.
+set horizon to 0.
+set STATUSx to -999.
+set listFunManuelSteer_Return:ADD TO push.
+set listFunManuelSteer_Return:ADD TO grade.
+set listFunManuelSteer_Return:ADD TO horizon.
+set listFunManuelSteer_Return:ADD TO STATUSx.
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. das Hauptziel aus der argsIn Liste holen.
+run DEBUG_print0("Anzahl von Parametern in argsIn = " + argsManuelSteerShipIn:LENGTH).
+set iIndex To -1.
+for argIn IN argsManuelSteerShipIn {
+	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		//set headingcurrent to argIn.
+		//run DEBUG_print0("in = " + targMain).
+		}.	
+	if iIndex >= 1 {
+		//set horizoncurrent to argIn.  //Fuelle die liste der sonstigen ziele
+		//run DEBUG_print0("Weiteres Ziel = " + argIn).
+		}.
+	if iIndex = 2 {
+		}.
+	}.
+
+//########### Setze den Wert: Ändere hier manuell im laufenden Programm die Zahlen ab.
+set push to 1.
+set grade to 350.
+set horizon to 10.
+set STATUSx to 0. //1= abbrechen
+
+//########### Check auf korrekte Werte
+if push < 0.0 { set push to 0.0. }.
+if push > 1.0 { set push to 1.0. }.
+
+if grade < 0 { set grade to 360+grade. }.
+if grade > 360 { set grade to grade-360. }.
+			
+if horizon < -90 { set horizon to 0. }.
+if horizon > 90 { set horizon to 0. }.
+
+//########### Rückgabe
+set listFunManuelSteer_Return:REMOVE to 3.
+set listFunManuelSteer_Return:REMOVE to 2.
+set listFunManuelSteer_Return:REMOVE to 1.
+set listFunManuelSteer_Return:REMOVE to 0.
+set listFunManuelSteer_Return:ADD TO push.
+set listFunManuelSteer_Return:ADD TO grade.
+set listFunManuelSteer_Return:ADD TO horizon.
+set listFunManuelSteer_Return:ADD TO STATUSx.

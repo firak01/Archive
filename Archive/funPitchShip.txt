@@ -53,11 +53,16 @@ if STATUS = "FLYING" {
 if STATUS = "PRELAUNCH" {
 	set horizon to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
 }.
+  if horizon < -90 { set horizon to 5. }.
+if horizon > 90 { set horizon to 5. }.
+		
 
 //ABER: Gelandet/vor dem Start stimmt der Wert nicht
 //STATUS              // Current situation: LANDED, SPLASHED, PRELAUNCH, FLYING, SUB_ORBITAL, ORBITING, ESCAPING, or DOCKED
 if STATUS = "LANDED" { set horizon to 0. }.
 if STATUS = "PRELAUNCH" { set horizon to 0. }.
+run DEBUG_print("Pitch  NORMIERT: " + horizon). //argIn gilt nur innerhalb der Schleife...
+
 
 set funPitchShip_Return:REMOVE to 0.
 set funPitchShip_Return:ADD TO horizon.

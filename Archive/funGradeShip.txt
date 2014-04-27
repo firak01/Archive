@@ -30,7 +30,7 @@ for argIn IN argsGradeShipIn {
 //run tfDirToUnitV(NORTH).
 //x/y/z= " + ROUND(tfUnit:x,2) + "/" +ROUND(tfUnit:y,2) + "/" + ROUND(tfUnit:z,2) 
  //set tfx to tfUnit:x.
- //set tfy to tfUnit:y.
+ //set tfy to tfUnmit:y.
  //set tfz to tfUnit:z.
  
  //MERKE: set tfUnit to PROGRADE. Hat als Struktur keine XYZ  Werte
@@ -43,11 +43,20 @@ run tfXYZtoEnu(tfUnit:x, tfUnit:y, tfUnit:z).
 //MERKE: Die inter verwendeten globalen Variablen   + "  | u/w/n/e= " + ROUND(tfU,2) + "/" + ROUND(tfW,2) + "/" +ROUND(tfN,2) + "/" + ROUND(tfE,2)
 
 if STATUS = "FLYING" {
-	set grade to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+	set gradetemp to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
 }.
 if STATUS = "PRELAUNCH" {
-	set grade to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+	set gradetemp to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
 }
+//run DEBUG_print("GRADE Wert: " + gradetemp). //argIn gilt nur innerhalb der Schleife...
+set grade to gradetemp.
+if Round(gradetemp) < 0 { 
+set grade to 360 + gradetemp. 
+}.
+if ROUND(gradetemp) > 360 { 
+set grade to gradetemp - 360. 
+}.
+run DEBUG_print("GRADE NORMIERT: " + grade). //argIn gilt nur innerhalb der Schleife...
 
 
 set funGradeShip_Return:REMOVE to 0.

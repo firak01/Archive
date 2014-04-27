@@ -1,6 +1,6 @@
 clearscreen.
 run langKernel. //Deklariere die "Language Konstanten."
-set langCallerName to "job1".
+set langCallerName to "job2".
 run DEBUG_Caller(langCallerName).
 
 //##################################
@@ -10,10 +10,10 @@ run libKerbal. //Soll die globalen Variablen für den Planeten deklarieren.
 run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 
 //Merke: Paramter sind 
-set args TO LIST().
 run STATUS_print("Steuere per Eingabewerte."). 
+set args to LIST().
 set args:ADD to libTargKscRunEnd.
-set args:add TO libTargPolNor. //Nordpol als Ziel
+set args:ADD to libTargPolNor. //Nordpol als Ziel
 
 //Nun auf Höhe gehen und das Ziel ansteuern.
 set prgPlaneSteer_Return to LIST(). //Rückgabewert
@@ -44,7 +44,7 @@ if prgPlaneSteerStatus = "0" {
 	run DEBUG_print("... Steuern NICHT fertig ...").
 	UNLOCK STEERING.
 	}.
-if prgPlaneSteertStatus = "-99" {
+if prgPlaneSteerStatus = "-99" {
 	run DEBUG_print( "ERROR beim Steuern.").
 	UNLOCK STEERING.
 }.
