@@ -31,20 +31,22 @@ run DEBUG_print0("Hauptziel ermittelt!").
 	
 //### Konstanten
 set constDegreeTxt to "G".
+set constColumnA to 0.
+set constColumnB to 25.
 
 //Ausgabe des Hauptziels
 //Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
 //            Um die Variable entgegenzunehmen, muss der Returnwert dann dem Programmnamen entsprechen.
 run funDistTargTxt (targMain).
-run DEBUG_Caller1("funDistTargTxt fertig.").
+run DEBUG_Caller0("funDistTargTxt fertig.").
 set distTargTxt to funDistTargTxt.
 
 set iColumn to 0. //Die Tabellenzeile.
 set lineOffSet to (iColumn*5).
-Print (iColumn+1) + ". Hauptziel: " at (0, langConsoleRowFirst+ langConsoleTargetOffset + lineOffset).
-Print "Distance: " + distTargTxt + "                " at (0,langConsoleRowFirst+ langConsoleTargetOffset +1 +lineOffset).
-Print "Heading:  " + ROUND(targMain:HEADING,2) + "                                   " + constDegreeTxt at (0,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
-Print "Bearing: " + ROUND(targMain:BEARING,2) + "                                     " + constDegreeTxt + "                         " at (25,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+Print (iColumn+1) + ". Hauptziel: " at (constColumnA, langConsoleRowFirst+ langConsoleTargetOffset + lineOffset).
+Print "Distance: " + distTargTxt + "                " at (constColumnA,langConsoleRowFirst+ langConsoleTargetOffset +1 +lineOffset).
+Print "Heading:  " + ROUND(targMain:HEADING,2) + "                                   " + constDegreeTxt at (constColumnA,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+Print "Bearing: " + ROUND(targMain:BEARING,2) + "                                     " + constDegreeTxt + "                         " at (constColumnB,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
 run PRINT_delimitRowAt(langConsoleRowFirst+ langConsoleTargetOffset + 3 +lineOffset).
 
 set listListCount_Return To LIST().
@@ -62,12 +64,12 @@ FOR targ IN listTarg {
 	//Workaround: Aufruf eines Programms als Funktion. Funktioniert, weil alle Variablen global sind.
 	//            Um die Variable entgegenzunehmen, muss der Returnwert dann dem Programmnamen entsprechen.	
 	run funDistTargTxt (targ).
-	run DEBUG_Caller1("funDistTargTxt in schleife fertig.").
+	run DEBUG_Caller0("funDistTargTxt in schleife fertig.").
 	set distTargTxt to funDistTargTxt.
 		
-	Print (iColumn+1) + ". Ziel: " at (0, langConsoleRowFirst+langConsoleTargetOffset + lineOffset).
-	Print "Distance: " + distTargTxt at (0,langConsoleRowFirst+ langConsoleTargetOffset + 1 +lineOffset).
-	Print "Heading:  " + ROUND(targ:HEADING,2) + "                                               " + constDegreeTxt at (0,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
-	Print "Bearing: " + ROUND(targ:BEARING,2) + "                                                 " + constDegreeTxt at (25,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+	Print (iColumn+1) + ". Ziel: " at (constColumnA, langConsoleRowFirst+langConsoleTargetOffset + lineOffset).
+	Print "Distance: " + distTargTxt at (constColumnA,langConsoleRowFirst+ langConsoleTargetOffset + 1 +lineOffset).
+	Print "Heading:  " + ROUND(targ:HEADING,2) + "                                               " + constDegreeTxt at (constColumnA,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
+	Print "Bearing: " + ROUND(targ:BEARING,2) + "                                                 " + constDegreeTxt at (constColumnB,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
 	run PRINT_delimitRowAt(langConsoleRowFirst+ langConsoleTargetOffset + 3 +lineOffset).
 }.

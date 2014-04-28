@@ -11,37 +11,54 @@ for argIn IN argsIn {
 	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
-		set headingplaned to argIn.
+		set headingplanedTemp to argIn.
 		//run DEBUG_print0("in = " + targMain).
 		}.	
 	if iIndex >= 1 {
-		set horizonplaned to argIn.  //Fuelle die liste der sonstigen ziele
+		set horizonplanedTemp to argIn.  //Fuelle die liste der sonstigen ziele
 		//run DEBUG_print0("Weiteres Ziel = " + argIn).
 		}.
 	if iIndex = 2 {
-		set headingship to argIn.
+		set headingshipTemp to argIn.
 		}.
 	 if iIndex = 3 {
-	    set horizonship to argIn.
+	    set horizonshipTemp to argIn.
 	 }. 
 }.
 	
 
 //### Konstanten
 set constDegreeTxt to "G".
+set constColumnA to 0.
+set constColumnB to 25.
 
 //1. Schiffsname
-print langCountGlobal + ".|- " + SHIP + " -" at (0,langConsoleRowFirst + langConsoleShipOffset).
+print langCountGlobal + ".|- " + SHIP + " -" at (constColumnA,langConsoleRowFirst + langConsoleShipOffset).
 set height to ALT:RADAR.
 
-//2. Aktuelle Werte
-print "RadarHoehe= " + ROUND(height) + "      " at (0,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
-print "EnuPitch= " + Round(horizonship,2)   at (0,langConsoleRowFirst + langConsoleShipOffset + 2). 
-print "EnuGrade= " + Round(headingship,2)   at (25,langConsoleRowFirst + langConsoleShipOffset + 2).
+//Die Werte für Pitch und Grade werden scheinbar manchmal vertauscht. Daher hier eine heuristische Lösung.
+if horizonshipTemp > 90 {
+	set horizonship to horizonshipTemp.
+	set headingship to headingshipTemp.
+	set horizonplaned to horizonplanedTemp.
+	set headingplaned to headingplanedTemp.	
+}.
+if horizonshipTemp < -90 {
+	set horizonship to horizonshipTemp.
+	set headingship to headingshipTemp.
+	set horizonplaned to horizonplanedTemp.
+	set headingplaned to headingplanedTemp.	
+}.
 
-print "VerticalSpeed: " + ROUND(VERTICALSPEED,2) + "       " at (0,langConsoleRowFirst + langConsoleShipOffset + 3).
-print "Heading: " + ROUND(HEADING,2) + "           " at(25,langConsoleRowFirst + langConsoleShipOffset + 3).  //??? ist Heading != gradeShip ???
+//2. Aktuelle Werte
+//Führungstextspalte ist 16 Zeichen breit, hinter jedem Wert extra Leerzeichen schreiben, um ggf. ältere Werte zu überschreiben, die eine kürzere Zeichenfolge haben.
+print "     RadarHoehe= " + ROUND(height) + "      " at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
+print "      EnuPitch= " + Round(horizonship,2)  + "      "   at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 2). 
+print "      EnuGrade= " + Round(headingship,2)  + "      "   at (constColumnB,langConsoleRowFirst + langConsoleShipOffset + 2).
 
 //3. Geplante Werte
-print "HorizonGoal: " + ROUND(horizonplaned,2) + "        " at(0,langConsoleRowFirst + langConsoleShipOffset + 4).
-print "GradeGoal: " + ROUND(headingplaned, 2) + "        " at (25,langConsoleRowFirst + langConsoleShipOffset + 4).
+print "   HorizonGoal: " + ROUND(horizonplaned,2) + "       " at(constColumnA,langConsoleRowFirst + langConsoleShipOffset + 3).
+print "     GradeGoal: " + ROUND(headingplaned, 2) + "       " at (contColumnB,langConsoleRowFirst + langConsoleShipOffset + 3).
+
+print "VerticalSpeed: " + ROUND(VERTICALSPEED,2) + "      " at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 4).
+print "       Heading: " + ROUND(HEADING,2) + "          " at(constColumnB,langConsoleRowFirst + langConsoleShipOffset + 4).  //??? ist Heading != gradeShip ??? JA, ist momentan immer 0.
