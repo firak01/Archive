@@ -208,8 +208,8 @@ until bContinue >= 1 {
 			
 		set iCountSoftH to iCountSoftH + 3.	
 		set horizonCurrentTemp To horizonCurrentENU + iCountSoftH.
-	    if horizonCurrentTemp < -90 { set horizonCurrentTemp to 5. }.
-	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 5. }.
+	    if horizonCurrentTemp < -90 { set horizonCurrentTemp to 5 + iCountSoftH. }.
+	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 5 + iCountSoftH. }.
 		
 		//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
 		if horizonCurrentTemp < 0  {				
@@ -244,8 +244,8 @@ until bContinue >= 1 {
 			
 			set iCountSoftH to iCountSoftH + 1.	
 			set horizonCurrentTemp To horizonCurrentENU + iCountSoftH.
-	  if horizonCurrentTemp < -90 { set horizonCurrentTemp to 5. }.
-	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 5. }.
+	  if horizonCurrentTemp < -90 { set horizonCurrentTemp to 5 + icountSoftH. }.
+	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 5 + icountSoftH. }.
 			
 			//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
 			if horizonCurrentTemp < 0  {
@@ -280,8 +280,8 @@ until bContinue >= 1 {
 					
 			set iCountSoftH to iCountSoftH + 1.	
 			set horizonCurrentTemp To horizonCurrentENU - iCountSoftH.
-		  if horizonCurrentTemp < -90 { set horizonCurrentTemp to 0. }.
-	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 0. }.
+		  if horizonCurrentTemp < -90 { set horizonCurrentTemp to 0 - iCountSoftH. }.
+	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 0 - iCountSoftH. }.
 			
 			//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
 			if horizonCurrentTemp >= 0  {

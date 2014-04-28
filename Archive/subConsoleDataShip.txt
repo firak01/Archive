@@ -37,28 +37,35 @@ print langCountGlobal + ".|- " + SHIP + " -" at (constColumnA,langConsoleRowFirs
 set height to ALT:RADAR.
 
 //Die Werte für Pitch und Grade werden scheinbar manchmal vertauscht. Daher hier eine heuristische Lösung.
+set horizonship to horizonshipTemp.
+set headingship to headingshipTemp.
+set horizonplaned to horizonplanedTemp.
+set headingplaned to headingplanedTemp.	
 if horizonshipTemp > 90 {
-	set horizonship to horizonshipTemp.
-	set headingship to headingshipTemp.
-	set horizonplaned to horizonplanedTemp.
-	set headingplaned to headingplanedTemp.	
+	set horizonship to headingshipTemp.
+	set headingship to horizonshipTemp.
+	//set horizonplaned to headingplanedTemp.	
+	set horizonplaned to 0.	
+	set headingplaned to horizonplanedTemp.
 }.
 if horizonshipTemp < -90 {
-	set horizonship to horizonshipTemp.
-	set headingship to headingshipTemp.
-	set horizonplaned to horizonplanedTemp.
-	set headingplaned to headingplanedTemp.	
+	set horizonship to headingshipTemp.
+	set headingship to horizonshipTemp.
+	//set horizonplaned to headingplanedTemp.	
+	set horizonplaned to 05.	
+	set headingplaned to horizonplanedTemp.
 }.
+
 
 //2. Aktuelle Werte
 //Führungstextspalte ist 16 Zeichen breit, hinter jedem Wert extra Leerzeichen schreiben, um ggf. ältere Werte zu überschreiben, die eine kürzere Zeichenfolge haben.
-print "     RadarHoehe= " + ROUND(height) + "      " at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
-print "      EnuPitch= " + Round(horizonship,2)  + "      "   at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 2). 
+print "   RadarHoehe= " + ROUND(height) + "      " at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 1). //Das klappt nur, wenn die Variable in einem "ueberprogramm" dekalriert ist und alle Variablen global sind....
+print "     EnuPitch= " + Round(horizonship,2)  + "      "   at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 2). 
 print "      EnuGrade= " + Round(headingship,2)  + "      "   at (constColumnB,langConsoleRowFirst + langConsoleShipOffset + 2).
 
 //3. Geplante Werte
-print "   HorizonGoal: " + ROUND(horizonplaned,2) + "       " at(constColumnA,langConsoleRowFirst + langConsoleShipOffset + 3).
-print "     GradeGoal: " + ROUND(headingplaned, 2) + "       " at (contColumnB,langConsoleRowFirst + langConsoleShipOffset + 3).
+print "  HorizonGoal: " + ROUND(horizonplaned,2) + "       " at(constColumnA,langConsoleRowFirst + langConsoleShipOffset + 3).
+print "     GradeGoal: " + ROUND(headingplaned, 2) + "       " at (constColumnB,langConsoleRowFirst + langConsoleShipOffset + 3).
 
 print "VerticalSpeed: " + ROUND(VERTICALSPEED,2) + "      " at (constColumnA,langConsoleRowFirst + langConsoleShipOffset + 4).
 print "       Heading: " + ROUND(HEADING,2) + "          " at(constColumnB,langConsoleRowFirst + langConsoleShipOffset + 4).  //??? ist Heading != gradeShip ??? JA, ist momentan immer 0.
