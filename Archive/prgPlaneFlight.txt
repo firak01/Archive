@@ -19,16 +19,16 @@ for argIn IN argsIn {
 	if iIndex = 0 {
 		set iHeightGoal to argIn.
 		run DEBUG_Caller("Height Goal = " + iHeightGoal).
-		}.
+	}.
 	if iIndex = 1 {
 		set iDistTargGoal to argIn.
 		run DEBUG_Caller("DistTarg Goal = " + iDistTargGoal).
-		}.
+	}.
 	if iIndex = 2 {
 		//run printDebug("param@2 = " + argIn).
 		//set targMain to argIn.
-		}.
 	}.
+}.
 	
 //######################
 //TODO: Diese Werte in die lib der Maschine aufnehmen (lib7p08.txt)
@@ -42,7 +42,8 @@ set langT to 1.
 LOCK THROTTLE to langT.
 LOCK STEERING TO langS.
 LOCK WHEELSTEERING TO langW.
-run STATUS_print1("STATUS=" + STATUS + " | Locked Throttel to " + langT).
+set sMissionStepTXT to "STATUS=" + STATUS + " | Locked Throttel to " + langT.
+run STATUS_print1(sMissionStepTXT).
 
 set argsPitchShip to LIST().
 run funPitchShip(argsPitchShip, funPitchShip_Return).
@@ -65,10 +66,10 @@ run DEBUG_print0("Hauptziel ermittelt!").
 //Gesamtliste aller (anderen) Ziele
 //TODO: Entferne aus der Liste das als Parameter uebergebene Haupt-Ziel.
 //           Das als Funktion machen.
-	SET listTarg TO LIST().   // Creates a new list in FOO variable
-	SET listTarg:ADD TO libTargKscRunEnd.    // Adds a new element to the end of the list
-	SET listTarg:ADD TO libTargPolNor.           //TODO: das müsste dann eigentlich rausfliegen!!!!!
-	SET listTarg:ADD To targMain.					//Das letzte Element ist das Hauptziel
+SET listTarg TO LIST().   // Creates a new list in FOO variable
+SET listTarg:ADD TO libTargKscRunEnd.    // Adds a new element to the end of the list
+SET listTarg:ADD TO libTargPolNor.           //TODO: das müsste dann eigentlich rausfliegen!!!!!
+SET listTarg:ADD To targMain.					//Das letzte Element ist das Hauptziel
 
 //########################################
 set iCount to 0. //Messungszähler intern
@@ -84,10 +85,10 @@ set bDistanceGoal to 0.
 //Bis auf Zielnähe fliegen.
 set bContinue to 0.
 //until Round(targMain:DISTANCE)<=Round(iDistTargGoal) {
-	set argsPitchShip to LIST().
-	set funPitchShip_Return to List().
-	set argsGradeShip to LIST().
-	set funGradeShip_Return to List().
+set argsPitchShip to LIST().
+set funPitchShip_Return to List().
+set argsGradeShip to LIST().
+set funGradeShip_Return to List().
 until bContinue >= 1 {
 	
 	//### Konsolenausgabe vorbereiten....	
@@ -112,8 +113,11 @@ until bContinue >= 1 {
 	set argsShip:REMOVE to 1.
 	set argsShip:REMOVE to 0.
 	
+	//TODO: In die Konsole die Schubangabe aufnehmen, also auch als Parameter.
+	//TODO: bei den Statusausgaben, die Grnezwerte (für Höhenbereiche) ausgeben. direkt nach inflight.
+	run DEBUG_Caller0("subConsoleDataTarget Aufruf").
 	run subConsoleDataTarget (listTarg).
-	run DEBUG_Caller1("subConsoleDataTarget fertig").
+	run DEBUG_Caller0("subConsoleDataTarget fertig").
 	
 	
 	//### Neue Plan-Werte ausrechnen, ausgehend von den aktuellen Werten
@@ -155,22 +159,6 @@ until bContinue >= 1 {
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360 + gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp - 360. }.
 			set langSteerHeading to gradeCurrentTemp.
-			if STATUS = "FLYING" {
-				if langSteerHorizon < 90 {
-					if langSteerHorizon > -90 {
-						set langS to HEADING(langSteerHorizon,langSteerHeading).     //NORMALFALL
-					}.
-				}.
-				if langSteerHorizon > 90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-				if langSteerHorizon < -90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-			}.
-			if STATUS = "PRELAUNCH" {
-				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			}.
 			SAS OFF.
 		}.
 		if ROUND(iBearing) <= 0 {		
@@ -179,22 +167,6 @@ until bContinue >= 1 {
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360 + gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp - 360. }.
 			set langSteerHeading to gradeCurrentTemp.			
-			if STATUS = "FLYING" {
-				if langSteerHorizon < 90 {
-					if langSteerHorizon > -90 {
-						set langS to HEADING(langSteerHorizon,langSteerHeading).      //NORMALFALL
-					}.
-				}.
-				if langSteerHorizon > 90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-				if langSteerHorizon < -90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-			}.
-			if STATUS = "PRELAUNCH" {
-				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			}.
 			SAS OFF.
 		}.
 		if ROUND(iBearing) = 0 {			
@@ -204,27 +176,11 @@ until bContinue >= 1 {
 			set iCountSoft to 0.
 			set langSteerHeading to gradeCurrentENU.
 			set langSteerHorizon to horizonCurrentENU.
-			if STATUS = "FLYING" {
-				if langSteerHorizon < 90 {
-					if langSteerHorizon > -90 {
-						set langS to HEADING(langSteerHorizon,langSteerHeading).      //NORMALFALL
-					}.
-				}.
-				if langSteerHorizon > 90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-				if langSteerHorizon < -90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-			}.
-			if STATUS = "PRELAUNCH" {
-				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			}.
 			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
 		}.
 	}. //if bHeightGoal=1.	
 	//###########################
-	run DEBUG_print1("Leichte Kursaenderung fertig!"). 
+	run DEBUG_print0("Leichte Kursaenderung fertig!"). 
 	
 	//Ziel: Höhe erreichen und dann halten
 	//until SHIP:altitude >= iHeightGoal{
@@ -257,22 +213,6 @@ until bContinue >= 1 {
 			}.			
 		}.
 		set langSteerHorizon to horizonCurrentTemp.
-		if STATUS = "FLYING" {
-			if langSteerHorizon < 90 {
-				if langSteerHorizon > -90 {
-					set langS to HEADING(langSteerHorizon,langSteerHeading).     //Normalfall
-				}.
-			}.
-			if langSteerHorizon > 90 {
-						set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			}.
-			if langSteerHorizon < -90 {
-						set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			}.
-		}.
-		if STATUS = "PRELAUNCH" {
-			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-		}.
 		set langT to 1.0.
 		SAS off.
 	}.
@@ -285,8 +225,22 @@ until bContinue >= 1 {
 			
 			set iCountSoftH to iCountSoftH + 1.	
 			set horizonCurrentTemp To horizonCurrentENU + iCountSoftH.
-	  if horizonCurrentTemp < -90 { set horizonCurrentTemp to 5 + icountSoftH. }.
-	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 5 + icountSoftH. }.
+			if horizonCurrentTemp < -90 { 
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 15 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to 5 + icountSoftH.
+				}.
+			}.
+			if horizonCurrentTemp > 90 { 
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 15 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to 5 + icountSoftH.
+				}.
+			}.
 			
 			//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
 			if horizonCurrentTemp < 0  {
@@ -306,23 +260,8 @@ until bContinue >= 1 {
 				}.
 			}.
 			set langSteerHorizon to horizonCurrentTemp.
-			if STATUS = "FLYING" {
-				if langSteerHorizon < 90 {
-					if langSteerHorizon > -90 {
-						set langS to HEADING(langSteerHorizon,langSteerHeading).    //NORMALFALL
-					}.
-				}.
-				if langSteerHorizon > 90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-				if langSteerHorizon < -90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-			}.
-			if STATUS = "PRELAUNCH" {
-				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			}.
-			
+
+			//TODO: Schubdrosselung. Grenzwerte durch 10 teilen (der durch 5)
 			//+++ Schub drosseln bis minimum
 			if ROUND(VERTICALSPEED) > 30 {
 				set Ttemp to Ttemp - 0.01.
@@ -353,8 +292,22 @@ until bContinue >= 1 {
 					
 			set iCountSoftH to iCountSoftH + 1.	
 			set horizonCurrentTemp To horizonCurrentENU - iCountSoftH.
-		  if horizonCurrentTemp < -90 { set horizonCurrentTemp to 0 - iCountSoftH. }.
-	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 0 - iCountSoftH. }.
+			if horizonCurrentTemp < -90 { 
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 0 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to -5 + icountSoftH.
+				}.
+			}.
+			if horizonCurrentTemp > 90 {
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 0 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to -5 + icountSoftH.
+				}.
+			}.
 			
 			//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
 			if horizonCurrentTemp >= 0  {
@@ -378,8 +331,7 @@ until bContinue >= 1 {
 				}.
 			}.
 			if ROUND(VERTICALSPEED) <= 30 {					
-					//set Ttemp to 0.5.
-				}.				
+					//set Ttemp to 0.5.		
 			}.
 			set langT to Ttemp.
 			SAS off.
@@ -392,24 +344,54 @@ until bContinue >= 1 {
 		set iCountSoftH to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
 		//set langSteerHorizon to 10. 
 		set langSteerHeading to gradeCurrentENU.
-		set langSteerHorizon to horizonCurrentENU.		
+		//set langSteerHorizon to horizonCurrentENU.	
+		if ROUND(VERTICALSPEED) <= 0 {		
+			set langSteerHorizon to 15.
+		}.
+		if ROUND(VERTICALSPEED) > 0 {
+			set langSteerHorizon to 5.
+		}.
+		
+		
+		//+++ Schub drosseln bis minimum
+		if ROUND(VERTICALSPEED) > 30 {
+			set Ttemp to Ttemp - 0.01.
+			if tTemp < 0.5 {
+				set Ttemp to 0.5.
+			}.
+		}.
+		if ROUND(VERTICALSPEED) <= 30 {
+			if ROUND(VERTICALSPEED) > 0 {
+				if ROUND(VERTICALSPEED) < 15 {
+					set Ttemp to Ttemp + 0.01.
+				}. 
+				if Ttemp >= 1.0 {
+					set Ttemp to 1.0.
+				}. 
+			}.
+			if ROUND(VERTICALSPEED) < 0 {
+				set Ttemp to 1.0.
+			}.				
+		}.
+		set langT to Ttemp.
+		SAS off.
 	}.
-		if STATUS = "FLYING" {
-				if langSteerHorizon < 90 {
-					if langSteerHorizon > -90 {
-						set langS to HEADING(langSteerHorizon,langSteerHeading).     //NORMALFALL
-					}.
-				}.
-				if langSteerHorizon > 90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
-				if langSteerHorizon < -90 {
-							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-				}.
+	if STATUS = "FLYING" {
+		if langSteerHorizon < 90 {
+			if langSteerHorizon > -90 {
+				set langS to HEADING(langSteerHorizon,langSteerHeading).     //NORMALFALL
 			}.
-			if STATUS = "PRELAUNCH" {
-				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-			}.
+		}.
+		if langSteerHorizon > 90 {
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		}.
+		if langSteerHorizon < -90 {
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		}.
+	}.
+	if STATUS = "PRELAUNCH" {
+		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+	}.
 	
 	run DEBUG_Caller1("Hoehensteuerung fertig").
 	run STATUS_print1(sAltitudeControl). 

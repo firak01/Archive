@@ -174,7 +174,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
 			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
 			SAS OFF.
-			set bIsInStartPosition to 0.
+			//set bIsInStartPosition to 0.
 		}.
 		if ROUND(iBearing) < 0 {		
 			run STATUS_print1( "... Korrektursteuern nach links...").
@@ -185,7 +185,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
 			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont				
 			SAS OFF.
-			set bIsInStartPosition to 0.
+			//set bIsInStartPosition to 0.
 		}.
 		if ROUND(iBearing) = 0 {						
 			run STATUS_print1("STATUS=" + STATUS).		
@@ -196,7 +196,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 			set langW to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont			
 			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont							
 			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
-			set bIsInStartPosition to 1.
+			//set bIsInStartPosition to 1.
 		}.	
 	}. 
 	
