@@ -155,12 +155,22 @@ until bContinue >= 1 {
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360 + gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp - 360. }.
 			set langSteerHeading to gradeCurrentTemp.
-	if STATUS = "FLYING" {
-	set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
-	if STATUS = "PRELAUNCH" {
-		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
+			if STATUS = "FLYING" {
+				if langSteerHorizon < 90 {
+					if langSteerHorizon > -90 {
+						set langS to HEADING(langSteerHorizon,langSteerHeading).     //NORMALFALL
+					}.
+				}.
+				if langSteerHorizon > 90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+				if langSteerHorizon < -90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+			}.
+			if STATUS = "PRELAUNCH" {
+				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			}.
 			SAS OFF.
 		}.
 		if ROUND(iBearing) <= 0 {		
@@ -169,12 +179,22 @@ until bContinue >= 1 {
 			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360 + gradeCurrentTemp. }.
 			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp - 360. }.
 			set langSteerHeading to gradeCurrentTemp.			
-		if STATUS = "FLYING" {
-	set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
-	if STATUS = "PRELAUNCH" {
-		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
+			if STATUS = "FLYING" {
+				if langSteerHorizon < 90 {
+					if langSteerHorizon > -90 {
+						set langS to HEADING(langSteerHorizon,langSteerHeading).      //NORMALFALL
+					}.
+				}.
+				if langSteerHorizon > 90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+				if langSteerHorizon < -90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+			}.
+			if STATUS = "PRELAUNCH" {
+				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			}.
 			SAS OFF.
 		}.
 		if ROUND(iBearing) = 0 {			
@@ -185,11 +205,21 @@ until bContinue >= 1 {
 			set langSteerHeading to gradeCurrentENU.
 			set langSteerHorizon to horizonCurrentENU.
 			if STATUS = "FLYING" {
-	set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
-	if STATUS = "PRELAUNCH" {
-		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
+				if langSteerHorizon < 90 {
+					if langSteerHorizon > -90 {
+						set langS to HEADING(langSteerHorizon,langSteerHeading).      //NORMALFALL
+					}.
+				}.
+				if langSteerHorizon > 90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+				if langSteerHorizon < -90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+			}.
+			if STATUS = "PRELAUNCH" {
+				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			}.
 			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
 		}.
 	}. //if bHeightGoal=1.	
@@ -228,11 +258,22 @@ until bContinue >= 1 {
 		}.
 		set langSteerHorizon to horizonCurrentTemp.
 		if STATUS = "FLYING" {
-	set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
-	if STATUS = "PRELAUNCH" {
-		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
+			if langSteerHorizon < 90 {
+				if langSteerHorizon > -90 {
+					set langS to HEADING(langSteerHorizon,langSteerHeading).     //Normalfall
+				}.
+			}.
+			if langSteerHorizon > 90 {
+						set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			}.
+			if langSteerHorizon < -90 {
+						set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			}.
+		}.
+		if STATUS = "PRELAUNCH" {
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		}.
+		set langT to 1.0.
 		SAS off.
 	}.
 	 //#########Ziel Hoehenkorridor halten
@@ -265,12 +306,44 @@ until bContinue >= 1 {
 				}.
 			}.
 			set langSteerHorizon to horizonCurrentTemp.
-				if STATUS = "FLYING" {
-	set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
-	if STATUS = "PRELAUNCH" {
-		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
+			if STATUS = "FLYING" {
+				if langSteerHorizon < 90 {
+					if langSteerHorizon > -90 {
+						set langS to HEADING(langSteerHorizon,langSteerHeading).    //NORMALFALL
+					}.
+				}.
+				if langSteerHorizon > 90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+				if langSteerHorizon < -90 {
+							set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+				}.
+			}.
+			if STATUS = "PRELAUNCH" {
+				set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+			}.
+			
+			//+++ Schub drosseln bis minimum
+			if ROUND(VERTICALSPEED) > 30 {
+				set Ttemp to Ttemp - 0.01.
+				if tTemp < 0.5 {
+					set Ttemp to 0.5.
+				}.
+			}.
+			if ROUND(VERTICALSPEED) <= 30 {
+				if ROUND(VERTICALSPEED) > 0 {
+					if ROUND(VERTICALSPEED) < 15 {
+						set Ttemp to Ttemp + 0.01.
+					}. 
+					if Ttemp >= 1.0 {
+						set Ttemp to 1.0.
+					}. 
+				}.
+				if ROUND(VERTICALSPEED) < 0 {
+					set Ttemp to 1.0.
+				}.				
+			}.
+			set langT to Ttemp.
 			SAS off.
 		}.
 		
@@ -297,6 +370,18 @@ until bContinue >= 1 {
 				}.		
 			}.
 			set langSteerHorizon to horizonCurrentTemp.
+				//+++ Schub drosseln bis minimum
+			if ROUND(VERTICALSPEED) > 30 {
+				set Ttemp to Ttemp - 0.01.
+				if tTemp < 0.5 {
+					set Ttemp to 0.5.
+				}.
+			}.
+			if ROUND(VERTICALSPEED) <= 30 {					
+					//set Ttemp to 0.5.
+				}.				
+			}.
+			set langT to Ttemp.
 			SAS off.
 		}.
 	}.
@@ -312,7 +397,7 @@ until bContinue >= 1 {
 		if STATUS = "FLYING" {
 				if langSteerHorizon < 90 {
 					if langSteerHorizon > -90 {
-						set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+						set langS to HEADING(langSteerHorizon,langSteerHeading).     //NORMALFALL
 					}.
 				}.
 				if langSteerHorizon > 90 {

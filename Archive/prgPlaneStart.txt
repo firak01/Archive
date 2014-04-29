@@ -59,12 +59,12 @@ set iCountStart to langCountGlobal.
 set sMissionStepTxt to "ONSTEER ".
 
 //################################
+//+++ Richtung beim Start, Auslesen wie sie wirklich ist.
 set argsPitchShip to LIST().
 set funPitchShip_Return to List().
 run funPitchShip(argsPitchShip, funPitchShip_Return).
 set langSteerHorizon to funPitchShip_Return#0.
 	
-//set gradeStart to targMain:HEADING.          //Richtung beim Start, TODO: Auslesen wie sie wirklich ist.
 set argsGradeShip to LIST().
 set funGradeShip_Return to List().
 run funGradeShip(argsGradeShip, funGradeShip_Return).

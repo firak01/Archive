@@ -117,8 +117,8 @@ until bContinue >= 1 {
 	set iCount to iCount + 1.
 	set langCountGlobal to iCountStart + iCount.  //Mit der globalen Zählvariablen werden die Unterprogramme und andere Teilprogramme versorgt.
 	
-	//TODO GOON rufe funktion auf, in der die Werte manuel gesetzt werden können. lies diese Werte als Argumente der Returnliste aus..
-	//Falls ende-argument gesetzt wird, set bContinue to 1.
+	//### Rufe funktion auf, in der die Werte manuel gesetzt werden können. lies diese Werte als Argumente der Returnliste aus..
+	//			Falls ende-argument gesetzt wird, set bContinue to 1.
 	set argsSteer to List().
 	set listFunManuelSteer_Return to List().
 	run funManuelSteerShip(argsSteer, listFunManuelSteer_Return).
@@ -133,7 +133,17 @@ until bContinue >= 1 {
 	
 	//+++ Steuerung
 	if STATUS = "FLYING" {
-	set langS to HEADING(langSteerHorizon,langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		if langSteerHorizon < 90 {
+			if langSteerHorizon > -90 {
+				set langS to HEADING(langSteerHorizon,langSteerHeading).      //NORMALFALL
+			}.
+		}.
+		if langSteerHorizon > 90 {
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		}.
+		if langSteerHorizon < -90 {
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		}.
 	}.
 	if STATUS = "PRELAUNCH" {
 		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
