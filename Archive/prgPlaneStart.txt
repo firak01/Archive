@@ -72,7 +72,8 @@ set langSteerHeading to funGradeShip_Return#0.
 
 
 set langW to targMain. //fuer das Wheelsteering
-set Ttemp to 0.0.
+set langThrottle to 0.0.
+set langT to langThrottle.
 LOCK THROTTLE to langT.
 LOCK STEERING TO langS.
 LOCK WHEELSTEERING TO langW.
@@ -111,7 +112,9 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	set argsShip:ADD To langSteerHorizon.
 	set argsShip:ADD To gradecurrentENU.
 	set argsShip:ADD To horizoncurrentENU.
+	set argsShip:ADD To langThrottel.
 	run subConsoleDataShip(argsShip).  //Wichtig: Erst nach den Korrektursteurn die Konsolenausgabe machne, sonst ist der aktuelle wert und der geplante Wert immer gleich.
+	set argsShip:REMOVE to 4.
 	set argsShip:REMOVE to 3.
 	set argsShip:REMOVE to 2.
 	set argsShip:REMOVE to 1.
@@ -126,6 +129,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	set iCount to iCount+1.//Achtung: Hier (in einem Unterprogram) deklarierte Variablen kann man nicht als globale Referenz uebergeben.
 	set langCountGlobal to langCountGlobal+1.////Das ist der einzige Weg eine Zählvariable an eine Unterfunktion zu uebergeben. Die Variable ist in einem "ueberprogramm" deklariert und daher global
 	
+	set Ttemp to langThrottle.
 	set Ttemp to Ttemp + 0.01.
 	
 	//ggf. am Boden in die richtige Richtung fahren.
@@ -140,7 +144,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		  BRAKES OFF.
 		}.
 	}
-	set langT to Ttemp.
+	set langThrottle to Ttemp.
 	
 	
 	
@@ -155,7 +159,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 			set iSurfaceSpeedOldDelay to 0.			
 			set Ttemp TO Ttemp + 0.05.
 			if Ttemp>=0.9 { set Ttemp TO 0.9}.
-			set langT TO Ttemp.			
+			set langThrottle TO Ttemp.			
 			}
 			
 	}.
@@ -205,7 +209,8 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	set iSurfaceSpeed to SHIP:SURFACESPEED.
 	if Round(alt:radar) < 3 { //Nicht einen Start abbrechen, nur weil jetzt die Geschwindigkeit erreicht wurde, aber man schon in der Luft ist.
 		if abs(iSurfaceSpeed) >= abs(launchSpeedAutoMax) {
-			LOCK THROTTLE TO 1.
+			set langThrottle to 1.0.
+			set langT to langThrottle.
 			UNLOCK WHEELSTEERING.
 			UNLOCK STEERING.
 			SAS OFF.
@@ -215,13 +220,16 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		
 		//Das wheelsteering korregieren nach dem Ziel beenden, ab einer bestimmten Geschwindigkeit.
 		if abs(iSurfaceSpeed) >= abs(launchSteeringSpeedAutoMax) {
-			LOCK THROTTLE TO 1.
+			set langThrottle to 1.0.
+			set langT to langThrottle.
 			UNLOCK WHEELSTEERING.
 			run STATUS_print1("AUTOMAX: WHEELSTEERING  abgestellt.").
 			set bIsInStartPosition to 1. //egal, augen zu und durch.
 		}.
 		
 		if abs(iSurfaceSpeed)	>= max(launchSpeedAutoMax, launchSteeringSpeedAutoMax) {
+			set langThrottle to 1.0.
+			set langT to langThrottle.
 			UNLOCK WHEELSTEERING.
 			UNLOCK STEERING.
 			SAS OFF.
@@ -231,7 +239,8 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	}.
 	
 	if abs(iSurfaceSpeed) >= abs(launchSpeedMin) {
-		LOCK THROTTLE TO 1.
+		set langThrottle to 1.0.
+		set langT to langThrottle.
 		set bIsFastEnough to 1.
 		SAS OFF.
 		set langSteerHorizon to 60.
@@ -244,7 +253,8 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	}
 	
 	if Round(alt:radar) >= 10 {
-		LOCK THROTTLE TO 1.
+		set langThrottle to 1.0.
+		set langT to langThrottle.
 		set bIsLaunched to 1.
 		SAS OFF.
 		set langSteerHorizon to 30.

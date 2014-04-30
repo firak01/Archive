@@ -30,7 +30,8 @@ for argIn IN argsIn {
 	
 //######################
 //Funktionen mit der Steuerung verknuepfen
-set langT to 1.
+set langThrottle to 1.0.
+set langT to langThrottle.
 LOCK THROTTLE to langT.
 LOCK STEERING TO langS.
 LOCK WHEELSTEERING TO langW.
@@ -90,7 +91,9 @@ until bContinue >= 1 {
 	set argsShip:ADD To langSteerHorizon.
 	set argsShip:ADD To horizoncurrentENU.	 //Das ist dann der aktuelle Wert	
 	set argsShip:ADD To gradecurrentENU.  //Das ist dann der aktuelle Wert	
+	set argsShip:ADD To langThrottle.  //Das ist dann der aktuelle Wert	
 	run subConsoleDataShip(argsShip). 
+	set argsShip:REMOVE to 4.
 	set argsShip:REMOVE to 3.
 	set argsShip:REMOVE to 2.
 	set argsShip:REMOVE to 1.
@@ -122,14 +125,21 @@ until bContinue >= 1 {
 	set argsSteer to List().
 	set listFunManuelSteer_Return to List().
 	run funManuelSteerShip(argsSteer, listFunManuelSteer_Return).
-	set langT to listFunManuelSteer_Return#0.
+	set langThrottle to listFunManuelSteer_Return#0.
 	set langSteerHeading to listFunManuelSteer_Return#1.
 	set langSteerHorizon to listFunManuelSteer_Return#2.
-	set bContinue to listFunManuelSteer_Return#3.
+	set iHeightGoal to listFunManuelSteer_Return#3.
+	set bContinue to listFunManuelSteer_Return#4.
+	set listFunManuelSteer_Return_REMOVE to 4.
 	set listFunManuelSteer_Return_REMOVE to 3.
 	set listFunManuelSteer_Return_REMOVE to 2.
 	set listFunManuelSteer_Return_REMOVE to 1.
 	set listFunManuelSteer_Return_REMOVE to 0.
+	
+	set sMissionParamsTxt to "(" + ROUND(iHeightGoal* 0.60) + "|" + ROUND(iHeightGoal - (iHeightGoal/10) + "|" + ROUND(iHeightGoal + (iHeightGoal/10) + ")".
+
+	//+++ TODO: Die gewünschte Höhe ansteuern. siehe prgPlaneFlight.
+	
 	
 	//+++ Steuerung
 	if STATUS = "FLYING" {
@@ -148,6 +158,10 @@ until bContinue >= 1 {
 	if STATUS = "PRELAUNCH" {
 		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
 	}.
+	set langT to langThrottle.
+	
+	run STATUS_print1(sMissionStepTxt + " " + sMissionParamsTXT + ": " +sAltitudeControl).
+	
 	SAS OFF.	
 }. //until bContinue >= 1.
 

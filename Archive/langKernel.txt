@@ -23,7 +23,8 @@ set langS to HEADING(langSteerHorizon, langSteerHeading).
 set langW to HEADING(langSteerHorizon, langSteerHeading).
 //LOCK WHEELSTEERING to langW.
 
-set langT to 0.0.
+set langThrottle to 0.0.
+set langT to langThrottle. //anders als die anderen Steuerinformatinen ist Throttle keine Struktur.
 //LOCK THROTTLE to langT.
 
 
