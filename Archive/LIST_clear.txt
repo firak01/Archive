@@ -17,3 +17,4 @@ until iIndex < 0 {
 	set argsIn:REMOVE TO iIndex.
 	set iIndex to iIndex - 1.
 }.
+run DEBUG_Caller1("List_clear ended").

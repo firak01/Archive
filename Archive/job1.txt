@@ -16,7 +16,7 @@ run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 run STATUS_print("Nehme Kurs auf"). 
 		
 //auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
-set iHeightGoal to 13000. //Sets desired height of plane.
+set iHeightGoal to libHeightGoal. //Sets desired height of plane.
 set iDistTargGoal to 2000. //Set desired distance to Target in meter.
 
 set args TO LIST().
@@ -39,10 +39,6 @@ for argReturn IN prgPlaneFlight_Return {
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
 		set prgPlaneFlightStatus to sReturn.		
-		}.
-	if iIndex = 1 {		
-		}.
-	if iIndex = 2 {
 		}.
 	}.		
 		

@@ -13,18 +13,11 @@ set funPitchShip_Return:ADD TO STATUSx.
 run DEBUG_print0("Anzahl von Parametern in argsIn = " + argsIn:LENGTH).
 set iIndex To -1.
 for argIn IN argsPitchShipIn {
-	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
-		//set headingcurrent to argIn.
-		//run DEBUG_print0("in = " + targMain).
+		set correction to argIn.
 		}.	
-	if iIndex >= 1 {
-		//set horizoncurrent to argIn.  //Fuelle die liste der sonstigen ziele
-		//run DEBUG_print0("Weiteres Ziel = " + argIn).
-		}.
-	if iIndex = 2 {
-		}.
 	}.
 
 //+++ In den hier verwendeten Funktionen werden globale Variablen verwendet
@@ -37,7 +30,7 @@ for argIn IN argsPitchShipIn {
  //set tfz to tfUnit:z.
  
  //MERKE: set tfUnit to PROGRADE. Hat als Struktur keine XYZ  Werte
- set tfA to latitude.
+ set tfA to LATITUDE.
  set tfUnit to VELOCITY:SURFACE.
  set tfx to tfUnit:x.
  set tfy to tfUnit:y.
@@ -48,20 +41,33 @@ run tfXYZtoEnu(tfUnit:x, tfUnit:y, tfUnit:z).
 
 //Errechne den aktuellen Pitch-Wert:
 if STATUS = "FLYING" {
-	set horizon to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+	set horizontemp to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
 }.
 if STATUS = "PRELAUNCH" {
-	set horizon to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
+	set horizontemp to ARCTAN2(tfU, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
 }.
-  if horizon < -90 { set horizon to 5. }.
-if horizon > 90 { set horizon to 5. }.
+
+if correction = "DOWN" {
+set horizon to horizontemp.
+if Round(horizontemp) < 0 { 
+set horizon to 360 + horizontemp. 
+}.
+if ROUND(horizontemp) > 360 { 
+set horizon to horizontemp - 360. 
+}.
+}.
+if correction = "UP" {
+  if horizontemp < -90 { set horizon to 3. }.
+if horizontemp > 90 { set horizon to 2. }.
+
+}.
 		
 
 //ABER: Gelandet/vor dem Start stimmt der Wert nicht
 //STATUS              // Current situation: LANDED, SPLASHED, PRELAUNCH, FLYING, SUB_ORBITAL, ORBITING, ESCAPING, or DOCKED
 if STATUS = "LANDED" { set horizon to 0. }.
 if STATUS = "PRELAUNCH" { set horizon to 0. }.
-run DEBUG_print("Pitch  NORMIERT: " + horizon). //argIn gilt nur innerhalb der Schleife...
+run DEBUG_print0("Pitch  NORMIERT: " + horizon). //argIn gilt nur innerhalb der Schleife...
 
 
 set funPitchShip_Return:REMOVE to 0.

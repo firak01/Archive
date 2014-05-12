@@ -59,16 +59,24 @@ set iCountStart to langCountGlobal.
 set sMissionStepTxt to "ONSTEER ".
 
 //################################
-//+++ Richtung beim Start, Auslesen wie sie wirklich ist.
-set argsPitchShip to LIST().
-set funPitchShip_Return to List().
-run funPitchShip(argsPitchShip, funPitchShip_Return).
-set langSteerHorizon to funPitchShip_Return#0.
-	
+set argsShip to LIST().
 set argsGradeShip to LIST().
 set funGradeShip_Return to List().
-run funGradeShip(argsGradeShip, funGradeShip_Return).
-set langSteerHeading to funGradeShip_Return#0.
+ set argsPitchShip to LIST().
+set funPitchShip_Return to List().
+
+//+++ Richtung beim Start, Auslesen wie sie wirklich ist.
+	set argsGradeShip:ADD to "UP".
+	run funGradeShip(argsGradeShip, funGradeShip_Return).
+	set gradeCurrentENU to funGradeShip_Return#0.     
+	set funGradeShip_Return:REMOVE to 0.
+	set argsGradeShip:REMOVE to 0.
+	
+	set argsPitchShip:ADD to "UP".
+	run funPitchShip(argsPitchShip, funPitchShip_Return).
+	set horizonCurrentENU to funPitchShip_Return#0.
+	set funPitchShip_Return:REMOVE to 0.
+	set argsPitchShip:REMOVE to 0.
 
 
 set langW to targMain. //fuer das Wheelsteering
@@ -81,7 +89,9 @@ LOCK WHEELSTEERING TO langW.
 //######################
 //Los geht´s....
 stage. //Spare das Druecken der "Spacebar"-Taste 
+wait 0.1.
 BRAKES On.
+wait 0.1.
 BRAKES OFF. //Funktioniert alleine nicht, braucht vorher BRAKES ON.
 
 set iSurfaceSpeedOld to 0.
@@ -92,27 +102,27 @@ set bContinue to 0.
 set iCountSoft to 0.
 set bIsInStartPosition to 1.
 
-set argsShip to LIST().
-set argsGradeShip to LIST().
-set funGradeShip_Return to List().
- set argsPitchShip to LIST().
-set funPitchShip_Return to List().
+
 until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 
 	//### Konsolenausgabe vorbereiten....
+	set argsGradeShip:ADD to "UP".
 	run funGradeShip(argsGradeShip, funGradeShip_Return).
 	set gradeCurrentENU to funGradeShip_Return#0.     
 	set funGradeShip_Return:REMOVE to 0.
+	set argsGradeShip:REMOVE to 0.
 	
+	set argsPitchShip:ADD to "UP".
 	run funPitchShip(argsPitchShip, funPitchShip_Return).
 	set horizonCurrentENU to funPitchShip_Return#0.
 	set funPitchShip_Return:REMOVE to 0.
+	set argsPitchShip:REMOVE to 0.
 	
 	set argsShip:ADD To langSteerHeading.
 	set argsShip:ADD To langSteerHorizon.
 	set argsShip:ADD To gradecurrentENU.
 	set argsShip:ADD To horizoncurrentENU.
-	set argsShip:ADD To langThrottel.
+	set argsShip:ADD To langThrottle.
 	run subConsoleDataShip(argsShip).  //Wichtig: Erst nach den Korrektursteurn die Konsolenausgabe machne, sonst ist der aktuelle wert und der geplante Wert immer gleich.
 	set argsShip:REMOVE to 4.
 	set argsShip:REMOVE to 3.
@@ -130,7 +140,7 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 	set langCountGlobal to langCountGlobal+1.////Das ist der einzige Weg eine Zählvariable an eine Unterfunktion zu uebergeben. Die Variable ist in einem "ueberprogramm" deklariert und daher global
 	
 	set Ttemp to langThrottle.
-	set Ttemp to Ttemp + 0.01.
+	set Ttemp to Ttemp + 0.1.
 	
 	//ggf. am Boden in die richtige Richtung fahren.
 	if bIsInStartPosition = 0 {
@@ -144,8 +154,6 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 		  BRAKES OFF.
 		}.
 	}
-	set langThrottle to Ttemp.
-	
 	
 	
 	if ROUND(SHIP:SURFACESPEED) < Min(MIN(launchSteeringSpeedAutoMax, launchSpeedAutoMax),launchSpeedMin) {
@@ -156,13 +164,15 @@ until bContinue >= 2 {	   //1=schnell genug //2 = hoch genug
 			set iSurfaceSpeedOld to ROUND(SHIP:SURFACESPEED).	
 			
 			if iSurfaceSpeedOldDelay >= 10 {
-			set iSurfaceSpeedOldDelay to 0.			
-			set Ttemp TO Ttemp + 0.05.
-			if Ttemp>=0.9 { set Ttemp TO 0.9}.
-			set langThrottle TO Ttemp.			
-			}
-			
+				set iSurfaceSpeedOldDelay to 0.			
+				set Ttemp TO Ttemp + 0.05.
+				if Ttemp>=0.9 {
+					set Ttemp TO 0.9. 
+				}.
+			}.		
 	}.
+	set langThrottle to Ttemp.
+	LOCK THROTTLE to langThrottle.	
 	
 		//Korrektursteuerungen			
 		set iCountSoft to iCountSoft + 2.     // 2 Grad korrektursteuerung.

@@ -13,15 +13,8 @@ for argIn IN argsGradeShipIn {
 	run DEBUG_print0("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
 	if iIndex = 0 {
-		//set headingcurrent to argIn.
-		//run DEBUG_print0("in = " + targMain).
+		set correction to argIn.
 		}.	
-	if iIndex >= 1 {
-		//set horizoncurrent to argIn.  //Fuelle die liste der sonstigen ziele
-		//run DEBUG_print0("Weiteres Ziel = " + argIn).
-		}.
-	if iIndex = 2 {
-		}.
 	}.
 
 //+++ In den hier verwendeten Funktionen werden globale Variablen verwendet
@@ -29,13 +22,12 @@ for argIn IN argsGradeShipIn {
 //set tfUnit To V(0,0,0).
 //run tfDirToUnitV(NORTH).
 //x/y/z= " + ROUND(tfUnit:x,2) + "/" +ROUND(tfUnit:y,2) + "/" + ROUND(tfUnit:z,2) 
- //set tfx to tfUnit:x.
- //set tfy to tfUnmit:y.
- //set tfz to tfUnit:z.
- 
+//set tfx to tfUnit:x.
+//set tfy to tfUnmit:y.
+//set tfz to tfUnit:z. 
  //MERKE: set tfUnit to PROGRADE. Hat als Struktur keine XYZ  Werte
- set tfA to latitude.
  set tfUnit to VELOCITY:SURFACE.
+ set tfa to LATITUDE.
  set tfx to tfUnit:x.
  set tfy to tfUnit:y.
  set tfz to tfUnit:z.
@@ -49,6 +41,11 @@ if STATUS = "PRELAUNCH" {
 	set gradetemp to ARCTAN2(tfE, tfN). //Wichtig, die Parameter müssen genau in dieser Reihenfolge stehen, sonst ist das Ergebnis nicht identisch mit dem, was auf dem NavBall steht.
 }
 //run DEBUG_print("GRADE Wert: " + gradetemp). //argIn gilt nur innerhalb der Schleife...
+if correction = "DOWN" {
+ if grade < -90 { set grade to 4. }.
+if grade > 90 { set grade to 6. }.
+}.
+if correction = "UP" {
 set grade to gradetemp.
 if Round(gradetemp) < 0 { 
 set grade to 360 + gradetemp. 
@@ -56,6 +53,9 @@ set grade to 360 + gradetemp.
 if ROUND(gradetemp) > 360 { 
 set grade to gradetemp - 360. 
 }.
+ 
+}.
+
 run DEBUG_print("GRADE NORMIERT: " + grade). //argIn gilt nur innerhalb der Schleife...
 
 

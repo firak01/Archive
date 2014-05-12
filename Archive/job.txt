@@ -38,10 +38,6 @@ for argReturn IN prgPlaneStart_Return {
 	if iIndex = 0 {
 		set prgPlaneStartStatus to sReturn.		
 		}.
-	if iIndex = 1 {		
-		}.
-	if iIndex = 2 {
-		}.
 	}.
 	
 //b) Rückgabwerte analysieren.
@@ -66,7 +62,7 @@ if prgPlaneStartStatus = "1" {
 		
 		//auch dass geht nicht args:CLEAR. //KEIN SET DAVOR
 		//TODO: Das alte Ziel, bzw. die aktuelle Richtung uebergeben, wenn man den Kurs nicht errechnen kann.
-		set iHeightGoal to 13000. //Sets desired height of plane.
+		set iHeightGoal to libHeightGoal. //Sets desired height of plane.
 		set iDistTargGoal to 2000. //Set desired distance to Target in meter.
 		set args:add To iHeightGoal. 
 		set args:add TO iDistTargGoal.
@@ -88,10 +84,6 @@ if prgPlaneStartStatus = "1" {
 			set iIndex to iIndex + 1.
 			if iIndex = 0 {
 				set prgPlaneFlightStatus to sReturn.		
-				}.
-			if iIndex = 1 {		
-				}.
-			if iIndex = 2 {
 				}.
 			}.
 		

@@ -22,6 +22,7 @@
 // namespace of KOS.
 
 declare parameter tfDir.
+run DEBUG_Caller1("tfDirToUnitV").
 
 // Rotation angles for rotation matrix:
 set tfA to tfDir:yaw.

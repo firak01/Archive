@@ -14,4 +14,5 @@ for argIn IN argsIn {
 	}.
 set listListCount_Return:REMOVE to 0.
 set listListCount_Return:ADD to iIndexList_count.
+run DEBUG_Caller1("LIST_count ended").
 

@@ -3,7 +3,7 @@ lock steering to mySteer.
 
 until 0 {
 
-	set tfA to latitude.
+	set tfA to LATITUDE.
 	set tfe to 0.
 	
 
@@ -21,7 +21,7 @@ until 0 {
    clearscreen.
    print "dumb test example:  Pres CTRL-C to end it.".
    print "Original velocity:surface vector: ".
-   print "lat= " + latitude + "up:yaw= " +up:yaw.
+   print "lat= " + LATITUDE + "up:yaw= " +up:yaw.
    print "      X : " + surPro:x .
    print "      Y : " + surPro:y .
    print "      Z : " + surPro:z .

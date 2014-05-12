@@ -37,9 +37,9 @@ for argIn IN argsManuelSteerShipIn {
 
 //########### Setze den Wert: Ändere hier manuell im laufenden Programm die Zahlen ab.
 set push to 1.
-set grade to 350.
+set grade to 330. //o.k. 20.//350.
 set horizon to 10.
-set heightship to 10000. //Momentan nicht relevant.
+set heightship to 4000.0. 
 set STATUSx to 0. //1= abbrechen
 
 //########### Check auf korrekte Werte
@@ -53,6 +53,7 @@ if horizon < -90 { set horizon to 0. }.
 if horizon > 90 { set horizon to 0. }.
 
 //########### Rückgabe
+set listFunManuelSteer_Return:REMOVE to 4.
 set listFunManuelSteer_Return:REMOVE to 3.
 set listFunManuelSteer_Return:REMOVE to 2.
 set listFunManuelSteer_Return:REMOVE to 1.

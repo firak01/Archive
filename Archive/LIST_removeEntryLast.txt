@@ -16,3 +16,4 @@ for argIn IN argsIn {
 	set listListRemoveEntryLast:ADD TO argIn.
 	if iIndex = iIndexReduced { break. }.
 }.
+run DEBUG_Caller1("LIST_removeEntryLast ended").

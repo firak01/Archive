@@ -10,4 +10,6 @@ set libTmaxGround to 0.05. //Schub am Boden, ohne Startabsicht.
 set libLaunchSpeedAutoMax to Max(85,libLaunchSpeedMin). //Ab wann KOS deaktivert werden soll und manuelle Steuerung notwendig ist
 set libLaunchGroundSteeringSpeedAutoMax to Max(20,libLaunchGroundSteeringSpeedMax). //Wenn beim start von anfang an gesteuert wird, dann kann man das so lassen.
 
+set libHeightGoal to 13000.
+
 

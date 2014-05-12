@@ -73,19 +73,39 @@ set funGradeShip_Return to LIST().
 set argsShip to LIST().
 	
 //Bis zum Programmende fliegen.
+set iSteerCorrection to "UP". //"DOWN", damit wird ein "Fehler" bei der Steuerung behoben.
 set bContinue to 0.
+set bHeightGoal to 0.
+set bGradeGoal to 0.
 until bContinue >= 1 {
 		
 	//### Konsolenausgabe vorbereiten....	
 	//+++ Aktuelle Werte für Richtung und Pitch, ausrechnen.
-
+	set argsGradeShip:ADD to iSteerCorrection.
+	set argsPitchShip:ADD to iSteerCorrection.
+	if iSteerCorrection = "DOWN" {
 	run funPitchShip(argsPitchShip, funPitchShip_Return).
 	set horizonCurrentENU to funPitchShip_Return#0.
-	set funPitchShip_Return:REMOVE to 0.
+	}.
+	if iSteerCorrection = "UP" {
+	run funGradeShip(argsGradeShip, funGradeShip_Return).
+	set horizonCurrentENU to funGradeShip_Return#0.
+	}.
 	
+	if iSteerCorrection = "DOWN" {
 	run funGradeShip(argsGradeShip, funGradeShip_Return).
 	set gradeCurrentENU to funGradeShip_Return#0.	
+	}.
+	if iSteerCorrection = "UP" {
+	run funPitchShip(argsPitchShip, funPitchShip_Return).
+	set gradeCurrentENU to funPitchShip_Return#0.	
+	}.
+	
+	set argsGradeShip:REMOVE to 0.
+	set argsPitchShip:REMOVE to 0.
+	set funPitchShip_Return:REMOVE to 0.
 	set funGradeShip_Return:REMOVE to 0.
+	
 	
 	set argsShip:ADD To langSteerHeading.
 	set argsShip:ADD To langSteerHorizon.
@@ -125,10 +145,15 @@ until bContinue >= 1 {
 	set argsSteer to List().
 	set listFunManuelSteer_Return to List().
 	run funManuelSteerShip(argsSteer, listFunManuelSteer_Return).
+	run DEBUG_print0("funManuelSteerShip fertig!"). 
 	set langThrottle to listFunManuelSteer_Return#0.
-	set langSteerHeading to listFunManuelSteer_Return#1.
-	set langSteerHorizon to listFunManuelSteer_Return#2.
+	set gradeSteerMain to listFunManuelSteer_Return#1.
 	set iHeightGoal to listFunManuelSteer_Return#3.
+	run DEBUG_PRINT0("HeightGoal: " + iHeightGoal).	
+	if iHeightGoal = 0 { 
+		set langSteerHorizon to listFunManuelSteer_Return#2. 
+		set bHeightGoal to 1.
+	}. //Bei Höhenangabe wird der Horizon automatisch errechnet.
 	set bContinue to listFunManuelSteer_Return#4.
 	set listFunManuelSteer_Return_REMOVE to 4.
 	set listFunManuelSteer_Return_REMOVE to 3.
@@ -136,33 +161,287 @@ until bContinue >= 1 {
 	set listFunManuelSteer_Return_REMOVE to 1.
 	set listFunManuelSteer_Return_REMOVE to 0.
 	
-	set sMissionParamsTxt to "(" + ROUND(iHeightGoal* 0.60) + "|" + ROUND(iHeightGoal - (iHeightGoal/10) + "|" + ROUND(iHeightGoal + (iHeightGoal/10) + ")".
+	//set sMissionParamsTxt to "(" + ROUND(iHeightGoal* 0.80) + "|" + ROUND(iHeightGoal - (iHeightGoal/30)) + "|" + ROUND(iHeightGoal + (iHeightGoal/30)) + ")".
+	set sMissionParamsTxt to "(H-Goal= " + ROUND(iHeightGoal) + "| S-Goal= " + ROUND(gradeSteerMain) +  ")".
+	
+	//+++ Die gewünschte Höhe ansteuern. siehe prgPlaneFlight.
+	//### Ziel: Langsam den Kurs aendern.
+	if bHeightGoal = 1 { 
+		run DEBUG_Caller("Leichte Kursaenderung machen....").	
+		set iSteerCorrection to "UP".
+		set iCountSoft to iCountSoft + 5.     // Grad der korrektursteuerung.
+		
+		if iCountSoft >= 40 { set iCountSoft to 40. }. //Maximale Grad Änderung
+		set iBearing to gradeSteerMain - gradeCurrentEnu. //targMain:BEARING.  //############OHNE ZIEL.
+		if ROUND(iBearing) > 0 {          //als String?, ist keine Zahl
+			run STATUS_print1("... Korrektursteuern nach rechts...").			
+			set gradeCurrentTemp to gradeCurrentENU+iCountSoft.   //rechts herum   //???? tatsächlich + iBearing ????? JA.
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360 + gradeCurrentTemp. }.
+			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp - 360. }.
+			set langSteerHeading to gradeCurrentTemp.
+			SAS OFF.
+		}.
+		if ROUND(iBearing) <= 0 {		
+			run STATUS_print1( "... Korrektursteuern nach links...").
+			set gradeCurrentTemp to gradeCurrentENU-iCountSoft.   //links herum    //???? tatsächlich - iBearing ????? JA, und immer + weil Bearing auch negativ wird.
+			if gradeCurrentTemp < 0 { set gradeCurrentTemp to 360 + gradeCurrentTemp. }.
+			if gradeCurrentTemp > 360 { set gradeCurrentTemp to gradeCurrentTemp - 360. }.
+			set langSteerHeading to gradeCurrentTemp.			
+			SAS OFF.
+		}.
+		if ROUND(iBearing) = 0 {			
+			run STATUS_print1("STATUS=" + STATUS).		
+			run DEBUG_print1("").
+			set bGradeGoal to 1.
+			set iCountSoft to 0.
+			set langSteerHeading to gradeSteerMain. //gradeCurrentENU.
+			set langSteerHorizon to horizonCurrentENU.
+			SAS ON.//Merke: bei = 0 ist Steuern nicht notwendig.
+		}.
+	}. //if bHeightGoal=1.	
+	//###########################
+	run DEBUG_print0("Leichte Kursaenderung fertig!"). 
+	
+	//Ziel: Höhe erreichen und dann halten
+	//until SHIP:altitude >= iHeightGoal{
+	run DEBUG_Caller0("Hoehensteuerung machen....").
+	
+	set bHeightGoal to 1.	
+    set iSteerCorrection to "UP".	
+	//#########Ziel schneller Aufstieg
+	if Round(height) < ROUND(iHeightGoal* 0.80) {  
+		set sAltitudeControl to "Schneller Aufstieg.".
+		set bHeightGoal to 0.		
+			
+		set iCountSoftH to iCountSoftH + 3.	
+		set horizonCurrentTemp To horizonCurrentENU + iCountSoftH.
+	    if horizonCurrentTemp < -90 { set horizonCurrentTemp to 5 + iCountSoftH. }.
+	    if horizonCurrentTemp > 90 { set horizonCurrentTemp to 5 + iCountSoftH. }.
+		
+		//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
+		if horizonCurrentTemp < 0  {				
+				set horizonCurrentTemp to 5.
+				set iCountSoftH to 0.
+			}.		
+		if horizonCurrentTemp > 0 {
+			if horizonCurrentTemp < constHorizonUpNormal  {
+				set horizonCurrentTemp to constHorizonUpNormal.
+				set iCountSoftH to 0.
+			}.		
+		if horizonCurrentTemp > constHorizonUpMax  {
+				set horizonCurrentTemp to constHorizonUpMax.
+				set iCountSoftH to 0.
+			}.			
+		}.
+		set langSteerHorizon to horizonCurrentTemp.
+		set langThrottle to 1.0.
+		SAS off.
+	}.
+	 //#########Ziel Hoehenkorridor halten
+	 run DEBUG_print("vor hoehe!"). 
+	if Round(height) >= ROUND(iHeightGoal* 0.80) { 
+		set sAltitudeControl to "Hoehenkorridor halten.".
+		if ROUND(height) < ROUND(iHeightGoal - (iHeightGoal/30)) { 
+			set sAltitudeControl to "Langsam Hochziehen!".		
+			//Beim langsamen hochziehen auch seitlich steuern.  set bHeightGoal to 0.
+			
+			set iCountSoftH to iCountSoftH + 1.	
+			set horizonCurrentTemp To horizonCurrentENU + iCountSoftH.
+			if horizonCurrentTemp < -90 { 
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 15 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to 5 + icountSoftH.
+				}.
+			}.
+			if horizonCurrentTemp > 90 { 
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 15 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to 5 + icountSoftH.
+				}.
+			}.
+			
+			//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
+			if horizonCurrentTemp < 0  {
+				if horizonCurrentTemp < -5 {
+					set horizonCurrentTemp to 10.
+					set iCountSoftH to 0.
+				}.
+				if horizonCurrentTemp >= -5 {
+					set horizonCurrentTemp to 10.
+					//ABER nicht mehr den Zähler auf 0 setzen.
+				}
+			}.			
+			if horizonCurrentTemp > 0 {
+				if horizonCurrentTemp  > constHorizonUpNormal  {
+					set horizonCurrentTemp to constHorizonUpNormal.
+					set iCountSoftH to 0.
+				}.
+			}.
+			set langSteerHorizon to horizonCurrentTemp.
 
-	//+++ TODO: Die gewünschte Höhe ansteuern. siehe prgPlaneFlight.
+			//TODO: Schubdrosselung. Grenzwerte durch 10 teilen (der durch 5)
+			//+++ Schub drosseln bis minimum
+			if ROUND(VERTICALSPEED) > 7 {
+				set Ttemp to Ttemp - 0.1.
+				if tTemp < 0.5 {
+					set Ttemp to 0.5.
+				}.
+			}.
+			if ROUND(VERTICALSPEED) <= 7 {
+				if ROUND(VERTICALSPEED) > 0 {
+					if ROUND(VERTICALSPEED) < 4 {
+						set Ttemp to Ttemp - 0.01.
+					}. 					
+				}.
+				if ROUND(VERTICALSPEED) < 0 {
+					if ROUND(VERTICALSPEED) > -7 {
+						set Ttemp to Ttemp + 0.01.
+					}.
+					if ROUND(VERTICALSPEED) <= -7 {
+						set Ttemp to Ttemp + 0.1.
+					}.
+				}.	
+				if Ttemp >= 1.0 {
+					set Ttemp to 1.0.
+				}.
+				if tTemp < 0.5 {
+					set Ttemp to 0.5.
+				}.				
+			}.
+			set langThrottle to Ttemp.
+			SAS off.
+		}.
+		
+		if ROUND(height) > ROUND(iHeightGoal + (iHeightGoal/30)) { 
+			set iSteerCorrection to "DOWN".                                                 //STEUERUNGSKORREKTUR!!!!
+			set sAltitudeControl to "Langsam Runterziehen!".
+			set bHeightGoal to 0.
+					
+			set iCountSoftH to iCountSoftH + 1.	
+			set horizonCurrentTemp To horizonCurrentENU - iCountSoftH.
+			if horizonCurrentTemp < -90 { 
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 0 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to -5 + icountSoftH.
+				}.
+			}.
+			if horizonCurrentTemp > 90 {
+				if ROUND(VERTICALSPEED) <= 0 {		
+					set horizonCurrentTemp to 0 + icountSoftH.
+				}.
+				if ROUND(VERTICALSPEED) > 0 {
+					set horizonCurrentTemp to -5 + icountSoftH.
+				}.
+			}.
+			
+			//Vermeide ueberschreiten der erlaubten Belastung & fliege gleichmaessiger
+			if horizonCurrentTemp >= 0  {
+				if horizonCurrentTemp <= 20  {
+					set horizonCurrentTemp to 0.
+					set iCountSoftH to 0.
+				}.
+			}.		
+			if horizonCurrentTemp < 0 {
+				if horizonCurrentTemp < constHorizonDownNormal  {
+					set horizonCurrentTemp to constHorizonDownNormal.
+					set iCountSoftH to 0.
+				}.		
+			}.
+			set langSteerHorizon to horizonCurrentTemp.
+				//+++ Schub drosseln bis minimum
+			if ROUND(VERTICALSPEED) >= 0 {	
+				if ROUND(VERTICALSPEED) <= 3 {					
+					//set Ttemp to 0.5.		
+				}.
+				if ROUND(VERTICALSPEED) > 3 {
+				   if ROUND(VERTICALSPEED) <= 7 {
+						set Ttemp to Ttemp - 0.1.
+					}.
+					if ROUND(VERTICALSPEED) > 7 {
+						set Ttemp to Ttemp - 0.1.		
+					}.
+				}.
+			}.
+			if ROUND(VERTICALSPEED) < 0 {
+				if ROUND(VERTICALSPEED) < -15 {
+					set Ttemp to Ttemp + 0.01.
+				}
+			}.
+			if tTemp < 0.5 {
+				set Ttemp to 0.5.
+			}.
+			set langThrottle to Ttemp.
+			SAS off.
+		}.
+	}.
 	
+	if bHeightGoal = 1 {	
+		//TODO: prüfen, ob der Surface:Velocity - Teil, (up-Wert) niedrig ist. Erst dann ist das Höhenziel tatsächlich erreicht!!!
+		//            Ansonsten kann eine Kurskorrektur bewirken, dass der Vogel abstürzt.
 	
-	//+++ Steuerung
-	if STATUS = "FLYING" {
-		if langSteerHorizon < 90 {
-			if langSteerHorizon > -90 {
-				set langS to HEADING(langSteerHorizon,langSteerHeading).      //NORMALFALL
+		set iCountSoftH to 0. // set iCountSoft to iCountSoft + 1.  //muss das nicht auch set iCountSoft to 0. sein?
+		//set langSteerHorizon to 10. 
+		//set langSteerHeading to gradeCurrentENU.
+		set langSteerHeading to gradeSteerMain.
+		//set langSteerHorizon to horizonCurrentENU.	
+		if ROUND(VERTICALSPEED) <= 0 {		
+			set langSteerHorizon to 15.
+		}.
+		if ROUND(VERTICALSPEED) > 0 {
+			set langSteerHorizon to 5.
+		}.
+		
+		
+		//+++ Schub drosseln bis minimum
+		if ROUND(VERTICALSPEED) > 10 {
+			set Ttemp to Ttemp - 0.1.
+			if tTemp < 0.5 {
+				set Ttemp to 0.5.
 			}.
 		}.
-		if langSteerHorizon > 90 {
-			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		if ROUND(VERTICALSPEED) <= 10 {
+			if ROUND(VERTICALSPEED) > 0 {
+				if ROUND(VERTICALSPEED) < 5 {
+					set Ttemp to Ttemp + 0.01.
+				}. 				
+			}.
+			if ROUND(VERTICALSPEED) < 0 {
+				set Ttemp to Ttemp + 0.1.
+			}.		
+			if Ttemp >= 1.0 {
+					set Ttemp to 1.0.
+			}. 
 		}.
-		if langSteerHorizon < -90 {
-			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		set langThrottle to Ttemp.
+		SAS off.
+	}.
+	
+	
+	//### Zuletzt: Befüllen der Strukturen / Variablen, die mit der Steuerung "gelocked" sind.
+	if iSteerCorrection = "UP" {
+    set langS to HEADING(langSteerHorizon, langSteerHeading).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+     }.
+	 if iSteerCorrection = "DOWN" {
+	 set langS to HEADING(langSteerHeading, langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+	 }.
+	
+	set langT to langThrottle. //ist zwar keine Struktur wie heading, aber um das programmiertechnisch gleich zu halten, wird langThrottle und langT verwendet, wie langSteerHeading... langS.
+	
+	run DEBUG_Caller("Hoehensteuerung fertig").
+	run STATUS_print1(sMissionStepTxt + " " + sMissionParamsTXT + ": " +sAltitudeControl). 
+	
+	// IRGENDWIE MUSS MAN DEN KURS MIT DEM GEWÜNSCHTEN GRADE/HORIZON VERGLEICHEN. WENNS PASST SAS ON.
+	if bHeightGoal = 1 {
+		if bGradeGoal = 1{
+			SAS ON.
 		}.
 	}.
-	if STATUS = "PRELAUNCH" {
-		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
-	}.
-	set langT to langThrottle.
-	
-	run STATUS_print1(sMissionStepTxt + " " + sMissionParamsTXT + ": " +sAltitudeControl).
-	
-	SAS OFF.	
 }. //until bContinue >= 1.
 
 

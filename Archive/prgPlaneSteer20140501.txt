@@ -1,0 +1,172 @@
+//Program "Plane 'Steer"
+//Steuere ein Flugzeug gemaess Eingabewerte, die in einer Datei veraendert werden koennen.
+DECLARE PARAMETER argsIn, prgPlaneSteer_Return.
+run DEBUG_Caller("prgPlaneSteer").
+set STATUSx to "-99".
+set prgPlaneSteer_Return:ADD TO STATUSx.
+
+//##########################
+//In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
+//1. Die Startgeschwindigkeit aus der argsIn Liste holen.
+//2. Die erlaubte Steuergeschwindigkeit am Boden.
+run DEBUG_print("Anzahl von Parametern in argsIn= " + argsIn:LENGTH).
+set iIndex to -1.
+for argIn IN argsIn {
+	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
+	set iIndex to iIndex + 1.
+	if iIndex = 0 {
+		//set iHeightGoal to argIn.
+		//run DEBUG_Caller("Height Goal = " + iHeightGoal).
+		}.
+	if iIndex = 1 {
+		//set iDistTargGoal to argIn.
+		//run DEBUG_Caller("DistTarg Goal = " + iDistTargGoal).
+		}.
+	if iIndex = 2 {
+		//run printDebug("param@2 = " + argIn).
+		//set targMain to argIn.
+		}.
+	}.
+	
+//######################
+//Funktionen mit der Steuerung verknuepfen
+set langThrottle to 1.0.
+set langT to langThrottle.
+LOCK THROTTLE to langT.
+LOCK STEERING TO langS.
+LOCK WHEELSTEERING TO langW.
+run STATUS_print("STATUS=" + STATUS + " | Locked Throttel to " + langT).
+
+set argsPitchShip to LIST().
+run funPitchShip(argsPitchShip, funPitchShip_Return).
+set langSteerHorizon to funPitchShip_Return#0.
+	
+set argsGradeShip to LIST().
+set funGradeShip_Return to List().
+run funGradeShip(argsGradeShip, funGradeShip_Return).
+set langSteerHeading to funGradeShip_Return#0.	
+
+//######################################
+//Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
+Set listListReadEntryLast_Return TO LIST().
+run LIST_readEntryLast(argsIn,listListReadEntryLast_Return).
+set targMain to listListReadEntryLast_Return#0.
+run DEBUG_print0("Hauptziel ermittelt!"). 
+
+//Gesamtliste aller (anderen) Ziele
+//TODO: Entferne aus der Liste das als Parameter uebergebene Haupt-Ziel.
+//           Das als Funktion machen.
+SET listTarg TO LIST().   // Creates a new list in FOO variable
+SET listTarg:ADD TO targMain.
+SET listTarg:ADD TO libTargKscRunEnd.    // Adds a new element to the end of the list
+SET listTarg:ADD TO libTargPolNor.
+
+//########################################
+set iCount to 0. //Messungszähler intern
+set iCountStart to langCountGlobal.
+set sMissionStepTxt to "ONSTEER ".
+	
+set argsPitchShip to LIST().
+set funPitchShip_Return to LIST().
+set argsGradeShip to LIST().
+set funGradeShip_Return to LIST().	
+set argsShip to LIST().
+	
+//Bis zum Programmende fliegen.
+set bContinue to 0.
+until bContinue >= 1 {
+		
+	//### Konsolenausgabe vorbereiten....	
+	//+++ Aktuelle Werte für Richtung und Pitch, ausrechnen.
+
+	run funPitchShip(argsPitchShip, funPitchShip_Return).
+	set horizonCurrentENU to funPitchShip_Return#0.
+	set funPitchShip_Return:REMOVE to 0.
+	
+	run funGradeShip(argsGradeShip, funGradeShip_Return).
+	set gradeCurrentENU to funGradeShip_Return#0.	
+	set funGradeShip_Return:REMOVE to 0.
+	
+	set argsShip:ADD To langSteerHeading.
+	set argsShip:ADD To langSteerHorizon.
+	set argsShip:ADD To horizoncurrentENU.	 //Das ist dann der aktuelle Wert	
+	set argsShip:ADD To gradecurrentENU.  //Das ist dann der aktuelle Wert	
+	set argsShip:ADD To langThrottle.  //Das ist dann der aktuelle Wert	
+	run subConsoleDataShip(argsShip). 
+	set argsShip:REMOVE to 4.
+	set argsShip:REMOVE to 3.
+	set argsShip:REMOVE to 2.
+	set argsShip:REMOVE to 1.
+	set argsShip:REMOVE to 0.	
+	
+	run subConsoleDataTarget (listTarg).
+	run DEBUG_Caller0("subConsoleDataTarget fertig").
+	
+	//+++ Hoehenangabe	
+	//Ziel: Bei niedriger Hoehe ggf. alt:radar verwenden, um Bergspitzen auszuweichen!
+	//These lines determine if the object is flying over water. If it is, the object determins its height based on altitude, not radalt.
+	//run STATUS_print("Hoehe: " + ALTITUDE).
+	if ROUND(ALTITUDE) <= 4000 {		
+		set height to alt:radar.
+		if alt:radar < 0 {set height to ALTITUDE.}.
+		if alt:radar > altitude {set height to ALTITUDE.}.
+	}.	
+	if ROUND(ALTITUDE) > 4000 {
+		set height to ALTITUDE.
+	}.
+	run DEBUG_print0("Hoehenermittlung fertig!"). 
+	
+	//### Neue Plan-Werte, aus der manuellen Steuerungsfunktion uebernehmen
+	set iCount to iCount + 1.
+	set langCountGlobal to iCountStart + iCount.  //Mit der globalen Zählvariablen werden die Unterprogramme und andere Teilprogramme versorgt.
+	
+	//### Rufe funktion auf, in der die Werte manuel gesetzt werden können. lies diese Werte als Argumente der Returnliste aus..
+	//			Falls ende-argument gesetzt wird, set bContinue to 1.
+	set argsSteer to List().
+	set listFunManuelSteer_Return to List().
+	run funManuelSteerShip(argsSteer, listFunManuelSteer_Return).
+	set langThrottle to listFunManuelSteer_Return#0.
+	set langSteerHeading to listFunManuelSteer_Return#1.
+	set langSteerHorizon to listFunManuelSteer_Return#2.
+	set iHeightGoal to listFunManuelSteer_Return#3.
+	set bContinue to listFunManuelSteer_Return#4.
+	set listFunManuelSteer_Return_REMOVE to 4.
+	set listFunManuelSteer_Return_REMOVE to 3.
+	set listFunManuelSteer_Return_REMOVE to 2.
+	set listFunManuelSteer_Return_REMOVE to 1.
+	set listFunManuelSteer_Return_REMOVE to 0.
+	
+	set sMissionParamsTxt to "(" + ROUND(iHeightGoal* 0.60) + "|" + ROUND(iHeightGoal - (iHeightGoal/10) + "|" + ROUND(iHeightGoal + (iHeightGoal/10) + ")".
+
+	//+++ TODO: Die gewünschte Höhe ansteuern. siehe prgPlaneFlight.
+	
+	
+	//+++ Steuerung
+	if STATUS = "FLYING" {
+		if langSteerHorizon < 90 {
+			if langSteerHorizon > -90 {
+				set langS to HEADING(langSteerHorizon,langSteerHeading).      //NORMALFALL
+			}.
+		}.
+		if langSteerHorizon > 90 {
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		}.
+		if langSteerHorizon < -90 {
+			set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+		}.
+	}.
+	if STATUS = "PRELAUNCH" {
+		set langS to HEADING(langSteerHeading,langSteerHorizon).     //gehe auf 90 Grad (startrichtung auf Startbahn), 55 Grad ?ber den Horizont	
+	}.
+	set langT to langThrottle.
+	
+	run STATUS_print1(sMissionStepTxt + " " + sMissionParamsTXT + ": " +sAltitudeControl).
+	
+	SAS OFF.	
+}. //until bContinue >= 1.
+
+
+Set STATUSx to "1".
+set prgPlaneSteer_Return:REMOVE to 0.
+set prgPlaneSteer_Return:ADD TO STATUSx.
+	

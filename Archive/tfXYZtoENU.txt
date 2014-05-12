@@ -21,10 +21,11 @@
 // variables you might have used in the global
 // namespace of KOS.
 
-declare parameter tfX,tfY,tfZ
+declare parameter tfX,tfY,tfZ.
+run DEBUG_Caller1("tfXYZtoENU").
 
 // Rotation angles for rotation matrix:
-set tfA to latitude. 
+set tfA to LATITUDE.
 set tfCosA to cos(tfA).
 set tfSinA to sin(tfA).
 

@@ -19,8 +19,6 @@ for argIn IN argsIn {
 		set listTarg:ADD to argIn.  //Fuelle die liste der sonstigen ziele
 		run DEBUG_print0("Weiteres Ziel = " + argIn).
 		}.
-	if iIndex = 2 {
-		}.
 	}.
 
 	//Das Hauptziel aus der argsIn Liste holen, es ist der letzte Eintrag der Liste.
@@ -73,3 +71,4 @@ FOR targ IN listTarg {
 	Print "Bearing: " + ROUND(targ:BEARING,2) + "                                                 " + constDegreeTxt at (constColumnB,langConsoleRowFirst+ langConsoleTargetOffset + 2 +lineOffset).
 	run PRINT_delimitRowAt(langConsoleRowFirst+ langConsoleTargetOffset + 3 +lineOffset).
 }.
+run DEBUG_Caller1("subConsoleDataTarget ended").
