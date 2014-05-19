@@ -15,8 +15,8 @@ set langCallerName to "Name der zuletzt aufgerufenen Funktion". //Wird dann als 
 set langCountGlobal to 0. //Globale Zählvariable, die über alle Programme hinaus deklariert ist.
 
 //#### Globale Variablen für die Steuerung 
-set langSteerHorizon to 0.
-set langSteerHeading to 0.
+set langSteerHorizon to 0.0.
+set langSteerHeading to 0.0.
 set langS to HEADING(langSteerHorizon, langSteerHeading).
 //LOCK STEERING to langS.
 

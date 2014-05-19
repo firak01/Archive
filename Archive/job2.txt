@@ -30,10 +30,6 @@ for argReturn IN prgPlaneSteer_Return {
 	if iIndex = 0 {
 		set prgPlaneSteerStatus to sReturn.		
 		}.
-	if iIndex = 1 {		
-		}.
-	if iIndex = 2 {
-		}.
 	}.		
 		
 if prgPlaneSteerStatus = "1" {

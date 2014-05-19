@@ -23,21 +23,11 @@ set iIndex To -1.
 for argIn IN argsManuelSteerShipIn {
 	run DEBUG_print("Wert: " + argIn). //argIn gilt nur innerhalb der Schleife...
 	set iIndex to iIndex + 1.
-	if iIndex = 0 {
-		//set headingcurrent to argIn.
-		//run DEBUG_print0("in = " + targMain).
-		}.	
-	if iIndex >= 1 {
-		//set horizoncurrent to argIn.  //Fuelle die liste der sonstigen ziele
-		//run DEBUG_print0("Weiteres Ziel = " + argIn).
-		}.
-	if iIndex = 2 {
-		}.
 	}.
 
 //########### Setze den Wert: Ändere hier manuell im laufenden Programm die Zahlen ab.
 set push to 1.
-set grade to 330. //o.k. 20.//350.
+set grade to 90. //o.k. 20.//350.
 set horizon to 10.
 set heightship to 4000.0. 
 set STATUSx to 0. //1= abbrechen
@@ -63,3 +53,4 @@ set listFunManuelSteer_Return:ADD TO grade.
 set listFunManuelSteer_Return:ADD TO horizon.
 set listFunManuelSteer_Return:ADD TO heightship.
 set listFunManuelSteer_Return:ADD TO STATUSx.
+run DEBUG_Caller1("funManuelSteerShip ended").

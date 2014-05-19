@@ -12,19 +12,22 @@ run lib7p08.   //Deklariere die "Flugzeug Konstanten"
 //TODO: 2 Zeilen Footer , davon 1 Trennlienie und von der Terminalgröße ausgehen.
 //run subConsoleFooter.
 
+
 //Merke: Parameter sind 
-set args TO LIST().
-set args:ADD to libLaunchSpeedMin.
-set args:ADD to libLaunchSpeedAutoMax.
-set args:ADD to libLaunchGroundSteeringSpeedAutoMax.
+set argsIn TO LIST().
+set argsIn:ADD to libLaunchSpeedMin.
+set argsIn:ADD to libLaunchSpeedAutoMax.
+set argsIn:ADD to libLaunchGroundSteeringSpeedAutoMax.
 
 //Merke: Der letzte Eintrag in der Liste ist das Hauptziel
-set args:ADD to libTargPolNor.
-set args:ADD to libTargKscRunEnd. 
-
+set argsIn:ADD to libTargPolNor.
+set argsIn:ADD to libTargKscRunEnd. 
 
 set prgPlaneStart_Return to LIST(). //Rückgabewert, muss hier schon deklariert werden.
-run prgPlaneStart (args,prgPlaneStart_Return).
+set prgPlaneStart_Return:ADD to "-99".
+run DEBUG_Caller("xxxxx").
+//run prgPlaneStart (argsIn, prgPlaneStart_Return).
+run prgPlaneStart (argsIn, prgPlaneStart_Return).
 run DEBUG_print("Startphase beendet. Anzahl ReturnWerte: " + prgPlaneStart_Return:LENGTH).
 
 //Prüfe den Status des Programms

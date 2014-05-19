@@ -1,11 +1,11 @@
 //Program "Plane Start"
 //Starte ein Flugzeug: 1) Beschleunige, 2) Ziehe hoch
-DECLARE PARAMETER argsIn, prgPlaneStart_Return.
+//DECLARE PARAMETER argsIn, prgPlaneStart_Return.
+DECLARE PARAMETER prgPlaneStart_Return.
+
 
 //erwarte als erstes Argument: Die startgeschwindigkeit.
 run DEBUG_Caller1("prgPlaneStart").
-set STATUSx to "-99".
-set prgPlaneStart_Return:ADD TO STATUSx.
 
 //##########################
 //In einer Schleife die Übergabebewerte den lokalen Variablen zuweisen.
@@ -62,28 +62,35 @@ set sMissionStepTxt to "ONSTEER ".
 set argsShip to LIST().
 set argsGradeShip to LIST().
 set funGradeShip_Return to List().
- set argsPitchShip to LIST().
+set argsPitchShip to LIST().
 set funPitchShip_Return to List().
 
 //+++ Richtung beim Start, Auslesen wie sie wirklich ist.
-	set argsGradeShip:ADD to "UP".
-	run funGradeShip(argsGradeShip, funGradeShip_Return).
-	set gradeCurrentENU to funGradeShip_Return#0.     
-	set funGradeShip_Return:REMOVE to 0.
-	set argsGradeShip:REMOVE to 0.
-	
-	set argsPitchShip:ADD to "UP".
-	run funPitchShip(argsPitchShip, funPitchShip_Return).
-	set horizonCurrentENU to funPitchShip_Return#0.
-	set funPitchShip_Return:REMOVE to 0.
-	set argsPitchShip:REMOVE to 0.
+set argsGradeShip:ADD to "UP".
+run funGradeShip(argsGradeShip, funGradeShip_Return).
+set gradeCurrentENU to funGradeShip_Return#0.     
+set funGradeShip_Return:REMOVE to 0.
+set argsGradeShip:REMOVE to 0.
 
+set argsPitchShip:ADD to "UP".
+run funPitchShip(argsPitchShip, funPitchShip_Return).
+set horizonCurrentENU to funPitchShip_Return#0.
+set funPitchShip_Return:REMOVE to 0.
+set argsPitchShip:REMOVE to 0.
 
 set langW to targMain. //fuer das Wheelsteering
 set langThrottle to 0.0.
 set langT to langThrottle.
 LOCK THROTTLE to langT.
 LOCK STEERING TO langS.
+//TODO GOON 20140518 Values of type System.String cannot have suffixes
+run DEBUG_Caller("yyyyyyyyyyy").
+
+
+	
+
+
+
 LOCK WHEELSTEERING TO langW.
 
 //######################
@@ -285,3 +292,7 @@ UNLOCK STEERING.
 UNLOCK THROTTLE.
 set prgPlaneStart_Return:REMOVE to 0.
 set prgPlaneStart_Return:ADD TO STATUSx.
+
+
+
+
